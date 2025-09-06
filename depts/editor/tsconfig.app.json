@@ -23,7 +23,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* Plugins */
+    /* Custom */
+    "paths": {
+      "app/*": ["src/*"],
+    },
     "plugins": [
       {"name": "typescript-plugin-css-modules"},
     ]
