@@ -21,6 +21,7 @@ services:
       - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
     volumes:
       - './:/app'
+      - depts-data:/app/depts
       - ./docker/map/php.custom.ini:/usr/local/etc/php/conf.d/zzz-custom.ini:ro
       - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
     depends_on:
@@ -53,6 +54,6 @@ services:
     depends_on:
       - db
 
-
 volumes:
   db-data:
+  depts-data:
