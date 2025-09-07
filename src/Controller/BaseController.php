@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\DtoProvider;
 use App\Entity\User;
-use App\Model\StorageFile;
 use App\Security\SecurityProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,19 +29,7 @@ class BaseController extends AbstractController
             ...parent::getSubscribedServices(),
             'app_em' => EntityManagerInterface::class,
             'app_security' => SecurityProvider::class,
-            'app_dto' => DtoProvider::class,
         ];
-    }
-
-    protected function toDto(
-        array|object $data,
-        array $context = [],
-        array $headers = [],
-        int $status = 200,
-    ): JsonResponse {
-        $data = $this->getDtoProvider()->createOutput($data, $context);
-
-        return $this->json($data, $status, $headers, $context);
     }
 
     protected function toJson(
@@ -53,22 +39,6 @@ class BaseController extends AbstractController
         int $status = 200,
     ): JsonResponse {
         return $this->json($data, $status, $headers, $context);
-    }
-
-    public function toStream(StorageFile $file): StreamedResponse
-    {
-        $response = new StreamedResponse(function () use ($file) {
-            $stream = $file->getContent()->asStream();
-            fpassthru($stream);
-        });
-
-        $response->headers->set('Content-Type', sprintf('%s; charset=utf-8', $file->mimeType));
-        $response->headers->set('Content-Disposition', sprintf('inline; filename="document.%s"', $file->getExtension()));
-        $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-        $response->headers->set('Pragma', 'no-cache');
-        $response->headers->set('Expires', '0');
-
-        return $response;
     }
 
     protected function getUser(): ?User
@@ -89,11 +59,6 @@ class BaseController extends AbstractController
     protected function getRouter(): RouterInterface
     {
         return $this->container->get('router');
-    }
-
-    protected function getDtoProvider(): DtoProvider
-    {
-        return $this->container->get('app_dto');
     }
 
     protected function em(): EntityManagerInterface
