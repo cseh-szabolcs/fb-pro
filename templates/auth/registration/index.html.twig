@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Hallooooo</h1>
+    <script type="module">
+        import app from "app"
+        app.component(() => ({
+            greeting: "Halloooo",
+        }));
+    </script>
+    <div x-data="root" x-cloak style="border:2px solid red;">
+        <h2 x-text="greeting">Test</h2>
+    </div>
+{% endblock %}
