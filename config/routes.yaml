@@ -3,3 +3,18 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+    prefix: /{_locale}
+    requirements:
+        _locale: en|de
+    defaults:
+        _locale: en
+
+public:
+    resource:
+        path: ../src/Controller/Web/
+        namespace: App\Controller\Web
+    type: attribute
+
+root:
+    path: /
+    controller: App\Controller\Home\HomeController

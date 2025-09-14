@@ -1,0 +1,47 @@
+<form method="post" class="d-center h-100">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <div class="w-100" style="max-width:640px;">
+        <div class="mb-3">
+            <label for="inputEmail">
+                Email
+            </label>
+            <input
+                type="email"
+                name="email"
+                id="inputEmail"
+                value="{{ last_username }}"
+                class="form-control"
+                autocomplete="email"
+                required
+                autofocus
+            />
+        </div>
+        <div class="mb-3">
+            <label for="inputPassword">
+                Password
+            </label>
+            <input
+                type="password"
+                name="password"
+                id="inputPassword"
+                value="{{ last_password }}"
+                class="form-control"
+                autocomplete="current-password"
+                required
+            />
+        </div>
+
+        <input
+            type="hidden"
+            name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}"
+        />
+
+        <button class="btn btn-lg btn-primary w-100" type="submit">
+            Login
+        </button>
+    </div>
+</form>

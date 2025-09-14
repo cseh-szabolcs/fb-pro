@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        {% include('pages/auth/login/logout.html.twig') %}
+    {% else %}
+        {% include('pages/auth/login/login.html.twig') %}
+    {% endif %}
+{% endblock %}
+

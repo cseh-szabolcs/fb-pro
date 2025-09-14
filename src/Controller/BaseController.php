@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Security\SecurityProvider;
+use App\Security\AuthProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
@@ -18,18 +17,9 @@ class BaseController extends AbstractController
 {
     use TargetPathTrait;
 
-    public function emptyResponse(): Response
+    public function newResponse(int $status = Response::HTTP_NO_CONTENT, string $content = ''): Response
     {
-        return new Response('', Response::HTTP_NO_CONTENT);
-    }
-
-    public static function getSubscribedServices(): array
-    {
-        return [
-            ...parent::getSubscribedServices(),
-            'app_em' => EntityManagerInterface::class,
-            'app_security' => SecurityProvider::class,
-        ];
+        return new Response($content, $status);
     }
 
     protected function toJson(
@@ -43,17 +33,17 @@ class BaseController extends AbstractController
 
     protected function getUser(): ?User
     {
-        return $this->getSecurity()->getUser();
+        return $this->getAuth()->getUser();
     }
 
     protected function isAuthenticated(): bool
     {
-        return $this->getSecurity()->isAuthenticated();
+        return $this->getAuth()->isAuthenticated();
     }
 
-    protected function getSecurity(): SecurityProvider
+    protected function getAuth(): AuthProvider
     {
-        return $this->container->get('app_security');
+        return $this->container->get('app_auth');
     }
 
     protected function getRouter(): RouterInterface
@@ -76,5 +66,14 @@ class BaseController extends AbstractController
     {
         $this->em()->remove($entity);
         $this->em()->flush();
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            ...parent::getSubscribedServices(),
+            'app_em' => EntityManagerInterface::class,
+            'app_auth' => AuthProvider::class,
+        ];
     }
 }

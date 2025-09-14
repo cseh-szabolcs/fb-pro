@@ -2,21 +2,29 @@
 
 namespace App\Entity;
 
+use App\Contracts\Entity\UuidAwareInterface;
 use App\Repository\MandateRepository;
+use App\Traits\Entity\CreatedTrait;
+use App\Traits\Entity\UuidAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MandateRepository::class)]
-class Mandate
+#[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
+#[ORM\HasLifecycleCallbacks]
+class Mandate implements UuidAwareInterface
 {
+    use UuidAwareTrait;
+    use CreatedTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $name;
 
     /**
      * @var Collection<int, User>
@@ -24,8 +32,9 @@ class Mandate
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'mandate', orphanRemoval: true)]
     private Collection $users;
 
-    public function __construct()
+    public function __construct(string $name)
     {
+        $this->name = $name;
         $this->users = new ArrayCollection();
     }
 
