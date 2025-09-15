@@ -5,3 +5,13 @@ body {
 [x-cloak] {
     visibility: hidden;
 }
+
+/* colors */
+.bg-app {
+    background-color: #113559;
+}
+
+/* common */
+.inset-0 {
+    inset: 0;
+}
