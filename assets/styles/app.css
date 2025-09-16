@@ -21,6 +21,13 @@ body {
     justify-content: center;
     align-items: center;
 }
+.d-flex-column {
+    display: flex;
+    flex-direction: column;
+}
+.flex-1 {
+    flex: 1;
+}
 
 .inset-0 {
     inset: 0;
