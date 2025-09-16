@@ -7,6 +7,10 @@ body {
 }
 
 /* colors */
+.color-white {
+    color: white;
+    border-color: white;
+}
 .bg-app {
     background-color: #113559;
 }

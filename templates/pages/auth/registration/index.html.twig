@@ -1,14 +1,26 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form 'forms/theme/app_floating.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
 {% block body %}
-    <h1>Hallooooo</h1>
-    <script type="module">
-        import app from "app"
-        app.component(() => ({
-            greeting: "Good moring Dave",
-        }));
-    </script>
-    <div x-data="root" x-cloak style="border:2px solid red;">
-        <h2 x-text="greeting">Test</h2>
-    </div>
+    <h1>Create your account</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">{{ message }}</div>
+    {% endfor %}
+
+    {{ form_start(form) }}
+        {{ form_row(form.mandateName) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.locale) }}
+        {{ form_row(form.plainPassword.first) }}
+        {{ form_row(form.plainPassword.second) }}
+        <button type="submit" class="btn btn-primary">Register</button>
+    {{ form_end(form) }}
+
+    <p>Already have an account? <a href="{{ path('app_auth_login') }}">Sign in</a></p>
 {% endblock %}
