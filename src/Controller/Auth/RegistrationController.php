@@ -5,7 +5,7 @@ namespace App\Controller\Auth;
 use App\Controller\BaseController;
 use App\Entity\Mandate;
 use App\Entity\User;
-use App\Form\RegistrationType;
+use App\Form\Type\RegistrationType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
