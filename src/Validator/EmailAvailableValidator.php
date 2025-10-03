@@ -26,17 +26,24 @@ final class EmailAvailableValidator extends ConstraintValidator
         assert(is_string($value) || $value instanceof EmailAwareInterface);
 
         try {
-            $this->userRepository->findOneByEmail($value);
+            $email = $this->getEmail($value);
+            $this->userRepository->findOneByEmail($email);
 
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
-                ->addViolation()
+            $violation = $this->context
+                ->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $email)
             ;
+
+            if ($value instanceof EmailAwareInterface) {
+                $violation->atPath($constraint->propertyPath);
+            }
+
+            $violation->addViolation();
         } catch (NoResultException) {}
     }
 
-    private function assertValue()
+    private function getEmail(string|EmailAwareInterface $value): string
     {
-
+        return $value instanceof EmailAwareInterface ? $value->getEmail() : $value;
     }
 }

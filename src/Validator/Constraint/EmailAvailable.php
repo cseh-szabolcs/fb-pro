@@ -15,10 +15,12 @@ use Symfony\Component\Validator\Constraint;
 final class EmailAvailable extends Constraint
 {
     public string $message = 'The email address "{{ value }}" already exists.';
+    public string $propertyPath = 'email';
 
-    public function __construct(?array $groups = null, mixed $payload = null)
+    public function __construct(?string $propertyPath = 'email', ?array $groups = null, mixed $payload = null)
     {
         parent::__construct([], $groups, $payload);
+        $this->propertyPath = $propertyPath;
     }
 
     public function validatedBy(): string
