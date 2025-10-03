@@ -51,7 +51,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    public function authenticateUser(User $user): ?Response
+    public function login(User $user): ?Response
     {
         return $this->userAuthenticator->authenticateUser($user, $this, $this->app->getMainRequest());
     }
