@@ -3,6 +3,8 @@
 namespace App\Controller\Auth;
 
 use App\Controller\BaseController;
+use App\Form\Data\Auth\LoginData;
+use App\Form\Type\Auth\LoginType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -12,13 +14,11 @@ class LoginController extends BaseController
     #[Route(path: '/login', name: 'login')]
     public function login(): Response {
         $utils = $this->getAuth()->utils;
+        $form = $this->createForm(LoginType::class, new LoginData($utils->getLastUsername()));
         $error = $utils->getLastAuthenticationError();
-        $lastUsername = $utils->getLastUsername();
-        $lastPassword = null;
 
         return $this->render('pages/auth/login/index.html.twig', [
-            'last_username' => $lastUsername,
-            'last_password' => $lastPassword,
+            'form' => $form->createView(),
             'error' => $error,
         ]);
     }

@@ -1,12 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/auth.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% form_theme form 'forms/theme/app_floating.html.twig' %}
 
-{% block body %}
+{% block title %}Login!{% endblock %}
+
+{% block content %}
     {% if app.user %}
         {% include('pages/auth/login/logout.html.twig') %}
     {% else %}
         {% include('pages/auth/login/login.html.twig') %}
     {% endif %}
 {% endblock %}
-

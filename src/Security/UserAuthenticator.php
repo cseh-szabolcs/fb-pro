@@ -27,8 +27,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public function __construct(
         private readonly UserProvider $userProvider,
-        private readonly App $app,
         private readonly UserAuthenticatorInterface $userAuthenticator,
+        private readonly App $app,
     ) {}
 
     public function supports(Request $request): bool

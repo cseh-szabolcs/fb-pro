@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Form\Type;
+namespace App\Form\Type\Auth;
 
-use App\Form\Data\RegistrationData;
+use App\Form\Data\Auth\ResetData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationType extends AbstractType
+class ResetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -29,22 +26,6 @@ class RegistrationType extends AbstractType
                 'second_options' => ['label' => 'Repeat Password'],
                 'required' => true,
             ])
-            ->add('firstname', TextType::class, [
-                'label' => 'First name',
-                'required' => false,
-            ])
-            ->add('lastname', TextType::class, [
-                'label' => 'Last name',
-                'required' => false,
-            ])
-            ->add('mandate', TextType::class, [
-                'label' => 'Company / Mandate name',
-                'help' => 'This is the name of your company.',
-                'required' => false,
-            ])
-            ->add('termsAgreed', null, [
-                'label' => 'Terms of service',
-            ])
         ;
     }
 
@@ -52,7 +33,7 @@ class RegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_protection' => true,
-            'data_class' => RegistrationData::class,
+            'data_class' => ResetData::class,
         ]);
     }
 }

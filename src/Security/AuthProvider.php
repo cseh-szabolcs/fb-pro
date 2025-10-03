@@ -19,8 +19,7 @@ final readonly class AuthProvider
         public AuthenticationUtils $utils,
         public UserPasswordHasherInterface $passwordHasher,
         private TokenStorageInterface $tokenStorage,
-    ) {
-    }
+    ) {}
 
     public function getUser(): User
     {

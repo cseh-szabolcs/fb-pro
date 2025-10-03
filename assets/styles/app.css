@@ -1,5 +1,6 @@
-body {
+html, body {
     background-color: white;
+    height: 100%;
 }
 
 [x-cloak] {
@@ -14,8 +15,19 @@ body {
 .bg-app {
     background-color: #113559;
 }
+.bg-lightgray {
+    background-color: #efefef;
+}
 
 /* common */
+a {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .d-flex-center {
     display: flex;
     justify-content: center;
@@ -24,6 +36,12 @@ body {
 .d-flex-column {
     display: flex;
     flex-direction: column;
+}
+.d-flex-column-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .flex-1 {
     flex: 1;

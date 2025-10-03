@@ -5,7 +5,6 @@ namespace App;
 use App\Constants\Env;
 use App\Entity\User;
 use App\Security\AuthProvider;
-use App\Security\UserAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -19,7 +18,6 @@ final readonly class App
 {
     public function __construct(
         public AuthProvider $authProvider,
-        public UserAuthenticator $authenticator,
         public EventDispatcherInterface $eventDispatcher,
         public RequestStack $requestStack,
         public RouterInterface $router,
@@ -40,7 +38,7 @@ final readonly class App
 
     public function isCurrentPath(string $name): bool
     {
-        $this->urlGenerator->generate($name) === $this->getCurrentPath();
+        return $this->urlGenerator->generate($name) === $this->getCurrentPath();
     }
 
     public function getUser(): User

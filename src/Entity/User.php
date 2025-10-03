@@ -55,6 +55,9 @@ class User implements UserInterface
     #[ORM\Column]
     private ?bool $termsAgreed;
 
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?DateTimeImmutable $confirmedAt;
+
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?DateTimeImmutable $lastAccess;
 
@@ -69,8 +72,9 @@ class User implements UserInterface
         $this->email = $email;
         $this->role = $role;
         $this->locale = $locale ?? Lang::getDefault();
-        $this->lastAccess = new DateTimeImmutable();
         $this->termsAgreed = $termsAgreed;
+        $this->confirmedAt = new DateTimeImmutable();
+        $this->lastAccess = new DateTimeImmutable();
     }
 
     public function getId(): ?int

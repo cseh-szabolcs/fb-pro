@@ -2,21 +2,23 @@
 
 namespace App\Controller\Auth;
 
-use App\App;
 use App\Controller\BaseController;
-use App\Form\Data\RegistrationData;
-use App\Form\Type\RegistrationType;
+use App\Form\Data\Auth\RegistrationData;
+use App\Form\Type\Auth\RegistrationType;
 use App\Manager\UserManager;
+use App\Security\UserAuthenticator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route(path: '/auth', name: 'app_auth_')]
 class RegistrationController extends BaseController
 {
-    #[Route(path: '/registration', name: 'app_auth_registration')]
-    public function __invoke(App $app, UserManager $userManager): Response
+    #[Route(path: '/registration', name: 'registration')]
+    public function __invoke(Request $request, UserAuthenticator $authenticator, UserManager $userManager): Response
     {
         $form = $this->createForm(RegistrationType::class, new RegistrationData());
-        $form->handleRequest($app->getRequest());
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var RegistrationData $data */
@@ -26,7 +28,7 @@ class RegistrationController extends BaseController
             $userManager->createAccount($user);
             $this->addFlash('success', 'Registration successful. You can now log in.');
 
-            if ($response = $app->authenticator->login($user)) {
+            if ($response = $authenticator->login($user)) {
                 return $response;
             }
 

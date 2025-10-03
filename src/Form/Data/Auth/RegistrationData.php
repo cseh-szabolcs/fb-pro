@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Form\Data;
+namespace App\Form\Data\Auth;
 
 use App\Constants\Role;
 use App\Contracts\EmailAwareInterface;
 use App\Entity\Mandate;
 use App\Entity\User;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraint;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Constraint\EmailAvailable]
 class RegistrationData implements EmailAwareInterface

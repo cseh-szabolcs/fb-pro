@@ -1,43 +1,37 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/auth.html.twig' %}
 
 {% form_theme form 'forms/theme/app_floating.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Create your account{% endblock %}
 
-{% block body %}
-    <div class="container py-4" style="max-width:640px">
-        <h1 class="mb-5">
-            Create your account
-        </h1>
+{% block content %}
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">{{ message }}</div>
+    {% endfor %}
 
-        {% for message in app.flashes('success') %}
-            <div class="flash-success">{{ message }}</div>
-        {% endfor %}
-
-        {{ form_start(form) }}
-            <div class="mb-5">
-                {{ form_row(form.email) }}
-                {{ form_row(form.password.first) }}
-                {{ form_row(form.password.second) }}
-            </div>
-            <p class="mb-3">
-                Optional data
-            </p>
-            <div class="mb-5">
-                {{ form_row(form.firstname) }}
-                {{ form_row(form.lastname) }}
-                {{ form_row(form.mandate) }}
-            </div>
-            <div class="mb-2">
-                {{ form_row(form.termsAgreed) }}
-            </div>
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary w-100">
-                    Register
-                </button>
-            </div>
-        {{ form_end(form) }}
-
-        <p>Already have an account? <a href="{{ path('app_auth_login') }}">Sign in</a></p>
+    {{ form_start(form) }}
+    <div class="mb-5">
+        {{ form_row(form.email) }}
+        {{ form_row(form.password.first) }}
+        {{ form_row(form.password.second) }}
     </div>
+    <p class="mb-3">
+        Optional data
+    </p>
+    <div class="mb-5">
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.mandate) }}
+    </div>
+    <div class="mb-2">
+        {{ form_row(form.termsAgreed) }}
+    </div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary w-100">
+            Register
+        </button>
+    </div>
+    {{ form_end(form) }}
+
+    <p>Already have an account? <a href="{{ path('app_auth_login') }}">Sign in</a></p>
 {% endblock %}
