@@ -27,11 +27,11 @@
         {{ form_row(form.termsAgreed) }}
     </div>
     <div class="mb-3">
-        <button type="submit" class="btn btn-primary w-100">
+        <button class="btn btn-lg btn-primary w-100" type="submit">
             Register
         </button>
     </div>
     {{ form_end(form) }}
 
-    <p>Already have an account? <a href="{{ path('app_auth_login') }}">Sign in</a></p>
+    <p>Already have an account? <a href="{{ path('app_auth_login') }}">Login</a></p>
 {% endblock %}

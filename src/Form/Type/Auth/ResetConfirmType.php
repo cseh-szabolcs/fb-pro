@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Auth;
 
-use App\Form\Data\Auth\ResetData;
+use App\Form\Data\Auth\ResetRequestData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -10,15 +10,11 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ResetType extends AbstractType
+class ResetConfirmType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'label' => 'Email',
-                'required' => true,
-            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
@@ -33,7 +29,7 @@ class ResetType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_protection' => true,
-            'data_class' => ResetData::class,
+            'data_class' => ResetRequestData::class,
         ]);
     }
 }

@@ -1,11 +1,15 @@
 {% extends 'layouts/auth.html.twig' %}
 
-{% form_theme form 'forms/theme/app_floating.html.twig' %}
-
 {% block title %}
     Reset Password
 {% endblock %}
 
 {% block content %}
-    Testtest
+    {% if action == 'request' %}
+        {% include('pages/auth/reset/request.html.twig') %}
+    {% else %}
+        {% include('pages/auth/reset/confirm.html.twig') %}
+    {% endif %}
+
+    <p>Your can remember? <a href="{{ path('app_auth_login') }}">Login</a> :)</p>
 {% endblock %}
