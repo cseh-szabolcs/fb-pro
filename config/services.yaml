@@ -27,8 +27,10 @@ services:
             - '../src/Entity/'
             - '../src/Event/'
             - '../src/Factory/'
+            - '../src/Form/Data'
             - '../src/Model/'
             - '../src/Traits/'
+            - '../src/Validator/Constraints/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed

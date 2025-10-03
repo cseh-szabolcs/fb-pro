@@ -2,11 +2,13 @@
 
 namespace App\Contracts\Entity;
 
+use App\Contracts\EmailAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
 interface UserInterface extends
     BaseUserInterface,
     PasswordAuthenticatedUserInterface,
+    EmailAwareInterface,
     UuidAwareInterface
 {}

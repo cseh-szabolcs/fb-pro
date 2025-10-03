@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Contracts\EmailAwareInterface;
 use App\Entity\User;
 use App\Traits\Repository\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,18 @@ class UserRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function findOneByEmail(string|EmailAwareInterface $email): User
+    {
+        if ($user = $this->findOneBy(['email' => $email instanceof EmailAwareInterface
+            ? $email->getEmail()
+            : $email
+        ])) {
+            return $user;
+        }
+
+        throw new NoResultException();
     }
 
     //    /**

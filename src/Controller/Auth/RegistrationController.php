@@ -3,9 +3,9 @@
 namespace App\Controller\Auth;
 
 use App\Controller\BaseController;
-use App\Entity\Mandate;
-use App\Entity\User;
+use App\Form\Data\RegistrationData;
 use App\Form\Type\RegistrationType;
+use App\Manager\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,35 +13,17 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends BaseController
 {
     #[Route(path: '/registration', name: 'app_auth_registration')]
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, UserManager $userManager): Response
     {
-        $form = $this->createForm(RegistrationType::class);
+        $form = $this->createForm(RegistrationType::class, new RegistrationData());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var RegistrationData $data */
             $data = $form->getData();
+            $user = $data->toUser();
 
-            $mandate = new Mandate($data['mandateName']);
-            $user = new User(
-                $mandate,
-                $data['email'],
-            );
-
-            $user->passwordPlain = $data['plainPassword'];
-
-            if (!empty($data['firstname'])) {
-                $user->setFirstname($data['firstname']);
-            }
-            if (!empty($data['lastname'])) {
-                $user->setLastname($data['lastname']);
-            }
-            if (!empty($data['locale'])) {
-                $user->setLocale($data['locale']);
-            }
-
-            $this->getAuth()->hashUserPassword($user);
-            $this->saveEntity($user);
-
+            $userManager->createAccount($user);
             $this->addFlash('success', 'Registration successful. You can now log in.');
 
             return $this->redirectToRoute('app_auth_login');
@@ -52,4 +34,3 @@ class RegistrationController extends BaseController
         ]);
     }
 }
-
