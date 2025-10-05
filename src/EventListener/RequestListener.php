@@ -29,7 +29,7 @@ readonly class RequestListener
         }
 
         if ($this->auth->isAuthenticated()) {
-            $request->attributes->set('_app_auth', $this->auth->getMandate());
+            $request->attributes->set('_auth', $this->auth->getMandate());
         }
     }
 

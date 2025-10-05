@@ -4,6 +4,7 @@ namespace App\Controller\Auth;
 
 use App\Controller\BaseController;
 use App\Form\Type\Auth\ResetRequestType;
+use App\Manager\AuthManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,13 +13,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class ResetController extends BaseController
 {
     #[Route(path: '/request', name: 'request')]
-    public function request(Request $request): Response
+    public function request(Request $request, AuthManager $authManager): Response
     {
         $form = $this->createForm(ResetRequestType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $authManager->resetPasswordRequest($this->getUser());
 
+            return $this->render('pages/auth/reset/index.html.twig', [
+                'form' => $form->createView(),
+                'action' => 'request:success',
+            ]);
         }
 
         return $this->render('pages/auth/reset/index.html.twig', [
