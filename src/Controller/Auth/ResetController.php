@@ -4,9 +4,9 @@ namespace App\Controller\Auth;
 
 use App\Controller\BaseController;
 use App\Exception\NotFoundException;
+use App\Exception\SecurityException;
 use App\Form\Type\Auth\ResetRequestType;
 use App\Manager\AuthManager;
-use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +24,7 @@ class ResetController extends BaseController
             $email = $form->getData()->email;
             try {
                 $authManager->resetPasswordRequest($email);
-            } catch (LogicException) {
+            } catch (SecurityException) {
                 return $this->render('pages/auth/reset/request-result.html.twig', [
                     'form' => $form->createView(),
                     'error' => true,

@@ -4,10 +4,10 @@ namespace App\Manager;
 
 use App\Entity\Token;
 use App\Event\Auth\PasswordResetEvent;
+use App\Exception\SecurityException;
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
 use App\Traits\Service\EventDispatcherTrait;
-use LogicException;
 
 final readonly class AuthManager
 {
@@ -27,7 +27,7 @@ final readonly class AuthManager
         $count = $this->tokenRepository->countUserToken($user, Token::TYPE_PASSWORD_RESET);
 
         if ($count >= self::MAX_PASSWORD_RESET_REQUESTS) {
-            throw new LogicException('Too many password reset requests');
+            throw new SecurityException('Too many password reset requests');
         }
 
         $token = new Token($user, Token::TYPE_PASSWORD_RESET, null, self::PASSWORD_RESET_REQUEST_TIME);
