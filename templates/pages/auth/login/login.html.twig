@@ -23,4 +23,8 @@
 </div>
 {{ form_end(form) }}
 
-<p>Forgot password? <a href="{{ path('app_auth_reset_request')}}">Reset Password</a></p>
+<p>
+    Forgot password? <a href="{{ path('app_auth_reset_request')}}">Reset Password</a>
+    <span class="d-inline-block px-2">|</span>
+    Noch kein Konto? <a href="{{ path('app_auth_registration')}}">Jetzt registrieren</a>
+</p>

@@ -24,13 +24,13 @@ final readonly class AuthManager
     public function resetPasswordRequest(string $email): Token
     {
         $user = $this->userRepository->findOneByEmail($email);
-        $count = $this->tokenRepository->countUserToken($user, Token::NAME_PASSWORD_RESET);
+        $count = $this->tokenRepository->countUserToken($user, Token::TYPE_PASSWORD_RESET);
 
         if ($count >= self::MAX_PASSWORD_RESET_REQUESTS) {
             throw new LogicException('Too many password reset requests');
         }
 
-        $token = new Token($user, Token::NAME_PASSWORD_RESET, null, self::PASSWORD_RESET_REQUEST_TIME);
+        $token = new Token($user, Token::TYPE_PASSWORD_RESET, null, self::PASSWORD_RESET_REQUEST_TIME);
         $this->tokenRepository->persist($token);
         $this->dispatchEvent(new PasswordResetEvent($token));
 

@@ -10,17 +10,17 @@ use App\Traits\Entity\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TokenRepository::class)]
-#[ORM\Index(name: 'name_idx', columns: ['name'])]
+#[ORM\Index(name: 'type_idx', columns: ['type'])]
 class Token implements OwnerAwareInterface
 {
     use UuidTrait;
     use OwnerAwareTrait;
     use CreatedTrait;
 
-    const NAME_PASSWORD_RESET = 'password_reset';
+    const TYPE_PASSWORD_RESET = 'password_reset';
 
     #[ORM\Column(length: 50)]
-    private ?string $name;
+    private ?string $type;
 
     #[ORM\Column(nullable: true)]
     private ?array $payload;
@@ -28,18 +28,18 @@ class Token implements OwnerAwareInterface
     #[ORM\Column(nullable: true)]
     private ?int $ttl;
 
-    public function __construct(User $owner, string $name, ?array $payload = null, ?int $ttl = null)
+    public function __construct(User $owner, string $type, ?array $payload = null, ?int $ttl = null)
     {
         $this->owner = $owner;
-        $this->name = $name;
+        $this->type = $type;
         $this->payload = $payload;
         $this->ttl = $ttl;
         $this->setCreated();
     }
 
-    public function getName(): string
+    public function getType(): string
     {
-        return $this->name;
+        return $this->type;
     }
 
     public function getPayload(?string $key = null, mixed $default = null): mixed
