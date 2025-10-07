@@ -6,8 +6,8 @@
 
 {% block content %}
     {% if app.user %}
-        {% include('pages/auth/login/logout.html.twig') %}
+        {% include 'pages/auth/login/logout.html.twig' %}
     {% else %}
-        {% include('pages/auth/login/login.html.twig') %}
+        {% include 'pages/auth/login/login.html.twig' %}
     {% endif %}
 {% endblock %}

@@ -20,15 +20,16 @@ class TokenRepository extends ServiceEntityRepository
         parent::__construct($registry, Token::class);
     }
 
-    public function countUserToken(User $user, string $key): int
+    public function countUserToken(User $user, string $name): int
     {
-        return $this->createQueryBuilder('COUNT(t)')
-            ->andWhere('t.user = :user')
-            ->andWhere('t.key = :key')
+        return (int) $this->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->andWhere('t.owner = :user')
+            ->andWhere('t.name = :name')
             ->setParameter('user', $user)
-            ->setParameter('key', $key)
+            ->setParameter('name', $name)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
         ;
     }
 }

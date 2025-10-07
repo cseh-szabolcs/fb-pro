@@ -17,7 +17,7 @@ class Token implements OwnerAwareInterface
     use OwnerAwareTrait;
     use CreatedTrait;
 
-    const PASSWORD_RESET_KEY = 'password_reset';
+    const NAME_PASSWORD_RESET = 'password_reset';
 
     #[ORM\Column(length: 50)]
     private ?string $name;

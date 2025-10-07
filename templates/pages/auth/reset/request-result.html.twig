@@ -1,0 +1,32 @@
+{% extends 'layouts/auth.html.twig' %}
+
+{% block title %}
+    Reset Password
+{% endblock %}
+
+{% block content %}
+    {% if error is defined %}
+        <p>
+            Du hast heute mehr als fünf Anfragen versendet. Aus Sicherheitsgründen kannst du keine
+            weiteren Anfragen versenden.
+        </p>
+        <p>
+            Bitte versuche es morgen erneut oder setze dich mit uns in Verbindung.
+        </p>
+    {% else %}
+        <p>
+            Wir haben deine Anfrage erhalten. Falls die E-Mail-Adresse <strong>{{ email }}</strong>
+            bei uns hinterlegt ist, erhälst du eine E-Mail mit einem Link zum Zurücksetzen
+            eines Passworts.
+        </p>
+        <p>
+            Bitte beachte, dass dieser Link nur <strong>eine Stunde gültig</strong> ist!
+        </p>
+        <hr />
+        <p>
+            E-Mail nicht erhalten? Schaue in deinem Spam-Ordner nach oder
+            <a href="{{ path('app_auth_reset_request') }}">versuche es nochmal.</a>
+        </p>
+    {% endif %}
+    <p>Your can remember? <a href="{{ path('app_auth_login') }}">Login</a> :)</p>
+{% endblock %}

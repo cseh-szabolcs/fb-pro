@@ -3,8 +3,10 @@
 namespace App\Controller\Auth;
 
 use App\Controller\BaseController;
+use App\Exception\NotFoundException;
 use App\Form\Type\Auth\ResetRequestType;
 use App\Manager\AuthManager;
+use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,17 +21,24 @@ class ResetController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $authManager->resetPasswordRequest($this->getUser());
+            $email = $form->getData()->email;
+            try {
+                $authManager->resetPasswordRequest($email);
+            } catch (LogicException) {
+                return $this->render('pages/auth/reset/request-result.html.twig', [
+                    'form' => $form->createView(),
+                    'error' => true,
+                ]);
+            } catch (NotFoundException) {}
 
-            return $this->render('pages/auth/reset/index.html.twig', [
+            return $this->render('pages/auth/reset/request-result.html.twig', [
                 'form' => $form->createView(),
-                'action' => 'request:success',
+                'email' => $email,
             ]);
         }
 
-        return $this->render('pages/auth/reset/index.html.twig', [
+        return $this->render('pages/auth/reset/request.html.twig', [
             'form' => $form->createView(),
-            'action' => 'request',
         ]);
     }
 

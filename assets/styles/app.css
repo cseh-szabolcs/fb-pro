@@ -20,6 +20,11 @@ html, body {
 }
 
 /* common */
+hr {
+    margin: 2.68rem 0;
+    color: #aaa;
+}
+
 a {
     text-decoration: none;
 

@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Exception\NotFoundException;
 use App\Traits\Repository\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,11 +22,11 @@ class UserRepository extends ServiceEntityRepository
 
     public function findOneByEmail(string $email): User
     {
-        if ($user = $this->findOneBy(['email' =>  $email])) {
+        if ($user = $this->findOneBy(['email' => trim($email)])) {
             return $user;
         }
 
-        throw new NoResultException();
+        throw new NotFoundException();
     }
 
     //    /**

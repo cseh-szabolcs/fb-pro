@@ -26,6 +26,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Event/'
+            - '../src/Exception/'
             - '../src/Factory/'
             - '../src/Form/Data'
             - '../src/Model/'
