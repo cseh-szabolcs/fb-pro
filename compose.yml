@@ -50,6 +50,14 @@ services:
     depends_on:
       - php
 
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "8025:8025"   # Web-UI
+      - "1025:1025"   # SMTP
+    restart: unless-stopped
+
   phpmyadmin:
     container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
     image: phpmyadmin:latest

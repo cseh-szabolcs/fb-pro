@@ -1,9 +1,9 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-
-    # Note that the session will be started ONLY if you read or write from it.
     session: true
+    router:
+        default_uri: '%env(APP_URL)%'
 
     #esi: true
     #fragments: true

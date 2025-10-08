@@ -32,7 +32,7 @@ final readonly class AuthManager
 
         $token = new Token($user, Token::TYPE_PASSWORD_RESET, null, self::PASSWORD_RESET_REQUEST_TIME);
         $this->tokenRepository->persist($token);
-        $this->dispatchEvent(new PasswordResetEvent($token));
+        $this->dispatchEvent(new PasswordResetEvent($token, $user));
 
         return $token;
     }

@@ -3,6 +3,7 @@
 namespace App\Controller\Auth;
 
 use App\Controller\BaseController;
+use App\Entity\Token;
 use App\Exception\NotFoundException;
 use App\Exception\SecurityException;
 use App\Form\Type\Auth\ResetRequestType;
@@ -42,8 +43,8 @@ class ResetController extends BaseController
         ]);
     }
 
-    #[Route(path: '/confirm', name: 'confirm')]
-    public function confirm(Request $request): Response
+    #[Route(path: '/confirm/{token}', name: 'confirm')]
+    public function confirm(Request $request, ?Token $token = null): Response
     {
         $form = $this->createForm(ResetRequestType::class);
         $form->handleRequest($request);

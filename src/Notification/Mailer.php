@@ -35,8 +35,9 @@ final readonly class Mailer
                 ->from($this->fromEmail)
                 ->to($to)
                 ->subject($subject)
-                ->text($this->render($template, 'text', $data))
-                ->html($this->render($template, 'html', $data));
+                ->html($this->render($template, $data))
+                ->text($this->render($template, $data, true))
+            ;
 
             $this->mailer->send($email);
         } catch (Throwable $e) {
@@ -44,10 +45,14 @@ final readonly class Mailer
         }
     }
 
-    private function render(string $template, string $type, array $context = []): string
+    private function render(string $template, array $context = [], bool $text = false): string
     {
+        if ($text) {
+            $template = str_replace('.html.twig', '.text.twig', $template);
+        }
+
         try {
-            return $this->twig->render(sprintf('email/%s.%s.twig', trim($template, '/'), $type), $context);
+            return $this->twig->render($template, $context);
         } catch (Throwable $e) {
             throw new RuntimeException(sprintf('Failed to render email template "%s".', $template), previous: $e);
         }

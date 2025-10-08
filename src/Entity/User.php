@@ -101,7 +101,7 @@ class User implements UserInterface
 
     public function setEmail(string $email): static
     {
-        $this->email = $email;
+        $this->email = mb_strtolower($email);
 
         return $this;
     }
@@ -148,7 +148,7 @@ class User implements UserInterface
 
     public function setFirstname(?string $firstname): static
     {
-        $this->firstname = $firstname;
+        $this->firstname = is_string($firstname) ? mb_ucfirst($firstname) : null;
 
         return $this;
     }
@@ -160,9 +160,26 @@ class User implements UserInterface
 
     public function setLastname(?string $lastname): static
     {
-        $this->lastname = $lastname;
+        $this->lastname = is_string($lastname) ? mb_ucfirst($lastname) : null;
 
         return $this;
+    }
+
+    public function getName(): ?string
+    {
+        if ($this->firstname && $this->lastname) {
+            return $this->firstname.' '.$this->lastname;
+        }
+
+        if ($this->firstname) {
+            return $this->firstname;
+        }
+
+        if ($this->lastname) {
+            return $this->lastname;
+        }
+
+        return null;
     }
 
     public function getLocale(): string
