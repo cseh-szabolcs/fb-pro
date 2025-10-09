@@ -17,6 +17,7 @@ class Token implements OwnerAwareInterface
     use OwnerAwareTrait;
     use CreatedTrait;
 
+    const TYPE_REGISTRATION = 'registration';
     const TYPE_PASSWORD_RESET = 'password_reset';
 
     #[ORM\Column(length: 50)]
@@ -56,6 +57,13 @@ class Token implements OwnerAwareInterface
     public function getTtl(): ?int
     {
         return $this->ttl;
+    }
+
+    public function setTtl(?int $ttl): self
+    {
+        $this->ttl = $ttl;
+
+        return $this;
     }
 
     public function isExpired(): bool

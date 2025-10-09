@@ -3,13 +3,13 @@
 namespace App\Manager;
 
 use App\Entity\Token;
-use App\Entity\User;
 use App\Event\Auth\PasswordResetEvent;
 use App\Event\Auth\PasswordResetRequestEvent;
 use App\Exception\SecurityException;
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
 use App\Security\AuthProvider;
+use App\Security\TokenVerifier;
 use App\Traits\Service\EventDispatcherTrait;
 
 final readonly class AuthManager
@@ -23,6 +23,7 @@ final readonly class AuthManager
         private UserRepository $userRepository,
         private TokenRepository $tokenRepository,
         private AuthProvider $authProvider,
+        private TokenVerifier $tokenVerifier,
     ) {}
 
     public function resetPasswordRequest(string $email): Token
@@ -43,13 +44,8 @@ final readonly class AuthManager
 
     public function resetPassword(Token $token, string $newPasswort): void
     {
-        if ($token->isExpired()) {
-            throw new SecurityException('Token expired');
-        }
-
-        $user = $token->getOwner();
+        $user = $this->tokenVerifier->verify($token);
         $user->passwordPlain = $newPasswort;
-        $this->tokenRepository->remove($token);
         $this->authProvider->hashUserPassword($user);
         $this->userRepository->flush();
         $this->dispatchEvent(new PasswordResetEvent($user));

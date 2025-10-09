@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Constants\Role;
 use App\Contracts\Entity\UuidAwareInterface;
 use App\Repository\MandateRepository;
 use App\Traits\Entity\CreatedTrait;
@@ -23,6 +24,10 @@ class Mandate implements UuidAwareInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $owner;
+
     #[ORM\Column(length: 255)]
     private ?string $name;
 
@@ -32,15 +37,31 @@ class Mandate implements UuidAwareInterface
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'mandate', orphanRemoval: true)]
     private Collection $users;
 
-    public function __construct(string $name)
+    public function __construct(string $name, User $owner = null)
     {
         $this->name = $name;
+        $this->owner = $owner;
         $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
+        if ($owner && $owner->getRole() === Role::USER->value) {
+            $owner->setRole(Role::MANDANT->value);
+        }
+
+        return $this;
     }
 
     public function getName(): ?string

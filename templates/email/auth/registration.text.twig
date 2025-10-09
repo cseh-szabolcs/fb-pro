@@ -1,0 +1,11 @@
+{% extends 'layouts/email.text.twig' %}
+
+{% block body %}
+Hallo lieber {{ user | username }},
+
+Willkommen bei FormBuilder Pro!
+
+Bestätige deine Registrierung mit dem folgenden Link:
+
+{{ url('app_auth_registration_confirm', { token: token }) }}
+{% endblock %}

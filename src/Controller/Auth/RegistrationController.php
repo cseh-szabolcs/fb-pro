@@ -3,9 +3,12 @@
 namespace App\Controller\Auth;
 
 use App\Controller\BaseController;
+use App\Entity\Token;
+use App\Exception\SecurityException;
 use App\Form\Data\Auth\RegistrationData;
 use App\Form\Type\Auth\RegistrationType;
 use App\Manager\UserManager;
+use App\Security\TokenVerifier;
 use App\Security\UserAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends BaseController
 {
     #[Route(path: '/registration', name: 'registration')]
-    public function __invoke(Request $request, UserAuthenticator $authenticator, UserManager $userManager): Response
+    public function registration(Request $request, UserAuthenticator $authenticator, UserManager $userManager): Response
     {
         $form = $this->createForm(RegistrationType::class, new RegistrationData());
         $form->handleRequest($request);
@@ -38,5 +41,21 @@ class RegistrationController extends BaseController
         return $this->render('pages/auth/registration/index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route(path: '/registration/{token}', name: 'registration_confirm')]
+    public function confirm(UserManager $userManager, ?Token $token = null): Response
+    {
+        try {
+            $user = $userManager->confirmAccount($token);
+            return $this->render('pages/auth/registration/confirm.html.twig', [
+                'user' => $user,
+            ]);
+
+        } catch (SecurityException) {
+            return $this->render('pages/auth/registration/confirm.html.twig', [
+                'error' => true,
+            ]);
+        }
     }
 }

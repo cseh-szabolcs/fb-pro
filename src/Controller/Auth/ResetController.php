@@ -9,6 +9,7 @@ use App\Exception\SecurityException;
 use App\Form\Type\Auth\ResetType;
 use App\Form\Type\Auth\ResetRequestType;
 use App\Manager\AuthManager;
+use App\Security\TokenVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -52,7 +53,7 @@ class ResetController extends BaseController
     }
 
     #[Route(path: '/confirm/{token}', name: 'confirm')]
-    public function confirm(Request $request, ?Token $token = null): Response
+    public function confirm(Request $request, TokenVerifier $tokenVerifier, ?Token $token = null): Response
     {
         if ($this->isPRGResponse()) {
 
@@ -61,7 +62,9 @@ class ResetController extends BaseController
             ]);
         }
 
-        if (!$token?->isOk()) {
+        try {
+            $tokenVerifier->verify($token, true);
+        } catch (SecurityException) {
             $this->addFlash('auth_reset_invalid_token', 'Invalid token.');
 
             return $this->redirectToRoute('app_auth_reset_request');

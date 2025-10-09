@@ -42,14 +42,16 @@ class RegistrationData implements EmailAwareInterface
 
     public function toUser(): User
     {
+        $mandate = new Mandate($this->mandate ?: $this->email);
         $user = new User(
-            mandate: new Mandate($this->mandate ?: $this->email),
+            mandate: $mandate,
             email: $this->email,
             role: Role::NEW->value,
             locale: null,
             termsAgreed: $this->termsAgreed
         );
 
+        $mandate->setOwner($user);
         $user->passwordPlain = $this->password;
         $user->setFirstname($this->firstname);
         $user->setLastname($this->lastname);

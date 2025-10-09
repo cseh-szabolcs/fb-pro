@@ -73,7 +73,6 @@ class User implements UserInterface
         $this->role = $role;
         $this->locale = $locale ?? Lang::getDefault();
         $this->termsAgreed = $termsAgreed;
-        $this->confirmedAt = new DateTimeImmutable();
         $this->lastAccess = new DateTimeImmutable();
     }
 
@@ -121,9 +120,11 @@ class User implements UserInterface
         return $this->role;
     }
 
-    public function setRole(?string $role): void
+    public function setRole(string|Role $role): void
     {
-        $this->role = $role;
+        $this->role = ($role instanceof Role)
+            ? $role->value
+            : $role;
     }
 
     public function getRoles(): array
@@ -194,6 +195,25 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getConfirmedAt(): ?DateTimeImmutable
+    {
+        return $this->confirmedAt;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return null !== $this->confirmedAt;
+    }
+
+    public function confirm(): static
+    {
+        if (null === $this->confirmedAt) {
+            $this->confirmedAt = new DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
     public function getLastAccess(): DateTimeImmutable
     {
         return $this->lastAccess;
@@ -214,5 +234,10 @@ class User implements UserInterface
             $this->password,
             $this->mandate->getId(),
         ));
+    }
+
+    public function hasTermsAgreed(): bool
+    {
+        return $this->termsAgreed;
     }
 }
