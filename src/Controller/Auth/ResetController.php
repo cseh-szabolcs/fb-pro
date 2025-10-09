@@ -6,6 +6,7 @@ use App\Controller\BaseController;
 use App\Entity\Token;
 use App\Exception\NotFoundException;
 use App\Exception\SecurityException;
+use App\Form\Type\Auth\ResetType;
 use App\Form\Type\Auth\ResetRequestType;
 use App\Manager\AuthManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,27 +16,34 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/auth/reset', name: 'app_auth_reset_')]
 class ResetController extends BaseController
 {
+    public function __construct(
+        private readonly AuthManager $authManager,
+    ) {}
+
     #[Route(path: '/request', name: 'request')]
-    public function request(Request $request, AuthManager $authManager): Response
+    public function request(Request $request): Response
     {
+        if ($email = $this->isPRGResponse()) {
+
+            return $this->render('pages/auth/reset/success.html.twig', [
+                'result' => 'requested',
+                'email' => $email,
+            ]);
+        }
+
         $form = $this->createForm(ResetRequestType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->getData()->email;
             try {
-                $authManager->resetPasswordRequest($email);
+                $this->authManager->resetPasswordRequest($email);
             } catch (SecurityException) {
-                return $this->render('pages/auth/reset/request-result.html.twig', [
-                    'form' => $form->createView(),
-                    'error' => true,
-                ]);
+
+                return $this->render('pages/auth/reset/exceeded.html.twig');
             } catch (NotFoundException) {}
 
-            return $this->render('pages/auth/reset/request-result.html.twig', [
-                'form' => $form->createView(),
-                'email' => $email,
-            ]);
+           return $this->createPRGResponse($email);
         }
 
         return $this->render('pages/auth/reset/request.html.twig', [
@@ -46,14 +54,29 @@ class ResetController extends BaseController
     #[Route(path: '/confirm/{token}', name: 'confirm')]
     public function confirm(Request $request, ?Token $token = null): Response
     {
-        $form = $this->createForm(ResetRequestType::class);
+        if ($this->isPRGResponse()) {
+
+            return $this->render('pages/auth/reset/success.html.twig', [
+                'result' => 'password_changed',
+            ]);
+        }
+
+        if (!$token?->isOk()) {
+            $this->addFlash('auth_reset_invalid_token', 'Invalid token.');
+
+            return $this->redirectToRoute('app_auth_reset_request');
+        }
+
+        $form = $this->createForm(ResetType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->authManager->resetPassword($token, $form->getData()->password);
 
+            return $this->createPRGResponse();
         }
 
-        return $this->render('pages/auth/reset/request.html.twig', [
+        return $this->render('pages/auth/reset/reset.html.twig', [
             'form' => $form->createView(),
         ]);
     }

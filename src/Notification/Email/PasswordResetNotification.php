@@ -2,13 +2,13 @@
 
 namespace App\Notification\Email;
 
-use App\Event\Auth\PasswordResetEvent;
+use App\Event\Auth\PasswordResetRequestEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener]
 final readonly class PasswordResetNotification extends AbstractNotification
 {
-    public function __invoke(PasswordResetEvent $event): void
+    public function __invoke(PasswordResetRequestEvent $event): void
     {
         $this->mailer->send(
             to: $event->user,

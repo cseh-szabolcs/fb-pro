@@ -62,4 +62,9 @@ class Token implements OwnerAwareInterface
     {
         return null !== $this->ttl && $this->created->getTimestamp() + $this->ttl < time();
     }
+
+    public function isOk(): bool
+    {
+        return !$this->isExpired();
+    }
 }

@@ -5,15 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if error is defined %}
-        <p>
-            Du hast heute mehr als fünf Anfragen versendet. Aus Sicherheitsgründen kannst du keine
-            weiteren Anfragen versenden.
-        </p>
-        <p>
-            Bitte versuche es morgen erneut oder setze dich mit uns in Verbindung.
-        </p>
-    {% else %}
+    {% if result == 'requested' %}
         <p>
             Wir haben deine Anfrage erhalten. Falls die E-Mail-Adresse <strong>{{ email }}</strong>
             bei uns hinterlegt ist, erhälst du eine E-Mail mit einem Link zum Zurücksetzen
@@ -27,6 +19,18 @@
             E-Mail nicht erhalten? Schaue in deinem Spam-Ordner nach oder
             <a href="{{ path('app_auth_reset_request') }}">versuche es nochmal.</a>
         </p>
+        <p>
+            Your can remember? <a href="{{ path('app_auth_login') }}">Login</a> :)
+        </p>
+    {% elseif result == 'password_changed' %}
+        <div class="alert alert-success mb-4" role="alert">
+            Dein Passwort wurde erfolgreich geändert.
+        </div>
+        <p>
+            Du kannst dich mit deinem neuen Password einloggen:
+        </p>
+        <a href="{{ path('app_auth_login') }}" class="btn-outline-primary btn-lg w-100">
+            Zum Login
+        </a>
     {% endif %}
-    <p>Your can remember? <a href="{{ path('app_auth_login') }}">Login</a> :)</p>
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'layouts/auth.html.twig' %}
+
+{% block title %}
+    Reset Password
+{% endblock %}
+
+{% block content %}
+    <p>
+        Du hast heute mehr als fünf Anfragen versendet. Aus Sicherheitsgründen kannst du keine
+        weiteren Anfragen versenden.
+    </p>
+    <p>
+        Bitte versuche es morgen erneut oder setze dich mit uns in Verbindung.
+    </p>
+    <p>
+        Your can remember? <a href="{{ path('app_auth_login') }}">Login</a> :)
+    </p>
+{% endblock %}

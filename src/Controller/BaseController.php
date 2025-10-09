@@ -9,6 +9,8 @@ use App\Security\AuthProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
@@ -66,6 +68,22 @@ class BaseController extends AbstractController
     {
         $this->em()->remove($entity);
         $this->em()->flush();
+    }
+
+    protected function createPRGResponse(mixed $data = true): Response
+    {
+        /** @var Request $request */
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $this->addFlash('app_form_prg', $data ?? true);
+
+        return new RedirectResponse($request->getRequestUri());
+    }
+
+    protected function isPRGResponse(): mixed
+    {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+
+        return $request->getSession()->getFlashBag()->get('app_form_prg')[0] ?? null;
     }
 
     public static function getSubscribedServices(): array
