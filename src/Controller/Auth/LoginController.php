@@ -7,6 +7,7 @@ use App\Controller\BaseController;
 use App\Form\Data\Auth\LoginData;
 use App\Form\Type\Auth\LoginType;
 use App\Security\Attribute\Grant;
+use LogicException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,6 +30,6 @@ class LoginController extends BaseController
     #[Route(path: '/logout', name: 'logout')]
     public function logout(): void
     {
-        throw new ('Handled by symfony.');
+        throw new LogicException('Handled by symfony.');
     }
 }
