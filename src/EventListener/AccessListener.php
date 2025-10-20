@@ -2,10 +2,9 @@
 
 namespace App\EventListener;
 
+use App\Component\Reader\AttributeReader;
 use App\Security\Attribute\GuestGranted;
 use App\Security\AuthProvider;
-use ReflectionClass;
-use ReflectionMethod;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -27,24 +26,19 @@ final readonly class AccessListener
             return;
         }
 
-        [$controllerObject, $method] = $controller;
+        $this->checkGuestGranted($controller, $event);
+    }
 
-        $refMethod = new ReflectionMethod($controllerObject, $method);
-        $attr = $refMethod->getAttributes(GuestGranted::class)[0] ?? null;
-
-        if (!$attr) {
-            $refClass = new ReflectionClass($controllerObject);
-            $attr = $refClass->getAttributes(GuestGranted::class)[0] ?? null;
-        }
-
-        if (!$attr) {
+    private function checkGuestGranted(callable $controller, ControllerEvent $event): void
+    {
+        if (!$this->auth->isAuthenticated()) {
             return;
         }
 
-        if ($this->auth->isAuthenticated()) {
-            /** @var GuestGranted $config */
-            $config = $attr->newInstance();
-            $url = $this->urlGenerator->generate($config->redirectRoute ?? 'app_home', $config->redirectRouteParams);
+        [$controllerObject, $method] = $controller;
+
+        if ($attr = AttributeReader::fromMethod($controllerObject, $method, GuestGranted::class)) {
+            $url = $this->urlGenerator->generate($attr->redirectRoute ?? 'app_home', $attr->redirectRouteParams);
             $event->setController(static fn () => new RedirectResponse($url));
         }
     }
