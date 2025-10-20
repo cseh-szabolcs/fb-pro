@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 #[AsEventListener]
-readonly class RequestListener
+final readonly class LocaleListener
 {
     public function __construct(
         private AuthProvider $auth,

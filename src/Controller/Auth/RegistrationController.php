@@ -8,16 +8,17 @@ use App\Exception\SecurityException;
 use App\Form\Data\Auth\RegistrationData;
 use App\Form\Type\Auth\RegistrationType;
 use App\Manager\UserManager;
-use App\Security\TokenVerifier;
+use App\Security\Attribute\GuestGranted;
 use App\Security\UserAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/auth', name: 'app_auth_')]
+#[Route(path: '/auth/registration', name: 'app_auth_registration_')]
 class RegistrationController extends BaseController
 {
-    #[Route(path: '/registration', name: 'registration')]
+    #[Route(name: 'index')]
+    #[GuestGranted]
     public function registration(Request $request, UserAuthenticator $authenticator, UserManager $userManager): Response
     {
         $form = $this->createForm(RegistrationType::class, new RegistrationData());
@@ -43,7 +44,7 @@ class RegistrationController extends BaseController
         ]);
     }
 
-    #[Route(path: '/registration/{token}', name: 'registration_confirm')]
+    #[Route(path: '/{token}', name: 'confirm')]
     public function confirm(UserManager $userManager, ?Token $token = null): Response
     {
         try {

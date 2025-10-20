@@ -26,11 +26,20 @@
         <div class="alert alert-success mb-4" role="alert">
             Dein Passwort wurde erfolgreich geändert.
         </div>
-        <p>
-            Du kannst dich mit deinem neuen Password einloggen:
-        </p>
-        <a href="{{ path('app_auth_login') }}" class="btn-outline-primary btn-lg w-100">
-            Zum Login
-        </a>
+        {% if is_guest() %}
+            <p>
+                Du kannst dich mit deinem neuen Password einloggen:
+            </p>
+            <a href="{{ path('app_auth_login') }}" class="btn-outline-primary btn-lg w-100">
+                Zum Login
+            </a>
+        {% else %}
+            <p>
+                Zur Startseite:
+            </p>
+            <a href="{{ path('root') }}" class="btn-outline-primary btn-lg w-100">
+                Home
+            </a>
+        {% endif %}
     {% endif %}
 {% endblock %}

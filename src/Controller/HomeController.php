@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use App\Security\Attribute\GuestGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route(path: '/', name: 'app_')]
+class HomeController extends AbstractController
+{
+    #[Route('/', name: 'intro')]
+    #[GuestGranted]
+    public function intro(): Response
+    {
+        return $this->render('pages/home/intro.html.twig');
+    }
+
+    #[Route('/home', name: 'home', alias: ['app_index', 'root'])]
+    public function index(): Response
+    {
+        return $this->render('pages/home/index.html.twig');
+    }
+}

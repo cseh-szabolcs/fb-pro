@@ -9,6 +9,7 @@ use App\Exception\SecurityException;
 use App\Form\Type\Auth\ResetType;
 use App\Form\Type\Auth\ResetRequestType;
 use App\Manager\AuthManager;
+use App\Security\Attribute\GuestGranted;
 use App\Security\TokenVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,8 @@ class ResetController extends BaseController
         private readonly AuthManager $authManager,
     ) {}
 
-    #[Route(path: '/request', name: 'request')]
+    #[Route(name: 'request')]
+    #[GuestGranted]
     public function request(Request $request): Response
     {
         if ($email = $this->isPRGResponse()) {
@@ -52,7 +54,7 @@ class ResetController extends BaseController
         ]);
     }
 
-    #[Route(path: '/confirm/{token}', name: 'confirm')]
+    #[Route(path: '/{token}', name: 'confirm')]
     public function confirm(Request $request, TokenVerifier $tokenVerifier, ?Token $token = null): Response
     {
         if ($this->isPRGResponse()) {
