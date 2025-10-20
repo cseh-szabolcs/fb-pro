@@ -21,7 +21,7 @@ final readonly class AttributeReader
     public static function fromMethod(object|string $object, string $method, string $attribute): ?object
     {
         $refMethod = new ReflectionMethod($object, $method);
-        $attr = $refMethod->getAttributes(GuestGranted::class)[0] ?? null;
+        $attr = $refMethod->getAttributes($attribute)[0] ?? null;
 
         if (!$attr) {
             $refClass = new ReflectionClass($object);

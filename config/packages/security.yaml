@@ -44,7 +44,7 @@ security:
         - { path: ^/(de|fr|it)/doc, roles: ROLE_USER }
 
     role_hierarchy:
-        ROLE_USER: [ROLE_NEW]
+        ROLE_USER: [ROLE_AUTH]
         ROLE_MANDANT: [ROLE_USER]
         ROLE_ADMIN: [ROLE_MANDANT]
         ROLE_ROOT: [ROLE_ADMIN]

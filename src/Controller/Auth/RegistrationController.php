@@ -2,13 +2,14 @@
 
 namespace App\Controller\Auth;
 
+use App\Constants\Role;
 use App\Controller\BaseController;
 use App\Entity\Token;
 use App\Exception\SecurityException;
 use App\Form\Data\Auth\RegistrationData;
 use App\Form\Type\Auth\RegistrationType;
 use App\Manager\UserManager;
-use App\Security\Attribute\GuestGranted;
+use App\Security\Attribute\SoftGranted;
 use App\Security\UserAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends BaseController
 {
     #[Route(name: 'index')]
-    #[GuestGranted]
+    #[SoftGranted(role: Role::GUEST, redirect: SoftGranted::ROUTE_HOME)]
     public function registration(Request $request, UserAuthenticator $authenticator, UserManager $userManager): Response
     {
         $form = $this->createForm(RegistrationType::class, new RegistrationData());

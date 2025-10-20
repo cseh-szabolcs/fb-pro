@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="navbar navbar-expand-lg bg-lightgray">
+        <div class="container px-5">
+            <a class="navbar-brand fw-bold d-flex-center gap-2 text-decoration-none" href="{{ path('app_intro') }}">
+                <img src="{{ asset('images/logo-fbpro.png') }}" alt="FormBuilder Pro Logo" width="40" height="40" class="d-inline-block align-text-top" />
+                FormBuilder Pro
+            </a>
+        </div>
+    </div>
+    {% block head %}{% endblock %}
+    {% block main %}{% endblock %}
+
+    <div class="container-sm" style="background:blue;">container-sm</div>
+    <div class="container-md" style="background:#8a8aac;">container-md</div>
+    <div class="container-lg" style="background:#00ff19;">container-lg</div>
+    <div class="container-xl" style="background:#ffb300;">container-xl</div>
+    <div class="container-xxl" style="background:#ff00f2;">container-xxl</div>
+    <div class="container-fluid" style="background:#ff0000;">
+        container-flui
+    </div>
+{% endblock %}

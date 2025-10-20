@@ -3,7 +3,7 @@
 namespace App\EventListener;
 
 use App\Component\Reader\AttributeReader;
-use App\Security\Attribute\GuestGranted;
+use App\Security\Attribute\SoftGranted;
 use App\Security\AuthProvider;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,19 +26,20 @@ final readonly class AccessListener
             return;
         }
 
-        $this->checkGuestGranted($controller, $event);
+        $this->checkSoftGranted($controller, $event);
     }
 
-    private function checkGuestGranted(callable $controller, ControllerEvent $event): void
+    private function checkSoftGranted(callable $controller, ControllerEvent $event): void
     {
-        if (!$this->auth->isAuthenticated()) {
+        [$controllerObject, $method] = $controller;
+        $attr = AttributeReader::fromMethod($controllerObject, $method, SoftGranted::class);
+
+        if (!$attr) {
             return;
         }
 
-        [$controllerObject, $method] = $controller;
-
-        if ($attr = AttributeReader::fromMethod($controllerObject, $method, GuestGranted::class)) {
-            $url = $this->urlGenerator->generate($attr->redirectRoute ?? 'app_home', $attr->redirectRouteParams);
+        if (!$this->auth->hasRole($attr->role, null, $attr->strict)) {
+            $url = $this->urlGenerator->generate($attr->redirect, $attr->params);
             $event->setController(static fn () => new RedirectResponse($url));
         }
     }

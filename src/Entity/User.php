@@ -64,16 +64,16 @@ class User implements UserInterface
     public function __construct(
         Mandate $mandate,
         string $email,
-        string $role = Role::NEW->value,
+        Role $role = Role::AUTH,
         ?string $locale = null,
         ?bool $termsAgreed = false,
     ) {
         $this->mandate = $mandate;
         $this->email = $email;
-        $this->role = $role;
         $this->locale = $locale ?? Lang::getDefault();
         $this->termsAgreed = $termsAgreed;
         $this->lastAccess = new DateTimeImmutable();
+        $this->setRole($role);;
     }
 
     public function getId(): ?int
@@ -115,9 +115,9 @@ class User implements UserInterface
         $this->password = $password;
     }
 
-    public function getRole(): string
+    public function getRole(): Role
     {
-        return $this->role;
+        return Role::from($this->role);
     }
 
     public function setRole(string|Role $role): void

@@ -46,7 +46,7 @@ class RegistrationData implements EmailAwareInterface
         $user = new User(
             mandate: $mandate,
             email: $this->email,
-            role: Role::NEW->value,
+            role: Role::AUTH,
             locale: null,
             termsAgreed: $this->termsAgreed
         );

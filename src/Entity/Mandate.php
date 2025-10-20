@@ -57,8 +57,8 @@ class Mandate implements UuidAwareInterface
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
-        if ($owner && $owner->getRole() === Role::USER->value) {
-            $owner->setRole(Role::MANDANT->value);
+        if ($owner && $owner->getRole() === Role::USER) {
+            $owner->setRole(Role::MANDANT);
         }
 
         return $this;

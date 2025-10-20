@@ -37,7 +37,7 @@ class AccountCommand extends Command
         $io->title('Main account creation');
 
         $mandate = new Mandate('NanoScript');
-        $user = new User($mandate, 'szabolcs.cseh@gmail.com', Role::ROOT->value, Lang::DE->value);
+        $user = new User($mandate, 'szabolcs.cseh@gmail.com', Role::ROOT, Lang::DE->value);
 
         $user->passwordPlain = $input->getArgument('password');
         $this->app->authProvider->hashUserPassword($user);
