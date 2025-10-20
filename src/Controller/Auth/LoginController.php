@@ -6,7 +6,7 @@ use App\Constants\Role;
 use App\Controller\BaseController;
 use App\Form\Data\Auth\LoginData;
 use App\Form\Type\Auth\LoginType;
-use App\Security\Attribute\SoftGranted;
+use App\Security\Attribute\Grant;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class LoginController extends BaseController
 {
     #[Route(path: '/login', name: 'login')]
-    #[SoftGranted(role: Role::GUEST, redirect: SoftGranted::ROUTE_HOME)]
+    #[Grant(role: Role::GUEST, redirect: Grant::ROUTE_HOME)]
     public function login(): Response {
         $utils = $this->getAuth()->utils;
         $form = $this->createForm(LoginType::class, new LoginData($utils->getLastUsername()));

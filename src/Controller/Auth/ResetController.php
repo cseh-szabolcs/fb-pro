@@ -10,7 +10,7 @@ use App\Exception\SecurityException;
 use App\Form\Type\Auth\ResetType;
 use App\Form\Type\Auth\ResetRequestType;
 use App\Manager\AuthManager;
-use App\Security\Attribute\SoftGranted;
+use App\Security\Attribute\Grant;
 use App\Security\TokenVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,7 @@ class ResetController extends BaseController
     ) {}
 
     #[Route(name: 'request')]
-    #[SoftGranted(role: Role::GUEST, redirect: SoftGranted::ROUTE_HOME)]
+    #[Grant(role: Role::GUEST, redirect: Grant::ROUTE_HOME)]
     public function request(Request $request): Response
     {
         if ($email = $this->isPRGResponse()) {

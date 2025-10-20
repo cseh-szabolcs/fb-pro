@@ -6,7 +6,7 @@ use App\Constants\Role;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-final readonly class SoftGranted
+final readonly class Grant
 {
     const ROUTE_HOME = 'app_home';
     const ROUTE_GUEST = 'app_intro';
@@ -16,10 +16,6 @@ final readonly class SoftGranted
         public string $redirect = 'app_intro',
         public array $params = [],
         public bool $strict = false,
+        public bool $throw = false,
     ) {}
-
-    public function isStrict(): bool
-    {
-        return $this->strict || $this->role === Role::GUEST;
-    }
 }
