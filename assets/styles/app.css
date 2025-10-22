@@ -13,7 +13,7 @@ html, body {
     border-color: white;
 }
 .bg-app {
-    background-color: #113559;
+    background-color: #2a4494;
 }
 .bg-lightgray {
     background-color: #efefef;
@@ -54,4 +54,17 @@ a {
 
 .inset-0 {
     inset: 0;
+}
+
+.scale-lg {
+    scale: 1.1;
+}
+.scale-sm {
+    scale: 0.9;
+}
+.scale-s {
+    scale: 0.8;
+}
+.scale-xs {
+    scale: 0.7;
 }

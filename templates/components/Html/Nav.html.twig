@@ -1,0 +1,23 @@
+<div class="navbar navbar-expand-lg navbar-dark {{ background }}"{{ attributes }}>
+    <div class="container-fluid px-5">
+        <a class="navbar-brand fw-bold d-flex-center gap-2 text-decoration-none" href="{{ path('app_intro') }}">
+            <img src="{{ asset('images/logo-fbpro.png') }}" alt="FormBuilder Pro Logo" width="40" height="40" class="d-inline-block align-text-top" />
+            FormBuilder Pro
+        </a>
+        <twig:Html:Nav:Toggler target="navMenu" />
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% for item in items %}
+                    <twig:Html:Nav:Item :route="item.route" :label="item.label" :params="item.params ?? null" />
+                {% endfor %}
+                <li class="ps-4">
+                    <div class="d-flex-center gap-2">
+                        <a href="{{ path('app_auth_logout') }}" class="btn btn-primary">
+                            Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
