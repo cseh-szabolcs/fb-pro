@@ -12,9 +12,11 @@
         </div>
         <div class="container d-flex-column-center flex-1 mb-5" style="max-width:860px;">
             <div class="w-100">
-                <h1 class="mb-5">
-                    {% block title %}{% endblock %}
-                </h1>
+                {% if block('title') %}
+                    <h1 class="mb-4 h3">
+                        {% block title %}{% endblock %}
+                    </h1>
+                {% endif %}
                 {% block content %}{% endblock %}
             </div>
         </div>
