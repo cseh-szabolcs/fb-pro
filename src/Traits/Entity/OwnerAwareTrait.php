@@ -2,6 +2,7 @@
 
 namespace App\Traits\Entity;
 
+use App\Entity\Mandate;
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,5 +15,10 @@ trait OwnerAwareTrait
     public function getOwner(): User
     {
         return $this->owner;
+    }
+
+    public function getMandate(): Mandate
+    {
+        return $this->owner->getMandate();
     }
 }

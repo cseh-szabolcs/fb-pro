@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
+use App\Contracts\MandateAwareInterface;
 use App\Repository\FormRepository;
 use App\Traits\Entity\CreatedTrait;
 use App\Traits\Entity\MandateAwareTrait;
 use App\Traits\Entity\UpdatedTrait;
 use App\Traits\Entity\UuidAwareTrait;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: FormRepository::class)]
-class Form
+#[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
+class Form implements MandateAwareInterface
 {
     use UuidAwareTrait;
     use MandateAwareTrait;
@@ -28,16 +28,29 @@ class Form
     #[ORM\JoinColumn(nullable: false)]
     private ?Mandate $mandate = null;
 
-    public function __construct(Mandate|User $mandate)
+    #[ORM\Column(length: 255)]
+    private ?string $title;
+
+    public function __construct(Mandate|User $mandate, string $title)
     {
-        $this->generateUuid();
         $this->setMandate($mandate);
-        $this->created = new DateTimeImmutable();
-        $this->updated = new DateTimeImmutable();
+        $this->title = $title;
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }

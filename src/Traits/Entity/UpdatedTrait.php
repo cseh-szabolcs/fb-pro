@@ -15,6 +15,7 @@ trait UpdatedTrait
         return $this->updated;
     }
 
+    #[ORM\PrePersist]
     public function setUpdated(DateTimeImmutable $updated): static
     {
         $this->updated = $updated;
