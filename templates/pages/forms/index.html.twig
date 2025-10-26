@@ -2,17 +2,23 @@
 
 {% block title %}Formulare{% endblock %}
 
-{% block left %}
-    <div class="app-box-bg">
-        <p>Nav 1</p>
-        <p>Nav 2</p>
-        <p>Nav 3</p>
-        <p>Nav 4</p>
+{% block main %}
+    <div class="app-box-bg p-4 h-100">
+        <div id="formsList" x-data="formsList">
+            <twig:Html:Loader:All x-if="!initialized" />
+            <p x-text="foo"></p>
+        </div>
     </div>
 {% endblock %}
 
-{% block main %}
-    <div class="app-box-bg h-100">
-        <p>Formullare</p>
-    </div>
+{% block scripts %}
+    <script type="module" src="{{ asset('js/components/list.js') }}"></script>
+    <script type="module" src="{{ asset('js/pages/forms/index.js') }}"></script>
+    <script type="module">
+        import app from "app";
+        app.pages.formList({
+            name: "formsList",
+            path: "{{ path('app_forms_fetch') }}",
+        })
+    </script>
 {% endblock %}

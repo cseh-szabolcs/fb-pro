@@ -10,11 +10,11 @@
         </div>
 
         {% if block('title') %}
-            <div class="px-3 mb-4">
+            <div class="px-3 mb-1">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col">
-                            <h1>
+                            <h1 class="h2 opacity-75">
                                 {% block title %}{% endblock %}
                             </h1>
                         </div>
@@ -38,8 +38,10 @@
                     </div>
                 </div>
             </div>
-        {% elseif block('content') %}
-            <div class="container-lg mb-5 h-100">
+        {% endif %}
+
+        {% if block('content') %}
+            <div class="container-lg mb-5 mt-4 h-100">
                 <div class="row h-100">
                     <div class="col h-100">
                         {% block content %}{% endblock %}
