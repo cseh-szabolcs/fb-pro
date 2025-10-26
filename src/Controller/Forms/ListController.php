@@ -19,6 +19,7 @@ class ListController extends BaseController
     #[Route(path: '/fetch', name: 'fetch')]
     public function fetch(): JsonResponse
     {
+        sleep(3);
         return $this->toJson(['items' => ['item1', 'item2', 'item3'], 'count' => 3]);
     }
 }

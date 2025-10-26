@@ -3,12 +3,11 @@
 namespace App\Traits\Entity;
 
 use DateTimeImmutable;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait CreatedTrait
 {
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column]
     private ?DateTimeImmutable $created = null;
 
     public function getCreated(): DateTimeImmutable

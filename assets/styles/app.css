@@ -122,7 +122,7 @@ a {
 
 @keyframes anim-loader-list {
     0% {
-        width: 30%;
+        width: 20%;
         left: 0;
         transform: translateX(-100%);
     }
@@ -142,7 +142,7 @@ a {
     position: relative;
     font-size: 11px;
     background: #666;
-    animation: escaleY 1s infinite ease-in-out;
+    animation: anim-loader 1s infinite ease-in-out;
     width: 1em;
     height: 2em;
     animation-delay: -0.16s;
@@ -157,14 +157,14 @@ a {
     background: #666;
     width: 1em;
     height: 2em;
-    animation: escaleY 1s infinite ease-in-out;
+    animation: anim-loader 1s infinite ease-in-out;
 }
 .loader:before {
     left: -2em;
     animation-delay: -0.32s;
 }
 
-@keyframes escaleY {
+@keyframes anim-loader {
     0%, 80%, 100% {
         box-shadow: 0 0;
         height: 2em;
