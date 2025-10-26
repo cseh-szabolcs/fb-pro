@@ -8,6 +8,10 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+
+        # custom-types
+        types:
+            json_document: App\Doctrine\Type\JsonDocumentType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

@@ -12,6 +12,8 @@ use Doctrine\ORM\NoResultException;
  */
 trait RepositoryTrait
 {
+    const MAX_RESULTS = 1000;
+
     public function assertResult(object|null $result): void
     {
         if (is_null($result)) {

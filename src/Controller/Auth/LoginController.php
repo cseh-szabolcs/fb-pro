@@ -2,11 +2,11 @@
 
 namespace App\Controller\Auth;
 
+use App\Attribute\Security\Grant;
 use App\Constants\Role;
 use App\Controller\BaseController;
 use App\Form\Data\Auth\LoginData;
 use App\Form\Type\Auth\LoginType;
-use App\Security\Attribute\Grant;
 use LogicException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

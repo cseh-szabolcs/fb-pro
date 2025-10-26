@@ -2,8 +2,8 @@
 
 namespace App\EventListener;
 
+use App\Attribute\Security\Grant;
 use App\Component\Reader\AttributeReader;
-use App\Security\Attribute\Grant;
 use App\Security\AuthProvider;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;

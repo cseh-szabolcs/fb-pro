@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Contracts\ToArrayInterface;
 use App\Entity\User;
 use App\Security\AuthProvider;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,6 +29,10 @@ class BaseController extends AbstractController
         array $headers = [],
         int $status = 200,
     ): JsonResponse {
+        if ($data instanceof ToArrayInterface) {
+            $data = $data->toArray();
+        }
+
         return $this->json($data, $status, $headers, $context);
     }
 

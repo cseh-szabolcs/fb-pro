@@ -2,15 +2,15 @@
 
 namespace App\Controller\Auth;
 
+use App\Attribute\Security\Grant;
 use App\Constants\Role;
 use App\Controller\BaseController;
 use App\Entity\Token;
 use App\Exception\NotFoundException;
 use App\Exception\SecurityException;
-use App\Form\Type\Auth\ResetType;
 use App\Form\Type\Auth\ResetRequestType;
+use App\Form\Type\Auth\ResetType;
 use App\Manager\AuthManager;
-use App\Security\Attribute\Grant;
 use App\Security\TokenVerifier;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

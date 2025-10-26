@@ -2,7 +2,12 @@
 
 namespace App\Repository;
 
+use App\Component\MandateGet;
 use App\Entity\Form;
+use App\Entity\Mandate;
+use App\Entity\User;
+use App\Model\List\Result;
+use App\Traits\Repository\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -11,33 +16,36 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FormRepository extends ServiceEntityRepository
 {
+    use RepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Form::class);
     }
 
-    //    /**
-    //     * @return Form[] Returns an array of Form objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('f.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getList(Mandate|User $mandate): Result
+    {
+        $mandate = MandateGet::get($mandate);
 
-    //    public function findOneBySomeField($value): ?Form
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        $qb = $this->createQueryBuilder('f')
+            ->andWhere('f.mandate = :mandate')
+            ->setParameter('mandate', $mandate)
+        ;
+
+        $total = (int) $qb->select('COUNT(f.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if ($total === 0) {
+            return new Result([], 0);
+        }
+
+        $result = $qb->select('f')
+            ->orderBy('f.updated', 'DESC')
+            ->setMaxResults(self::MAX_RESULTS)
+            ->getQuery()
+            ->getResult();
+
+        return new Result($result, $total);
+    }
 }

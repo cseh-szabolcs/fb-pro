@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Attribute;
+namespace App\Attribute\Security;
 
 use App\Constants\Role;
 use Attribute;

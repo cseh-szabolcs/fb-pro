@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use App\Attribute\Security\Grant;
 use App\Constants\Role;
 use App\Controller\BaseController;
 use App\Entity\Token;
@@ -9,7 +10,6 @@ use App\Exception\SecurityException;
 use App\Form\Data\Auth\RegistrationData;
 use App\Form\Type\Auth\RegistrationType;
 use App\Manager\UserManager;
-use App\Security\Attribute\Grant;
 use App\Security\UserAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

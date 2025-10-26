@@ -3,6 +3,7 @@
 namespace App\Controller\Forms;
 
 use App\Controller\BaseController;
+use App\Repository\FormRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,9 +18,10 @@ class ListController extends BaseController
     }
 
     #[Route(path: '/fetch', name: 'fetch')]
-    public function fetch(): JsonResponse
+    public function fetch(FormRepository $formRepository): JsonResponse
     {
-        sleep(3);
-        return $this->toJson(['items' => ['item1', 'item2', 'item3'], 'count' => 3]);
+        $list = $formRepository->getList($this->getAuth()->getUser());
+
+        return $this->toJson($list);
     }
 }
