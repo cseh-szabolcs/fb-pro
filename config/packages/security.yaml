@@ -40,8 +40,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/(de|fr|it)/article, roles: ROLE_USER }
-        - { path: ^/(de|fr|it)/doc, roles: ROLE_USER }
+        - { path: ^/(de|fr|it)/forms, roles: ROLE_USER }
 
     role_hierarchy:
         ROLE_USER: [ROLE_AUTH]

@@ -7,6 +7,21 @@ html, body {
     visibility: hidden;
 }
 
+/* layout */
+body {
+    background: #f6f6f6;
+}
+
+.app-box,
+.app-box-bg {
+    border: 1px solid #eceded;
+    border-radius: 4px;
+}
+
+.app-box-bg {
+    background-color: #fff;
+}
+
 /* colors */
 .color-white {
     color: white;
@@ -67,4 +82,7 @@ a {
 }
 .scale-xs {
     scale: 0.7;
+}
+.h-0 {
+    height: 0;
 }

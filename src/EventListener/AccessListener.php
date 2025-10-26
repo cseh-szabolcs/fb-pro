@@ -3,7 +3,6 @@
 namespace App\EventListener;
 
 use App\Component\Reader\AttributeReader;
-use App\Exception\SecurityException;
 use App\Security\Attribute\Grant;
 use App\Security\AuthProvider;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;

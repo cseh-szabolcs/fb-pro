@@ -16,7 +16,8 @@ class LoginController extends BaseController
 {
     #[Route(path: '/login', name: 'login')]
     #[Grant(role: Role::GUEST, redirect: Grant::ROUTE_HOME)]
-    public function login(): Response {
+    public function login(): Response
+    {
         $utils = $this->getAuth()->utils;
         $form = $this->createForm(LoginType::class, new LoginData($utils->getLastUsername()));
         $error = $utils->getLastAuthenticationError();

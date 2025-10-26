@@ -1,26 +1,51 @@
 {% extends 'base.html.twig' %}
 
-
 {% block body %}
-    {% set navItems = [
-        {route: 'app_home', label: 'Home'},
-        {route: 'app_home', label: 'Home'},
-        {route: 'app_home', label: 'Home'},
-        {route: 'app_home', label: 'Home'},
-        {route: 'app_home', label: 'Home'},
-        {route: 'app_home', label: 'Home'},
-    ] %}
+    <div class="d-flex-column h-100">
+        <div class="mb-4">
+            <twig:Html:Nav items="{{[
+                {route: 'app_forms_index', label: 'Formulare'},
+                {route: 'app_home', label: 'Home'},
+            ]}}" />
+        </div>
 
-    <twig:Html:Nav :items="navItems" />
-    {% block head %}{% endblock %}
-    {% block main %}{% endblock %}
+        {% if block('title') %}
+            <div class="px-3 mb-4">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <h1>
+                                {% block title %}{% endblock %}
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
-    <div class="container-sm" style="background:blue;">container-sm</div>
-    <div class="container-md" style="background:#8a8aac;">container-md</div>
-    <div class="container-lg" style="background:#00ff19;">container-lg</div>
-    <div class="container-xl" style="background:#ffb300;">container-xl</div>
-    <div class="container-xxl" style="background:#ff00f2;">container-xxl</div>
-    <div class="container-fluid" style="background:#ff0000;">
-        container-flui
+        {% if block('main') %}
+            <div class="px-2 mb-5 flex-1">
+                <div class="container-fluid h-100">
+                    <div class="row h-100">
+                        {% if block('left') %}
+                            <div class="col-3 h-100">
+                                {% block left %}{% endblock %}
+                            </div>
+                        {% endif %}
+                        <div class="col h-100">
+                            {% block main %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elseif block('content') %}
+            <div class="container-lg mb-5 h-100">
+                <div class="row h-100">
+                    <div class="col h-100">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
