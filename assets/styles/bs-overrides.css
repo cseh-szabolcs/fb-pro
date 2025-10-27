@@ -1,0 +1,16 @@
+/** modal */
+body:has(.modal-backdrop) {
+    #body {
+        filter: blur(4px);
+    }
+}
+
+.modal-backdrop {
+    --bs-backdrop-bg: #999 !important;
+}
+.modal.fade {
+    transition: all 120ms ease;
+}
+.modal-backdrop.fade {
+    transition: all 120ms ease;
+}

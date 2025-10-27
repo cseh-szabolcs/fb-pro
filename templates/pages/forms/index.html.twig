@@ -3,16 +3,9 @@
 {% block title %}Formulare{% endblock %}
 
 {% block action %}
-    <twig:Html:Modal label="Neuen Formular erstellen" :action="null" id="formCreate" size="lg" x-data="{valid:false}">
-        {{ form_start(form, {action: path('app_forms_create'), method: 'post'}) }}
-        {{ form_row(form.title, {attr: {'@input': "valid = $event.target.value.trim().length > 2"}}) }}
-        <div class="d-flex justify-content-end pt-3">
-            <button type="submit" class="btn btn-lg btn-primary w-100" :disabled="!valid">
-                Erstellen
-            </button>
-        </div>
-        {{ form_end(form) }}
-    </twig:Html:Modal>
+    <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#formCreateModal">
+        Neuen Formular erstellen
+    </button>
 {% endblock %}
 
 {% block main %}
@@ -22,6 +15,19 @@
             <p x-text="foo"></p>
         </div>
     </div>
+{% endblock %}
+
+{% block modal %}
+    <twig:Html:Modal title="Neuen Formular erstellen" :action="null" id="formCreateModal" size="lg" x-data="{valid:false}">
+        {{ form_start(form, {action: path('app_forms_create'), method: 'post'}) }}
+        {{ form_row(form.title, {attr: {'@input': "valid = $event.target.value.trim().length > 2"}}) }}
+        <div class="d-flex justify-content-end pt-3">
+            <button type="submit" class="btn btn-lg btn-primary w-100" :disabled="!valid">
+                Erstellen
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </twig:Html:Modal>
 {% endblock %}
 
 {% block scripts %}

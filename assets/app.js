@@ -5,6 +5,7 @@ import {component} from "./js/app/component.js";
 import {extend} from "./js/app/exdend.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
+import './styles/bs-overrides.css';
 
 window.Tooltip = Tooltip;
 window.Alpine = Alpine;

@@ -10,6 +10,12 @@
         {% block scripts %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div id="body">
+            {% block body %}{% endblock %}
+        </div>
+        {% set modalBlock %}{% block modal %}{% endblock %}{% endset %}
+        {% if modalBlock is not empty %}
+            {{ modalBlock }}
+        {% endif %}
     </body>
 </html>
