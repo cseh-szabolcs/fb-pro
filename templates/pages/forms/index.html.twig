@@ -2,6 +2,19 @@
 
 {% block title %}Formulare{% endblock %}
 
+{% block action %}
+    <twig:Html:Modal label="Neuen Formular erstellen" :action="null" id="formCreate" size="lg" x-data="{valid:false}">
+        {{ form_start(form, {action: path('app_forms_create'), method: 'post'}) }}
+        {{ form_row(form.title, {attr: {'@input': "valid = $event.target.value.trim().length > 2"}}) }}
+        <div class="d-flex justify-content-end pt-3">
+            <button type="submit" class="btn btn-lg btn-primary w-100" :disabled="!valid">
+                Erstellen
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </twig:Html:Modal>
+{% endblock %}
+
 {% block main %}
     <div class="app-box-bg p-4 h-100">
         <div id="formsList" x-data="formsList">

@@ -2,6 +2,7 @@ twig:
     file_name_pattern: '*.twig'
     form_themes:
         - 'bootstrap_5_layout.html.twig'
+        - 'forms/theme/app_floating.html.twig'
 
 when@test:
     twig:

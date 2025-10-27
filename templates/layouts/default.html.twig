@@ -9,42 +9,52 @@
             ]}}" />
         </div>
 
-        {% if block('title') %}
+        {% set titleBlock %}{% block title %}{% endblock %}{% endset %}
+        {% if titleBlock is not empty %}
             <div class="px-3 mb-1">
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col">
                             <h1 class="h2 opacity-75">
-                                {% block title %}{% endblock %}
+                                {{ titleBlock }}
                             </h1>
                         </div>
+                        {% set actionBlock %}{% block action %}{% endblock %}{% endset %}
+                        {% if actionBlock is not empty %}
+                            <div class="col-auto">
+                                {{ actionBlock }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         {% endif %}
 
-        {% if block('main') %}
+        {% set mainBlock %}{% block main %}{% endblock %}{% endset %}
+        {% if mainBlock is not empty %}
             <div class="px-2 mb-5 flex-1">
                 <div class="container-fluid h-100">
                     <div class="row h-100">
-                        {% if block('left') %}
+                        {% set leftBlock %}{% block left %}{% endblock %}{% endset %}
+                        {% if leftBlock is not empty %}
                             <div class="col-3 h-100">
-                                {% block left %}{% endblock %}
+                                {{ leftBlock }}
                             </div>
                         {% endif %}
                         <div class="col h-100">
-                            {% block main %}{% endblock %}
+                            {{ mainBlock }}
                         </div>
                     </div>
                 </div>
             </div>
         {% endif %}
 
-        {% if block('content') %}
+        {% set pageBlock %}{% block page %}{% endblock %}{% endset %}
+        {% if pageBlock is not empty %}
             <div class="container-lg mb-5 mt-4 h-100">
                 <div class="row h-100">
                     <div class="col h-100">
-                        {% block content %}{% endblock %}
+                        {{ pageBlock }}
                     </div>
                 </div>
             </div>

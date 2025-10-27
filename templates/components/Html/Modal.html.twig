@@ -1,0 +1,26 @@
+<!-- Button -->
+<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#{{ id }}Modal">
+    {{ label }}
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="{{ id }}Modal" tabindex="-1" aria-hidden="true"{{ attributes }}>
+    <div class="modal-dialog modal-dialog-centered{{ size ? ' modal-' ~ size : '' }}">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 mb-4">
+                <h5 class="modal-title">
+                    {{ title ? title : label }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% block content %}{% endblock %}
+            </div>
+            {% if action %}
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-primary">{{ action }}</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
