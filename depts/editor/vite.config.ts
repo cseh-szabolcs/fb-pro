@@ -18,17 +18,16 @@ export default defineConfig({
     },
     build: {
         target: 'esnext',
-        // disable caching-postfixes, because it will be created by symfony asset-mapper
         rollupOptions: {
             output: {
+                // hash for caching will be handled by symfony!
                 entryFileNames: 'editor/[name].js',
                 chunkFileNames: 'editor/[name].js',
                 assetFileNames: (assetInfo) => {
                     const name = assetInfo.name ?? '';
-                    if (name.endsWith('.css')) {
-                        return 'editor/[name][extname]'; // kein [hash] für CSS
-                    }
-                    return 'editor/assets/[name]-[hash][extname]'; // Standard für andere Assets
+                    return name.endsWith('.css')
+                        ? 'editor/[name][extname]'
+                        : 'editor/assets/[name]-[hash][extname]';
                 },
             },
         },
