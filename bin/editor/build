@@ -1,24 +1,30 @@
 #!/usr/bin/env bash
 
+###
+echo 'Step 1: Build editor'
 docker compose exec editor yarn build
 
-if test -d ./public/editor; then
-  rm -R ./public/editor
+###
+echo 'Step 2: Move files to public'
+PATH_TARGET="./public/editor"
+PATH_SOURCE="./depts/editor/dist/editor"
+
+if test -d $PATH_TARGET; then
+  rm -R $PATH_TARGET
 fi
 
-if test -d ./depts/editor/dist/editor; then
-  mv ./depts/editor/dist/editor ./public/editor
+if test -d $PATH_SOURCE; then
+  mv $PATH_SOURCE $PATH_TARGET
 fi
 
+###
+echo 'Step 3: Update editor-version in .env-file.'
 ENV_FILE=".env.dev.local"
-NEW_VERSION="$(date +%Y%m%d%H%M%S)"  # oder: NEW_VERSION="$(git rev-parse --short HEAD)"
+NEW_VERSION="$(date +%Y%m%d%H%M%S)"  # or: NEW_VERSION="$(git rev-parse --short HEAD)"
 
-# Datei anlegen, falls nicht vorhanden
 [ -f "$ENV_FILE" ] || touch "$ENV_FILE"
 
-# Zeile ersetzen oder hinzufügen
 if grep -qE '^APP_EDITOR_VERSION=' "$ENV_FILE"; then
-  # portable inplace (kein sed -i nötig)
   tmpfile="$(mktemp)"
   sed -E "s|^APP_EDITOR_VERSION=.*$|APP_EDITOR_VERSION=${NEW_VERSION}|" "$ENV_FILE" > "$tmpfile" && mv "$tmpfile" "$ENV_FILE"
 else
