@@ -13,6 +13,9 @@ class FormsController extends BaseController
 {
     public function __invoke(#[MapEntity(mapping: ['uuid' => 'uuid'])] Form $form): Response
     {
-        return new Response(':o)');
+        return $this->render('editor/forms.html.twig', [
+            'form' => $form,
+            'fields' => '',
+        ]);
     }
 }

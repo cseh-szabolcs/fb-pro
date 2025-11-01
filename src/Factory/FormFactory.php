@@ -5,6 +5,7 @@ namespace App\Factory;
 use App\Entity\Form;
 use App\Entity\Form\FormVersion;
 use App\Entity\User;
+use App\Form\Data\Forms\CreateData;
 use App\Repository\FormRepository;
 
 final readonly class FormFactory
@@ -13,9 +14,9 @@ final readonly class FormFactory
         private FormRepository $formRepository
     ) {}
 
-    public function create(User $owner, string $title): Form
+    public function create(User $owner, CreateData $data): Form
     {
-        $form = new Form($owner, $title, new FormVersion());
+        $form = new Form($owner, $data->title, new FormVersion(), $data->description);
         $this->formRepository->persist($form);
 
         return $form;

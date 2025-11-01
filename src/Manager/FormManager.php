@@ -21,7 +21,7 @@ final readonly class FormManager
 
     public function create(CreateData $data): Form
     {
-        $form = $this->formFactory->create($this->authProvider->getUser(), $data->title);
+        $form = $this->formFactory->create($this->authProvider->getUser(), $data);
         $this->dispatchEvent(new FormCreatedEvent($form));
 
         return $form;

@@ -22,3 +22,8 @@ body:has(.modal-backdrop) {
 .modal-backdrop.fade {
     transition: all 120ms ease;
 }
+
+/** form */
+.form-floating > textarea.form-control {
+    height: auto;
+}

@@ -9,4 +9,7 @@ final class CreateData
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 255)]
     public ?string $title = null;
+
+    #[Assert\Length(max: 255)]
+    public ?string $description = null;
 }

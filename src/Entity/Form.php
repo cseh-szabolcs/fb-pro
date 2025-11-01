@@ -40,6 +40,9 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
     #[ORM\Column(length: 255)]
     private ?string $title;
 
+    #[ORM\Column(length: 255)]
+    private ?string $description;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?FormVersion $draftVersion = null;
 
@@ -50,10 +53,11 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
     #[ORM\OrderBy(['updated' => 'DESC'])]
     private Collection $versions;
 
-    public function __construct(User $user, string $title, FormVersion $draftVersion)
+    public function __construct(User $user, string $title, FormVersion $draftVersion, string $description = null)
     {
         $this->owner = $user;
         $this->title = $title;
+        $this->description = $description;
         $this->versions = new ArrayCollection();
         $this->setDraftVersion($draftVersion);
         $this->setMandate($user);
@@ -73,6 +77,19 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    #[Groups(['default'])]
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
