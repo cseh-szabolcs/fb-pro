@@ -4,21 +4,23 @@ namespace App\Traits\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait UpdatedTrait
 {
     #[ORM\Column]
     private ?DateTimeImmutable $updated = null;
 
+    #[Groups(['default'])]
     public function getUpdated(): ?DateTimeImmutable
     {
         return $this->updated;
     }
 
     #[ORM\PrePersist]
-    public function setUpdated(DateTimeImmutable $updated): static
+    public function setUpdated(): static
     {
-        $this->updated = $updated;
+        $this->updated = new DateTimeImmutable();
 
         return $this;
     }

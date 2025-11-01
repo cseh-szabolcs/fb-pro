@@ -1,12 +1,12 @@
-import app from "app";
 
-app.components.list = {
+export default {
     path: '',
     items: [],
     count: 0,
     initialized: false,
     loading: false,
     version: 0,
+
     fetch() {
         if (this.loading || !this.path) return;
         this.loading = true;
@@ -29,6 +29,12 @@ app.components.list = {
             .catch(() => {
                 this.error = true;
             });
+    },
+
+    reload() {
+        this.initialized = true;
+        this.loading = true;
+        this.fetch();
     },
 };
 

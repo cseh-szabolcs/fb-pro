@@ -16,6 +16,9 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+    'app/components' => [
+        'path' => './assets/js/components/index.js',
+    ],
     'bootstrap' => [
         'version' => '5.3.8',
     ],

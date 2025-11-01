@@ -17,7 +17,7 @@ trait MandateAwareTrait
         return $this->mandate;
     }
 
-    public function setMandate(Mandate|User $mandate): static
+    private function setMandate(Mandate|User $mandate): static
     {
         $this->mandate = $mandate instanceof User
             ? $mandate->getMandate()

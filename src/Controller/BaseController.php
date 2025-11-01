@@ -24,16 +24,35 @@ class BaseController extends AbstractController
     }
 
     protected function toJson(
-        array|object $data,
-        array $context = [],
-        array $headers = [],
+        mixed $data,
+        array|int $groups = [],
+        array|int $headers = [],
+        array|int $context = [],
         int $status = 200,
     ): JsonResponse {
         if ($data instanceof ToArrayInterface) {
             $data = $data->toArray();
         }
 
-        return $this->json($data, $status, $headers, $context);
+        if (is_int($groups)) {
+            $status = $groups;
+            $groups = [];
+        }
+
+        if (is_int($headers)) {
+            $status = $headers;
+            $headers = [];
+        }
+
+        if (is_int($context)) {
+            $status = $context;
+            $context = [];
+        }
+
+        return $this->json($data, $status, $headers, array_merge(
+            ['groups' => array_merge($groups, ['default'])],
+            $context,
+        ));
     }
 
     protected function getUser(): ?User

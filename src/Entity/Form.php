@@ -3,22 +3,29 @@
 namespace App\Entity;
 
 use App\Contracts\MandateAwareInterface;
+use App\Contracts\OwnerAwareInterface;
 use App\Entity\Form\FormVersion;
 use App\Repository\FormRepository;
 use App\Traits\Entity\CreatedTrait;
 use App\Traits\Entity\MandateAwareTrait;
-use App\Traits\Entity\UpdatedTrait;
+use App\Traits\Entity\OwnerAwareTrait;
 use App\Traits\Entity\UuidAwareTrait;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FormRepository::class)]
 #[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
-class Form implements MandateAwareInterface
+#[ORM\HasLifecycleCallbacks]
+class Form implements MandateAwareInterface, OwnerAwareInterface
 {
     use UuidAwareTrait;
     use MandateAwareTrait;
-    use UpdatedTrait;
+    use OwnerAwareTrait;
     use CreatedTrait;
 
     #[ORM\Id]
@@ -34,20 +41,22 @@ class Form implements MandateAwareInterface
     private ?string $title;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?FormVersion $draft = null;
+    private ?FormVersion $draftVersion = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
-    private ?FormVersion $published = null;
+    private ?FormVersion $publishedVersion = null;
 
-    #[ORM\OneToMany(targetEntity: FormVersion::class, mappedBy: 'form', cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: FormVersion::class, mappedBy: 'form', cascade: ['remove', 'persist', 'refresh', 'detach'], orphanRemoval: true)]
+    #[ORM\OrderBy(['updated' => 'DESC'])]
     private Collection $versions;
 
-    public function __construct(Mandate|User $mandate, string $title)
+    public function __construct(User $user, string $title, FormVersion $draftVersion)
     {
-        $this->setMandate($mandate);
+        $this->owner = $user;
         $this->title = $title;
+        $this->versions = new ArrayCollection();
+        $this->setDraftVersion($draftVersion);
+        $this->setMandate($user);
     }
 
     public function getId(): ?int
@@ -55,6 +64,7 @@ class Form implements MandateAwareInterface
         return $this->id;
     }
 
+    #[Groups(['default'])]
     public function getTitle(): ?string
     {
         return $this->title;
@@ -67,44 +77,57 @@ class Form implements MandateAwareInterface
         return $this;
     }
 
-    public function getDraft(): ?FormVersion
+    #[Groups(['default'])]
+    public function getDraftVersion(): FormVersion
     {
-        return $this->draft;
+        assert($this->draftVersion instanceof FormVersion);
+
+        return $this->draftVersion;
     }
 
-    public function setDraft(FormVersion $draft): static
+    public function setDraftVersion(FormVersion $draftVersion): static
     {
-        $this->draft = $draft;
+        if (null === $this->draftVersion) {
+            $this->draftVersion = $draftVersion;
+            $draftVersion->setForm($this);
+        }
 
         return $this;
     }
 
-    public function getPublished(): ?FormVersion
+    #[Groups(['default'])]
+    public function getPublishedVersion(): ?FormVersion
     {
-        return $this->published;
+        return $this->publishedVersion;
     }
 
-    public function setPublished(?FormVersion $published): static
+    public function setPublished(?FormVersion $publishedVersion): static
     {
-        $this->published = $published;
-        $this->versions->add($published);
+        $this->publishedVersion = $publishedVersion;
+        $this->versions->add($publishedVersion);
 
         return $this;
     }
 
     public function isPublished(): bool
     {
-        return null !== $this->published;
+        return null !== $this->publishedVersion;
     }
 
-    public function areChangesPublied(): bool
-    {
-        return $this->draft->getId() && !$this->getId();
-    }
 
     /** @return  Collection<int, FormVersion> */
     public function getVersions(): Collection
     {
-        return $this->versions;
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->neq('published', null))
+            ->orderBy(['published' => Order::Descending]);
+
+        return $this->versions->matching($criteria);
+    }
+
+    #[Groups(['default'])]
+    public function getLastEdited(): ?DateTimeInterface
+    {
+        return $this->draftVersion->getUpdated();
     }
 }

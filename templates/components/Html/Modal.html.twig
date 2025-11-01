@@ -1,18 +1,34 @@
-<div class="modal fade" id="{{ id }}" tabindex="-1" aria-hidden="true"{{ attributes }}>
+<div
+    class="modal fade"
+    id="{{ id }}"
+    tabindex="-1"
+    @done.window="loading = false"
+    aria-hidden="true"{{ attributes }}
+    {%- if not stateless -%}
+        x-data="{
+          valid:false,
+          loading: false,
+          confirm() {
+            this.loading = true;
+            this.$dispatch('{{ id | kebab_case }}:confirm')
+          },
+        }"
+    {%- endif -%}
+>
     <div class="modal-dialog modal-dialog-centered{{ size ? ' modal-' ~ size : '' }}">
         <div class="modal-content">
             <div class="modal-header border-bottom-0 mb-4">
                 <h5 class="modal-title">
                     {{ title }}
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" :class="{ 'loading-child-btn': loading }">
                 {% block content %}{% endblock %}
             </div>
             {% if action %}
                 <div class="modal-footer border-top-0">
-                    <button type="button" class="btn btn-primary">{{ action }}</button>
+                    <button type="button" class="btn btn-primary loading">{{ action }}</button>
                 </div>
             {% endif %}
         </div>

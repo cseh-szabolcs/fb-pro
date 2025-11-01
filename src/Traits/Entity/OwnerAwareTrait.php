@@ -16,9 +16,4 @@ trait OwnerAwareTrait
     {
         return $this->owner;
     }
-
-    public function getMandate(): Mandate
-    {
-        return $this->owner->getMandate();
-    }
 }

@@ -11,4 +11,5 @@ class Modal
     public ?string $title = null;
     public ?string $action = 'Submit';
     public ?string $size = null;
+    public bool $stateless = false;
 }

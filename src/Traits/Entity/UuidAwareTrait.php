@@ -4,6 +4,7 @@ namespace App\Traits\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 trait UuidAwareTrait
@@ -11,6 +12,7 @@ trait UuidAwareTrait
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     private ?Uuid $uuid = null;
 
+    #[Groups(['default'])]
     public function getUuid(): Uuid
     {
         return $this->uuid;

@@ -1,8 +1,7 @@
 import Alpine from 'alpinejs'
 import persist from '@alpinejs/persist';
 import {Tooltip} from 'bootstrap';
-import {component} from "./js/app/component.js";
-import {extend} from "./js/app/exdend.js";
+import core from "./js/core/index.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 import './styles/bs-overrides.css';
@@ -12,12 +11,26 @@ window.Alpine = Alpine;
 Alpine.plugin(persist);
 
 export default {
-    component,
-    extend,
+    component(data, name = 'root', start = true) {
+        const factory = typeof data !== 'function'
+            ? () => data
+            : function() { return data.apply(this, [this]); };
+
+        Alpine.data(name, factory);
+        if (start) Alpine.start();
+    },
+    extend(...objects) {
+        const result = {};
+        objects.forEach(obj => {
+            Object.defineProperties(result, Object.getOwnPropertyDescriptors(obj));
+        });
+        return result;
+    },
     start: () => Alpine.start(),
     delay: (callback, ms = undefined) => {
         window.setTimeout(callback, ms);
     },
+    core,
     components: {},
     pages: {},
 };

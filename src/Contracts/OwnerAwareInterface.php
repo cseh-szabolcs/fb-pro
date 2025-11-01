@@ -4,7 +4,7 @@ namespace App\Contracts;
 
 use App\Entity\User;
 
-interface OwnerAwareInterface extends MandateAwareInterface
+interface OwnerAwareInterface
 {
     public function getOwner(): User;
 }

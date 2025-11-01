@@ -28,6 +28,8 @@ class FormRepository extends ServiceEntityRepository
         $mandate = MandateGet::get($mandate);
 
         $qb = $this->createQueryBuilder('f')
+            ->join('f.draftVersion', 'dfv')
+            ->leftJoin('f.publishedVersion', 'pfv')
             ->andWhere('f.mandate = :mandate')
             ->setParameter('mandate', $mandate)
         ;
@@ -41,7 +43,7 @@ class FormRepository extends ServiceEntityRepository
         }
 
         $result = $qb->select('f')
-            ->orderBy('f.updated', 'DESC')
+            ->orderBy('dfv.updated', 'DESC')
             ->setMaxResults(self::MAX_RESULTS)
             ->getQuery()
             ->getResult();

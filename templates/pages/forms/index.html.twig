@@ -3,26 +3,48 @@
 {% block title %}Formulare{% endblock %}
 
 {% block action %}
-    <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#formCreateModal">
+    <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#createFormModal">
         Neuen Formular erstellen
     </button>
 {% endblock %}
 
 {% block main %}
     <div class="app-box-bg p-4 h-100">
-        <div id="formsList" x-data="formsList">
+        <div id="formsList" x-data="formsList" @create-form-modal:confirm.window="createNew">
             <twig:Html:Loader:All x-if="!initialized" />
-            <p x-text="foo"></p>
+            <template x-if="initialized && items.length > 0">
+                <ul class="gallery-list items-300 gap-4">
+                    <template x-for="form of items" :key="form.uuid">
+                        <li class="card">
+                            <img src="https://www.autogrammalbum.de/wpimages/wp2a861f3d_05_06.jpg" class="object-fit-cover" style="aspect-ratio:2.5;" class="card-img-top" alt="..." />
+                            <div class="card-body">
+                                <h5 class="card-title" x-text="form.title"></h5>
+                                <p class="card-text">
+                                    Some quick example text to build on the card title and make up the bulk of the card's content.
+                                </p>
+                                <a :href="editForm(form)" class="btn btn-primary">
+                                    Bearbeiten
+                                </a>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
         </div>
     </div>
 {% endblock %}
 
 {% block modal %}
-    <twig:Html:Modal title="Neuen Formular erstellen" :action="null" id="formCreateModal" size="lg" x-data="{valid:false}">
+    <twig:Html:Modal
+        title="Neuen Formular erstellen"
+        :action="null"
+        id="createFormModal"
+        size="lg"
+    >
         {{ form_start(form, {action: path('app_forms_create'), method: 'post'}) }}
         {{ form_row(form.title, {attr: {'@input': "valid = $event.target.value.trim().length > 2"}}) }}
         <div class="d-flex justify-content-end pt-3">
-            <button type="submit" class="btn btn-lg btn-primary w-100" :disabled="!valid">
+            <button type="submit" class="btn btn-lg btn-primary w-100" @click.prevent="confirm()" :disabled="!valid">
                 Erstellen
             </button>
         </div>
@@ -31,13 +53,13 @@
 {% endblock %}
 
 {% block scripts %}
-    <script type="module" src="{{ asset('js/components/list.js') }}"></script>
     <script type="module" src="{{ asset('js/pages/forms/index.js') }}"></script>
     <script type="module">
         import app from "app";
         app.pages.formList({
             name: "formsList",
             path: "{{ path('app_forms_fetch') }}",
-        })
+            editAction: "{{ path('app_editor_forms', { uuid: '__UUID__' }) }}",
+        });
     </script>
 {% endblock %}
