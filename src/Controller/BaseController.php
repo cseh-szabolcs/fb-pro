@@ -34,23 +34,10 @@ class BaseController extends AbstractController
             $data = $data->toArray();
         }
 
-        if (is_int($groups)) {
-            $status = $groups;
-            $groups = [];
-        }
-
-        if (is_int($headers)) {
-            $status = $headers;
-            $headers = [];
-        }
-
-        if (is_int($context)) {
-            $status = $context;
-            $context = [];
-        }
+        $this->_toJson($groups, $headers, $context, $status);
 
         return $this->json($data, $status, $headers, array_merge(
-            ['groups' => array_merge($groups, ['default'])],
+            ['groups' => array_merge($groups, ['app'])],
             $context,
         ));
     }
@@ -115,5 +102,19 @@ class BaseController extends AbstractController
             'app_em' => EntityManagerInterface::class,
             'app_auth' => AuthProvider::class,
         ];
+    }
+
+    private function _toJson(int|array &$groups, int|array &$headers, int|array &$context, int &$status): void
+    {
+        if (is_int($groups)) {
+            $status = $groups;
+            $groups = [];
+        } else if (is_int($headers)) {
+            $status = $headers;
+            $headers = [];
+        } else if (is_int($context)) {
+            $status = $context;
+            $context = [];
+        }
     }
 }

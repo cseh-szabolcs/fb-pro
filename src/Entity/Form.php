@@ -19,7 +19,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FormRepository::class)]
-#[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
 #[ORM\HasLifecycleCallbacks]
 class Form implements MandateAwareInterface, OwnerAwareInterface
 {
@@ -68,7 +67,7 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
         return $this->id;
     }
 
-    #[Groups(['default'])]
+    #[Groups(['app'])]
     public function getTitle(): ?string
     {
         return $this->title;
@@ -81,7 +80,7 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
         return $this;
     }
 
-    #[Groups(['default'])]
+    #[Groups(['app'])]
     public function getDescription(): ?string
     {
         return $this->description;
@@ -94,7 +93,7 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
         return $this;
     }
 
-    #[Groups(['default'])]
+    #[Groups(['app'])]
     public function getDraftVersion(): FormVersion
     {
         assert($this->draftVersion instanceof FormVersion);
@@ -112,7 +111,7 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
         return $this;
     }
 
-    #[Groups(['default'])]
+    #[Groups(['app'])]
     public function getPublishedVersion(): ?FormVersion
     {
         return $this->publishedVersion;
@@ -142,7 +141,7 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
         return $this->versions->matching($criteria);
     }
 
-    #[Groups(['default'])]
+    #[Groups(['app'])]
     public function getLastEdited(): ?DateTimeInterface
     {
         return $this->draftVersion->getUpdated();

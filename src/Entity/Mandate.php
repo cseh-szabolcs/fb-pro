@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MandateRepository::class)]
-#[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
 #[ORM\HasLifecycleCallbacks]
 class Mandate implements UuidAwareInterface
 {

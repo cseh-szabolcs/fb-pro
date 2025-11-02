@@ -10,7 +10,6 @@ use App\Traits\Entity\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TokenRepository::class)]
-#[ORM\Index(name: 'type_idx', columns: ['type'])]
 class Token implements OwnerAwareInterface
 {
     use UuidTrait;
@@ -20,7 +19,7 @@ class Token implements OwnerAwareInterface
     const TYPE_REGISTRATION = 'registration';
     const TYPE_PASSWORD_RESET = 'password_reset';
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, index: true)]
     private ?string $type;
 
     #[ORM\Column(nullable: true)]

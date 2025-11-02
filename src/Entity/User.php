@@ -14,9 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
-#[ORM\Index(name: 'email_idx', columns: ['email'])]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface
 {
@@ -32,7 +29,7 @@ class User implements UserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Mandate $mandate;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true, index: true)]
     private ?string $email;
 
     #[ORM\Column(length: 255)]

@@ -9,7 +9,7 @@ use Symfony\Component\Uid\Uuid;
 
 trait UuidAwareTrait
 {
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\Column(type: UuidType::NAME, unique: true, index: true)]
     private ?Uuid $uuid = null;
 
     #[Groups(['default'])]

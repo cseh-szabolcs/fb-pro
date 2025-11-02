@@ -55,7 +55,7 @@ class FormVersion
         return null !== $this->published;
     }
 
-    #[Groups(['default'])]
+    #[Groups(['app'])]
     public function getPublished(): ?DateTimeImmutable
     {
         return $this->published;
