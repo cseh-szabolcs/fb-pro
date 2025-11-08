@@ -35,7 +35,6 @@ final class ServiceTunnel  implements ServiceSubscriberInterface
         return self::$container->get($className);
     }
 
-
     #[Required]
     public function setContainer(ContainerInterface $container): void
     {
