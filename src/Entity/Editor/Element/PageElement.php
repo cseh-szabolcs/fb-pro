@@ -2,7 +2,6 @@
 
 namespace App\Entity\Editor\Element;
 
-use App\Contracts\Entity\EditorScopeInterface;
 use App\Entity\Editor\BaseElement;
 use App\Model\Editor\Data\PageData;
 use App\Repository\Editor\ElementRepository;
@@ -11,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
 class PageElement extends BaseElement
 {
-    public function __construct(EditorScopeInterface $scope, PageData $data, DocumentElement $parent)
+    public function __construct(PageData $data, DocumentElement $parent)
     {
-        parent::__construct($scope, $data, $parent);
+        parent::__construct($data, $parent);
     }
 }

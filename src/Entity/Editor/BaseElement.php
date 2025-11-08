@@ -2,14 +2,13 @@
 
 namespace App\Entity\Editor;
 
-use App\Constants\Entity\ElementScope;
-use App\Contracts\Entity\EditorScopeInterface;
 use App\Doctrine\EntityListener\ElementListener;
 use App\Doctrine\Type\JsonDocumentType;
 use App\Model\Editor\BaseData;
 use App\Repository\Editor\ElementRepository;
 use App\Traits\Entity\UuidAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -17,7 +16,6 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
 #[ORM\Table(name: 'editor_elements')]
 #[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
-#[ORM\Index(name: 'scope_idx', columns: ['scope_id'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(BaseElement::TYPES)]
@@ -35,12 +33,6 @@ abstract class BaseElement
     #[ORM\Column(type: Types::BIGINT, options: ['unsigned' => true])]
     protected ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false, enumType: ElementScope::class)]
-    protected ?ElementScope $scope = null;
-
-    #[ORM\Column(nullable: false)]
-    protected ?string $scopeId;
-
     #[ORM\Column(type: JsonDocumentType::NAME)]
     protected ?BaseData $data;
 
@@ -48,15 +40,13 @@ abstract class BaseElement
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     protected ?BaseElement $parent = null;
 
-    /** @var ArrayCollection<int, BaseElement> */
+    /** @var Collection<int, BaseElement> */
     #[ORM\OneToMany(targetEntity: BaseElement::class, mappedBy: 'parent', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    protected ArrayCollection $children;
+    protected Collection $children;
 
-    public function __construct(EditorScopeInterface $scope, BaseData $data, ?BaseElement $parent = null)
+    public function __construct(BaseData $data, ?BaseElement $parent = null)
     {
         $this->uuid = Uuid::v4();
-        $this->scope = $scope->getName();
-        $this->scopeId = $scope->getId();
         $this->data = $data;
         $this->parent = $parent;
         $this->children = new ArrayCollection();
@@ -65,16 +55,6 @@ abstract class BaseElement
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getScope(): ElementScope
-    {
-        return $this->scope;
-    }
-
-    public function getScopeId(): string
-    {
-        return $this->scopeId;
     }
 
     public function getParent(): BaseElement
@@ -90,8 +70,8 @@ abstract class BaseElement
         return $this;
     }
 
-    /** @return  ArrayCollection<int, BaseElement> */
-    public function getChildren(): ArrayCollection
+    /** @return Collection<int, BaseElement> */
+    public function getChildren(): Collection
     {
         return $this->children;
     }

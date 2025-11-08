@@ -4,7 +4,7 @@ namespace App\Model\Editor;
 
 use App\Attribute\Doctrine\JsonDocument;
 
-#[JsonDocument]
+#[JsonDocument(serializationGroups: ['api'])]
 abstract class BaseData
 {
     public ?string $backgroundColor = null;

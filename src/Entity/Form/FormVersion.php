@@ -2,6 +2,7 @@
 
 namespace App\Entity\Form;
 
+use App\Entity\Editor\Element\DocumentElement;
 use App\Entity\Form;
 use App\Repository\Form\FormVersionRepository;
 use App\Traits\Entity\CreatedTrait;
@@ -32,6 +33,16 @@ class FormVersion
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $published = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?DocumentElement $document = null;
+
+    public function __construct(Form $form, DocumentElement $document)
+    {
+        $this->form = $form;
+        $this->document = $document;
+    }
 
     public function getId(): ?int
     {
@@ -67,6 +78,18 @@ class FormVersion
             $this->published = new DateTimeImmutable();
             $this->form->setPublished($this);
         }
+
+        return $this;
+    }
+
+    public function getDocument(): ?DocumentElement
+    {
+        return $this->document;
+    }
+
+    public function setDocument(DocumentElement $document): static
+    {
+        $this->document = $document;
 
         return $this;
     }

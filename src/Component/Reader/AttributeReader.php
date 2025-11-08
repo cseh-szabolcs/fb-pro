@@ -35,11 +35,27 @@ final readonly class AttributeReader
      * @return T|null
      * @throws ReflectionException
      */
-    public static function fromClass(object|string $object, string $attribute): ?object
+    public static function fromClass(object|string $object, string $attribute, bool $parent = false): ?object
     {
         $refClass = new ReflectionClass($object);
         $attr = $refClass->getAttributes($attribute)[0] ?? null;
 
+        if (!$attr && $parent) {
+            return self::iterateParent($refClass, $attribute);
+        }
+
         return $attr?->newInstance();
+    }
+
+    private static function iterateParent(ReflectionClass $refClass, string $attribute): ?object
+    {
+        while ($refClass) {
+            $attr = $refClass->getAttributes($attribute)[0] ?? null;
+            if ($attr) {
+                return $attr->newInstance();
+            }
+            $refClass = $refClass->getParentClass();
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Doctrine\Type;
 
 use App\Attribute\Doctrine\JsonDocument;
 use App\Component\Reader\AttributeReader;
+use App\Services\ServiceTunnel;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
 use InvalidArgumentException;
@@ -15,31 +16,24 @@ final class JsonDocumentType extends JsonType
 
     private string $format = 'json';
 
-    private SerializerInterface $serializer;
-
-    private array $context = [
-        'groups' => ['orm'],
-    ];
-
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if (empty($value)) {
             return null;
         }
 
-        if (!is_object($value)) {
-            throw new InvalidArgumentException('JsonDocumentType supports only objects.');
-        }
-
-        $attribute = AttributeReader::fromClass($value, JsonDocument::class);
+        assert(is_object($value), 'JsonDocument must be an object.');
+        $attribute = AttributeReader::fromClass($value, JsonDocument::class, true);
         if (empty($attribute)) {
             throw new InvalidArgumentException('Value-object is missing the JsonDocument attribute.');
         }
 
-        return $this->serializer->serialize(
-            [get_class($value) => $value,],
+        $serializer = ServiceTunnel::get(SerializerInterface::class);
+
+        return $serializer->serialize(
+            [get_class($value) => $value],
             $this->format,
-            $this->context,
+            ['groups' => [$attribute->group ?? 'default']],
         );
     }
 
@@ -49,13 +43,24 @@ final class JsonDocumentType extends JsonType
             return null;
         }
 
+        $data = $this->dataDecode($value);
+        $serializer = ServiceTunnel::get(SerializerInterface::class);
+
+
+        return $serializer->deserialize($data['json'], $data['className'], $this->format, $this->context);
+    }
+
+    private function dataDecode(string $value): array
+    {
         $typePattern = '/^\s*{\s*"([a-z0-9_\\\]+)"\s*:\s*{/i';
         $result = preg_match($typePattern, $value, $matches);
         assert($result && count($matches) > 1);
         $className = trim(str_replace('\\\\', '\\', $matches[1]));
-        $json = sprintf('{%s', preg_replace($typePattern, '', preg_replace('/\s*}$/', '', $value)));
 
-        return $this->serializer->deserialize($json, $className, $this->format, $this->context);
+        return [
+            'className' => $className,
+            'json' => sprintf('{%s', preg_replace($typePattern, '', preg_replace('/\s*}$/', '', $value))),
+        ];
     }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
@@ -66,13 +71,5 @@ final class JsonDocumentType extends JsonType
     public function getName(): string
     {
         return self::NAME;
-    }
-
-    /**
-     * Called by the Dependency Injection component.
-     */
-    public function injectSerializer(SerializerInterface $serializer): void
-    {
-        $this->serializer = $serializer;
     }
 }
