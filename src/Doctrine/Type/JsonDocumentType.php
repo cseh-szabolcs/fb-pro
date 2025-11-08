@@ -39,15 +39,20 @@ final class JsonDocumentType extends JsonType
         return $this->deserialize($value);
     }
 
-    private function serialize(object $value, JsonDocument $definitions): string
+    private function serialize(object $model, JsonDocument $definitions): string
     {
         $groups = $definitions->serializationGroups;
-        $data = $this->getSerializer()->serialize($value, self::FORMAT, ['groups' => $groups]);
+        $data = $this->getSerializer()->serialize($model, self::FORMAT, ['groups' => $groups]);
+        $etag = md5($data);
+        if (property_exists($model, 'etag')) {
+            $model->etag = $etag;
+        }
 
         return json_encode([
-            '_type_' => get_class($value),
-            '_groups_' => implode(',', $groups),
-            '_data_' => json_decode($data, true),
+            '@type' => get_class($model),
+            '@groups' => implode(',', $groups),
+            '@data' => json_decode($data, true),
+            '@etag' => $etag,
         ]);
     }
 
@@ -55,16 +60,22 @@ final class JsonDocumentType extends JsonType
     {
         $data = json_decode($value, true);
 
-        assert(isset($data['_type_']), 'Class name is missing.');
-        assert(isset($data['_groups_']), 'Groups are missing.');
-        assert(isset($data['_data_']), 'Data is missing.');
+        assert(isset($data['@type']), 'Class name is missing.');
+        assert(isset($data['@groups']), 'Groups are missing.');
+        assert(isset($data['@data']), 'Data is missing.');
 
-        return $this->getSerializer()->deserialize(
-            $data['_data_'],
-            $data['_type_'],
+        $model = $this->getSerializer()->deserialize(
+            $data['@data'],
+            $data['@type'],
             self::FORMAT,
-            ['groups' => explode(',', $data['_groups_'])],
+            ['groups' => explode(',', $data['@groups'])],
         );
+
+        if (property_exists($model, 'etag') && isset($data['@etag'])) {
+            $model->etag = $data['@etag'];
+        }
+
+        return $model;
     }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool

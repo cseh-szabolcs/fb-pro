@@ -8,6 +8,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[JsonDocument(serializationGroups: ['api'])]
 abstract class BaseData
 {
+    public ?string $etag = null;
+
     #[Groups(['api'])]
     public ?string $backgroundColor = null;
 

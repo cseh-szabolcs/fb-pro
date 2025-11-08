@@ -8,7 +8,7 @@ use App\Repository\Editor\ElementRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
-final class DocumentElement extends BaseElement
+class DocumentElement extends BaseElement
 {
     const TYPE = 'document';
 
