@@ -6,6 +6,7 @@ namespace App\Services;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -45,4 +46,6 @@ final class ServiceTunnel  implements ServiceSubscriberInterface
     {
         return array_combine(self::Services, self::Services);
     }
+
+    public function __invoke(RequestEvent $event): void {}
 }

@@ -6,5 +6,4 @@ use App\Model\Editor\BaseData;
 
 final class DocumentData extends BaseData
 {
-
 }

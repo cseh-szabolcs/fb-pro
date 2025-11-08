@@ -29,8 +29,9 @@ final readonly class FormFactory
 
     private function createDocument(): DocumentElement
     {
-        $document = new DocumentElement(new DocumentData());
-
-        return $document;
+        return new DocumentElement(new DocumentData([
+            'backgroundColor' => '#ffffff',
+            'textColor' => '#000000',
+        ]));
     }
 }

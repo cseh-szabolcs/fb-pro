@@ -7,14 +7,13 @@ use App\Component\Reader\AttributeReader;
 use App\Services\ServiceTunnel;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\JsonType;
-use InvalidArgumentException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class JsonDocumentType extends JsonType
 {
     public const NAME = 'json_document';
 
-    private string $format = 'json';
+    private const FORMAT = 'json';
 
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
@@ -24,43 +23,48 @@ final class JsonDocumentType extends JsonType
 
         assert(is_object($value), 'JsonDocument must be an object.');
         $attribute = AttributeReader::fromClass($value, JsonDocument::class, true);
-        if (empty($attribute)) {
-            throw new InvalidArgumentException('Value-object is missing the JsonDocument attribute.');
-        }
+        assert($attribute instanceof JsonDocument, 'JsonDocument attribute is missing.');
 
-        $serializer = ServiceTunnel::get(SerializerInterface::class);
-
-        return $serializer->serialize(
-            [get_class($value) => $value],
-            $this->format,
-            ['groups' => [$attribute->group ?? 'default']],
-        );
+        return $this->serialize($value, $attribute);
     }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
     {
-        if (empty($value) || !is_string($value)) {
+        if (empty($value)) {
             return null;
         }
 
-        $data = $this->dataDecode($value);
-        $serializer = ServiceTunnel::get(SerializerInterface::class);
+        assert(is_string($value), 'JsonDocument must be a string.');
 
-
-        return $serializer->deserialize($data['json'], $data['className'], $this->format, $this->context);
+        return $this->deserialize($value);
     }
 
-    private function dataDecode(string $value): array
+    private function serialize(object $value, JsonDocument $definitions): string
     {
-        $typePattern = '/^\s*{\s*"([a-z0-9_\\\]+)"\s*:\s*{/i';
-        $result = preg_match($typePattern, $value, $matches);
-        assert($result && count($matches) > 1);
-        $className = trim(str_replace('\\\\', '\\', $matches[1]));
+        $groups = $definitions->serializationGroups;
+        $data = $this->getSerializer()->serialize($value, self::FORMAT, ['groups' => $groups]);
 
-        return [
-            'className' => $className,
-            'json' => sprintf('{%s', preg_replace($typePattern, '', preg_replace('/\s*}$/', '', $value))),
-        ];
+        return json_encode([
+            '_type_' => get_class($value),
+            '_groups_' => implode(',', $groups),
+            '_data_' => json_decode($data, true),
+        ]);
+    }
+
+    private function deserialize(string $value): object
+    {
+        $data = json_decode($value, true);
+
+        assert(isset($data['_type_']), 'Class name is missing.');
+        assert(isset($data['_groups_']), 'Groups are missing.');
+        assert(isset($data['_data_']), 'Data is missing.');
+
+        return $this->getSerializer()->deserialize(
+            $data['_data_'],
+            $data['_type_'],
+            self::FORMAT,
+            ['groups' => explode(',', $data['_groups_'])],
+        );
     }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
@@ -71,5 +75,10 @@ final class JsonDocumentType extends JsonType
     public function getName(): string
     {
         return self::NAME;
+    }
+
+    private function getSerializer(): SerializerInterface
+    {
+        return ServiceTunnel::get(SerializerInterface::class);
     }
 }
