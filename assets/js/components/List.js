@@ -7,34 +7,31 @@ export default {
     loading: false,
     version: 0,
 
-    fetch() {
+    async fetch() {
         if (this.loading || !this.path) return;
         this.loading = true;
         this.error = false;
 
-        fetch(this.path, {redirect: 'manual'})
-            .then(response => {
-                if (response.status === 302 || response.type === 'opaqueredirect') {
-                    window.location.reload();
-                }
-                return response.json();
-            })
-            .then(({items, count}) => {
-                this.initialized = true;
-                this.items = items;
-                this.count += count;
-                this.loading = false;
-                this.version++;
-            })
-            .catch(() => {
-                this.error = true;
-            });
+        const response = await fetch(this.path, {redirect: 'manual'});
+        if (response.status === 302 || response.type === 'opaqueredirect') {
+            window.location.reload();
+        }
+        try {
+            const result = await response.json();
+            this.initialized = true;
+            this.items = result.items;
+            this.count += result.count;
+            this.loading = false;
+            this.version++;
+        } catch (e) {
+            this.error = true;
+        }
     },
 
-    reload() {
+    async reload() {
         this.initialized = true;
         this.loading = true;
-        this.fetch();
+        await this.fetch();
     },
 };
 

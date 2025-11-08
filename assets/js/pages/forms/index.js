@@ -10,7 +10,7 @@ app.pages.formList = ({
     foo: "Bar",
     path,
     init() {
-        this.fetch()
+        this.fetch();
     },
     async createNew() {
         await app.core.form.submit('form[name="create"]');

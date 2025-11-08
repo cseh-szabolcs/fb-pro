@@ -6,15 +6,15 @@ use App\Constants\Entity\ElementScope;
 use App\Contracts\Entity\EditorScopeInterface;
 use App\Doctrine\EntityListener\ElementListener;
 use App\Doctrine\Type\JsonDocumentType;
-use App\Model\Editor\Data\BaseData;
+use App\Model\Editor\BaseData;
+use App\Repository\Editor\ElementRepository;
 use App\Traits\Entity\UuidAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ElementRepository::class)]
 #[ORM\Table(name: 'editor_elements')]
 #[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
 #[ORM\Index(name: 'scope_idx', columns: ['scope_id'])]

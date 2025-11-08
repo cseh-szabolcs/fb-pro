@@ -29,7 +29,8 @@ class ListController extends BaseController
     #[Route(path: '/fetch', name: 'fetch')]
     public function fetch(FormRepository $formRepository): JsonResponse
     {
-        $list = $formRepository->getList($this->getAuth()->getUser());
+        $user = $this->getAuth()->getUser();
+        $list = $formRepository->getList($user);
 
         return $this->toJson($list);
     }
