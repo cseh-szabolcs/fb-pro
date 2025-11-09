@@ -4,6 +4,8 @@ namespace App\Model\Editor;
 
 use App\Attribute\Doctrine\JsonDocument;
 use App\Model\Editor\Data\DocumentData;
+use App\Model\Editor\Data\PageData;
+use App\Model\Editor\Data\ViewData;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap as SerializerMap;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -13,6 +15,8 @@ abstract class BaseData
 {
     const TYPES = [
         DocumentData::TYPE => DocumentData::class,
+        PageData::TYPE => PageData::class,
+        ViewData::TYPE => ViewData::class,
     ];
 
     const TYPE = 'base';

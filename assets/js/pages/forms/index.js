@@ -23,11 +23,6 @@ app.pages.formList = ({
         return editAction.replace('__UUID__', form.uuid);
     },
     async deleteForm(form) {
-        await fetch(deleteAction.replace('__UUID__', form.uuid), {
-            method: 'DELETE',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        });
+        await this.deleteItem(form, deleteAction.replace('__UUID__', form.uuid), 'uuid');
     }
 }), name);

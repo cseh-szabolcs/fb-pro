@@ -29,8 +29,9 @@ export default {
         }
     },
 
-    async remove(item, path, id = 'id') {
-        app.remove
+    async deleteItem(item, path, id = 'id') {
+        this.items = this.items.filter(i => i[id] !== item[id]);
+        await app.delete(path);
     },
 
     async reload() {

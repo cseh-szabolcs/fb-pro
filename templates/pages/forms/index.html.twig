@@ -23,9 +23,9 @@
                                 <a :href="editForm(form)" class="btn btn-primary">
                                     Bearbeiten
                                 </a>
-                                <a :href="deleteForm(form)" class="btn btn-danger">
+                                <span @click="deleteForm(form)" class="btn btn-danger">
                                     Löschen
-                                </a>
+                                </span>
                             </div>
                         </div>
                     </li>

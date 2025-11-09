@@ -5,6 +5,8 @@ namespace App\Entity\Editor;
 use App\Doctrine\EntityListener\ElementListener;
 use App\Doctrine\Type\JsonDocumentType;
 use App\Entity\Editor\Element\DocumentElement;
+use App\Entity\Editor\Element\PageElement;
+use App\Entity\Editor\Element\ViewElement;
 use App\Model\Editor\BaseData;
 use App\Repository\Editor\ElementRepository;
 use App\Traits\Entity\UuidAwareTrait;
@@ -30,6 +32,8 @@ abstract class BaseElement
 
     const TYPES = [
         DocumentElement::TYPE => DocumentElement::class,
+        PageElement::TYPE => PageElement::class,
+        ViewElement::TYPE => ViewElement::class,
     ];
 
     #[ORM\Id]

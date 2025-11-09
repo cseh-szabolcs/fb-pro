@@ -44,13 +44,15 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?FormVersion $draftVersion = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?FormVersion $publishedVersion = null;
 
-    #[ORM\OneToMany(targetEntity: FormVersion::class, mappedBy: 'form', cascade: ['remove', 'persist', 'refresh', 'detach'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: FormVersion::class, mappedBy: 'form', cascade: ['all'], orphanRemoval: true)]
     #[ORM\OrderBy(['updated' => 'DESC'])]
     private Collection $versions;
 

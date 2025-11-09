@@ -29,11 +29,11 @@ class FormVersion implements UuidAwareInterface, EditorDocumentAwareInterface
     private ?int $id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Form $form;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?DocumentElement $document;
 
     public function __construct(Form $form, DocumentElement $document)

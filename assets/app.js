@@ -45,7 +45,7 @@ export default {
                 ...headers,
             },
             ...options,
-            body: body || undefined,
+            body: body ?? undefined,
         });
     },
     async get(path, options = {}, headers = {}) {
