@@ -75,7 +75,8 @@
             "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "bin/editor/build"
         ],
         "post-update-cmd": [
             "@auto-scripts"
