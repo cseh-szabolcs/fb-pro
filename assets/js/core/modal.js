@@ -1,4 +1,5 @@
 import {Modal} from "bootstrap";
+import app from "../../app.js";
 
 export default {
     close: () => {
@@ -6,6 +7,7 @@ export default {
 
         if (openModalEl) {
             Modal.getOrCreateInstance(openModalEl).hide();
+            app.dispatch('modal:close');
         }
     }
 };

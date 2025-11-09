@@ -30,6 +30,13 @@ export default {
     delay: (callback, ms = undefined) => {
         window.setTimeout(callback, ms);
     },
+    dispatch: (name, data = undefined) => {
+        const event = data
+            ? new CustomEvent(name, {detail: data})
+            : new CustomEvent(name);
+
+        window.dispatchEvent(event);
+    },
     core,
     components: {},
     pages: {},

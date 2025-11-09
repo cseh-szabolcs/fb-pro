@@ -2,7 +2,8 @@
     class="modal fade"
     id="{{ id }}"
     tabindex="-1"
-    @done.window="loading = false"
+    x-on:done.window="loading = false"
+    x-on:modal:close.window="loading = false"
     aria-hidden="true"{{ attributes }}
     {%- if not stateless -%}
         x-data="{

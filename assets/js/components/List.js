@@ -30,7 +30,6 @@ export default {
 
     async reload() {
         this.initialized = true;
-        this.loading = true;
         await this.fetch();
     },
 };

@@ -48,12 +48,11 @@ final class JsonDocumentType extends JsonType
             $model->etag = $etag;
         }
 
-        return json_encode([
+        return json_encode(array_merge([
             '@type' => get_class($model),
             '@groups' => implode(',', $groups),
-            '@data' => json_decode($data, true),
             '@etag' => $etag,
-        ]);
+        ], json_decode($data, true)));
     }
 
     private function deserialize(string $value): object
@@ -62,10 +61,9 @@ final class JsonDocumentType extends JsonType
 
         assert(isset($data['@type']), 'Class name is missing.');
         assert(isset($data['@groups']), 'Groups are missing.');
-        assert(isset($data['@data']), 'Data is missing.');
 
         $model = $this->getSerializer()->deserialize(
-            $data['@data'],
+            $data,
             $data['@type'],
             self::FORMAT,
             ['groups' => explode(',', $data['@groups'])],
