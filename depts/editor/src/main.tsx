@@ -8,3 +8,11 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 )
+
+declare global {
+    interface Window {
+        APP_URL: string;
+        DATA_SRC: string;
+        API_URL: string;
+    }
+}

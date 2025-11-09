@@ -5,12 +5,13 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FormBuilder-Pro Editor</title>
-    <script type="module" crossorigin src="/editor/index.js?v={{ env('APP_EDITOR_VERSION') }}"></script>
-    <link rel="stylesheet" crossorigin href="/editor/index.css?v={{ env('APP_EDITOR_VERSION') }}">
-    <script>
+    <script type="module">
+        window.APP_URL = "{{ env('APP_URL') }}";
         window.DATA_SRC = "{{ dataSrc }}";
         window.API_URL = "{{ '' }}";
     </script>
+    <script type="module" src="/editor/index.js?v={{ env('APP_EDITOR_VERSION') }}"></script>
+    <link rel="stylesheet" href="/editor/index.css?v={{ env('APP_EDITOR_VERSION') }}">
 </head>
 <body>
 <div id="root"></div>

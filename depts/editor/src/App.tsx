@@ -2,10 +2,11 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import 'app/App.css'
-import {Test} from "./Test/Test.tsx";
+import {Test} from "./Test/Test.tsx"
 
 function App() {
   const [count, setCount] = useState(0)
+    console.log("DDDDDD", window, window.APP_URL);
 
   return (
     <>
@@ -19,6 +20,11 @@ function App() {
         </a>
       </div>
       <h1>Haaaalllooooooo!!!!</h1>
+        <code>
+            APP_URL: "{window.APP_URL}"<br />
+            DATA_SRC: "{window.DATA_SRC}"<br />
+            API_URL: "{window.API_URL}"<br />
+        </code>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
