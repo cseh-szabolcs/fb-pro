@@ -17,8 +17,7 @@ class FormsController extends BaseController
     public function index(#[MapEntityUuid] Form $form, RouterInterface $router,): Response
     {
         return $this->render('editor/forms.html.twig', [
-            'type' => 'form',
-            'path' => $router->generate('app_editor_forms_data', ['uuid' => $form->getUuid()->toString()]),
+            'dataSrc' => $router->generate('app_editor_forms_data', ['uuid' => $form->getUuid()->toString()]),
         ]);
     }
 
