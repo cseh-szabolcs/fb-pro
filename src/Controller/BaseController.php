@@ -37,7 +37,7 @@ class BaseController extends AbstractController
         $this->_toJson($groups, $headers, $context, $status);
 
         return $this->json($data, $status, $headers, array_merge(
-            ['groups' => array_merge($groups, ['app'])],
+            ['groups' => count($groups) ? $groups : ['app']],
             $context,
         ));
     }

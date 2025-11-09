@@ -11,7 +11,7 @@ trait UpdatedTrait
     #[ORM\Column]
     private ?DateTimeImmutable $updated = null;
 
-    #[Groups(['app'])]
+    #[Groups(['app', 'editor'])]
     public function getUpdated(): ?DateTimeImmutable
     {
         return $this->updated;

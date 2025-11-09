@@ -5,15 +5,15 @@ namespace App\Model\Editor;
 use App\Attribute\Doctrine\JsonDocument;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[JsonDocument(serializationGroups: ['api'])]
+#[JsonDocument(serializationGroups: ['editor'])]
 abstract class BaseData
 {
     public ?string $etag = null;
 
-    #[Groups(['api'])]
+    #[Groups(['editor'])]
     public ?string $backgroundColor = null;
 
-    #[Groups(['api'])]
+    #[Groups(['editor'])]
     public ?string $textColor = null;
 
     public function __construct(array $data = [])

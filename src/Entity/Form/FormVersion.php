@@ -2,13 +2,14 @@
 
 namespace App\Entity\Form;
 
+use App\Contracts\Entity\EditorDocumentAwareInterface;
+use App\Contracts\Entity\UuidAwareInterface;
 use App\Entity\Editor\Element\DocumentElement;
 use App\Entity\Form;
 use App\Repository\Form\FormVersionRepository;
 use App\Traits\Entity\CreatedTrait;
 use App\Traits\Entity\UpdatedTrait;
 use App\Traits\Entity\UuidAwareTrait;
-use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -16,7 +17,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: FormVersionRepository::class)]
 #[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
 #[ORM\HasLifecycleCallbacks]
-class FormVersion
+class FormVersion implements UuidAwareInterface, EditorDocumentAwareInterface
 {
     use UuidAwareTrait;
     use UpdatedTrait;
@@ -31,12 +32,9 @@ class FormVersion
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Form $form;
 
-    #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $published = null;
-
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?DocumentElement $document = null;
+    private ?DocumentElement $document;
 
     public function __construct(Form $form, DocumentElement $document)
     {
@@ -49,6 +47,7 @@ class FormVersion
         return $this->id;
     }
 
+    #[Groups(['editor'])]
     public function getForm(): ?Form
     {
         return $this->form;
@@ -61,36 +60,10 @@ class FormVersion
         return $this;
     }
 
-    public function isPublished(): bool
-    {
-        return null !== $this->published;
-    }
 
-    #[Groups(['app'])]
-    public function getPublished(): ?DateTimeImmutable
-    {
-        return $this->published;
-    }
-
-    public function publish(): self
-    {
-        if (null === $this->form && $this->id !== $this->form->getDraftVersion()->getId()) {
-            $this->published = new DateTimeImmutable();
-            $this->form->setPublished($this);
-        }
-
-        return $this;
-    }
-
-    public function getDocument(): ?DocumentElement
+    #[Groups(['editor'])]
+    public function getDocumentElement(): DocumentElement
     {
         return $this->document;
-    }
-
-    public function setDocument(DocumentElement $document): static
-    {
-        $this->document = $document;
-
-        return $this;
     }
 }

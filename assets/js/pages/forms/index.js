@@ -1,7 +1,6 @@
 import app from "app";
 import {List} from 'app/components'
 
-
 app.pages.formList = ({
     name,
     path,

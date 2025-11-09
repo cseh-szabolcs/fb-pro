@@ -36,9 +36,11 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Mandate $mandate = null;
 
+    #[Groups(['editor'])]
     #[ORM\Column(length: 255)]
     private ?string $title;
 
+    #[Groups(['editor'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description;
 
@@ -124,11 +126,18 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
         return $this;
     }
 
-    public function isPublished(): bool
+    #[Groups(['editor'])]
+    public function getChangesPublished(): bool
     {
-        return null !== $this->publishedVersion;
+        return $this->draftVersion->getUpdated()->getTimestamp()
+            !== $this->publishedVersion?->getUpdated()->getTimestamp();
     }
 
+    #[Groups(['app'])]
+    public function getPublishedAt(): ?DateTimeInterface
+    {
+        return $this->publishedVersion?->getCreated();
+    }
 
     /** @return  Collection<int, FormVersion> */
     public function getVersions(): Collection

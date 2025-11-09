@@ -4,6 +4,7 @@ namespace App\Entity\Editor;
 
 use App\Doctrine\EntityListener\ElementListener;
 use App\Doctrine\Type\JsonDocumentType;
+use App\Entity\Editor\Element\DocumentElement;
 use App\Model\Editor\BaseData;
 use App\Repository\Editor\ElementRepository;
 use App\Traits\Entity\UuidAwareTrait;
@@ -11,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
@@ -24,8 +26,10 @@ abstract class BaseElement
 {
     use UuidAwareTrait;
 
-    const TYPES = [
+    const TYPE = 'base';
 
+    const TYPES = [
+        DocumentElement::TYPE => DocumentElement::class,
     ];
 
     #[ORM\Id]
@@ -33,6 +37,7 @@ abstract class BaseElement
     #[ORM\Column(type: Types::BIGINT, options: ['unsigned' => true])]
     protected ?int $id = null;
 
+    #[Groups(['editor'])]
     #[ORM\Column(type: JsonDocumentType::NAME)]
     protected ?BaseData $data;
 
@@ -41,6 +46,7 @@ abstract class BaseElement
     protected ?BaseElement $parent = null;
 
     /** @var Collection<int, BaseElement> */
+    #[Groups(['editor'])]
     #[ORM\OneToMany(targetEntity: BaseElement::class, mappedBy: 'parent', cascade: ['persist', 'remove'], orphanRemoval: true)]
     protected Collection $children;
 
@@ -55,6 +61,24 @@ abstract class BaseElement
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    #[Groups(['editor'])]
+    public function getType(): string
+    {
+        return static::TYPE;
+    }
+
+    public function getData(): BaseData
+    {
+        return $this->data;
+    }
+
+    public function setData(BaseData $data): self
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     public function getParent(): BaseElement

@@ -57,7 +57,7 @@
         app.pages.formList({
             name: "formsList",
             path: "{{ path('app_forms_fetch') }}",
-            editAction: "{{ path('app_editor_forms', { uuid: '__UUID__' }) }}",
+            editAction: "{{ path('app_editor_forms_index', { uuid: '__UUID__' }) }}",
         });
     </script>
 {% endblock %}

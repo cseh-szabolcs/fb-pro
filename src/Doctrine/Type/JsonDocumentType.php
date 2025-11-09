@@ -63,7 +63,7 @@ final class JsonDocumentType extends JsonType
         assert(isset($data['@groups']), 'Groups are missing.');
 
         $model = $this->getSerializer()->deserialize(
-            $data,
+            json_encode($data),
             $data['@type'],
             self::FORMAT,
             ['groups' => explode(',', $data['@groups'])],

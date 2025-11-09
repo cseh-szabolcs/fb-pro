@@ -12,7 +12,7 @@ trait UuidAwareTrait
     #[ORM\Column(type: UuidType::NAME, unique: true, index: true)]
     private ?Uuid $uuid = null;
 
-    #[Groups(['app'])]
+    #[Groups(['app', 'editor'])]
     public function getUuid(): Uuid
     {
         return $this->uuid;
