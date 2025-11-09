@@ -2,8 +2,10 @@
 
 namespace App\Controller\Forms;
 
+use App\Attribute\ArgumentResolver\MapEntityUuid;
 use App\Attribute\Request\XhrRequest;
 use App\Controller\BaseController;
+use App\Entity\Form;
 use App\Form\Data\Forms\CreateData;
 use App\Form\Type\Forms\CreateType;
 use App\Manager\FormManager;
@@ -26,6 +28,7 @@ class ListController extends BaseController
         ]);
     }
 
+    #[XhrRequest]
     #[Route(path: '/fetch', name: 'fetch')]
     public function fetch(FormRepository $formRepository): JsonResponse
     {
@@ -49,5 +52,14 @@ class ListController extends BaseController
         }
 
         return $this->toJson($form->getErrors(true));
+    }
+
+    #[XhrRequest]
+    #[Route('/{uuid}', name: 'remove', methods: 'DELETE')]
+    public function remove(#[MapEntityUuid] Form $form, FormManager $formManager): Response
+    {
+        $formManager->remove($form);
+
+        return $this->emptyResponse();
     }
 }

@@ -1,3 +1,4 @@
+import app from "app";
 
 export default {
     path: '',
@@ -12,7 +13,7 @@ export default {
         this.loading = true;
         this.error = false;
 
-        const response = await fetch(this.path, {redirect: 'manual'});
+        const response = await app.get(this.path, {redirect: 'manual'});
         if (response.status === 302 || response.type === 'opaqueredirect') {
             window.location.reload();
         }
@@ -26,6 +27,10 @@ export default {
         } catch (e) {
             this.error = true;
         }
+    },
+
+    async remove(item, path, id = 'id') {
+        app.remove
     },
 
     async reload() {

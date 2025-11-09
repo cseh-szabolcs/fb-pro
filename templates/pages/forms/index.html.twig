@@ -19,9 +19,14 @@
                         <div class="card-body">
                             <h5 class="card-title" x-text="form.title"></h5>
                             <p class="card-text" x-text="form.description"></p>
-                            <a :href="editForm(form)" class="btn btn-primary">
-                                Bearbeiten
-                            </a>
+                            <div class="d-flex gap-2">
+                                <a :href="editForm(form)" class="btn btn-primary">
+                                    Bearbeiten
+                                </a>
+                                <a :href="deleteForm(form)" class="btn btn-danger">
+                                    Löschen
+                                </a>
+                            </div>
                         </div>
                     </li>
                 </template>
@@ -58,6 +63,7 @@
             name: "formsList",
             path: "{{ path('app_forms_fetch') }}",
             editAction: "{{ path('app_editor_forms_index', { uuid: '__UUID__' }) }}",
+            deleteAction: "{{ path('app_forms_remove', { uuid: '__UUID__' }) }}",
         });
     </script>
 {% endblock %}

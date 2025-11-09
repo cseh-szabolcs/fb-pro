@@ -42,6 +42,11 @@ class BaseController extends AbstractController
         ));
     }
 
+    protected function emptyResponse(): Response
+    {
+        return new Response('', Response::HTTP_NO_CONTENT);
+    }
+
     protected function getUser(): ?User
     {
         return $this->getAuth()->getUser();

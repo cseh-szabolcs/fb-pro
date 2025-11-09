@@ -5,6 +5,7 @@ app.pages.formList = ({
     name,
     path,
     editAction,
+    deleteAction,
 }) => app.component(app.extend(List, {
     foo: "Bar",
     path,
@@ -21,4 +22,12 @@ app.pages.formList = ({
     editForm(form) {
         return editAction.replace('__UUID__', form.uuid);
     },
+    async deleteForm(form) {
+        await fetch(deleteAction.replace('__UUID__', form.uuid), {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+    }
 }), name);

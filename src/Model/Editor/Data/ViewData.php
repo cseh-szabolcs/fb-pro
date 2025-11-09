@@ -4,7 +4,7 @@ namespace App\Model\Editor\Data;
 
 use App\Model\Editor\BaseData;
 
-class PageData extends BaseData
+class ViewData extends BaseData
 {
-    const TYPE = 'page';
+    const TYPE = 'view';
 }

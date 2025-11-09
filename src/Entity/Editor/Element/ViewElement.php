@@ -3,17 +3,17 @@
 namespace App\Entity\Editor\Element;
 
 use App\Entity\Editor\BaseElement;
-use App\Model\Editor\Data\PageData;
+use App\Model\Editor\Data\ViewData;
 use App\Repository\Editor\ElementRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
-class PageElement extends BaseElement
+class ViewElement extends BaseElement
 {
-    const TYPE = PageData::TYPE;
+    const TYPE = ViewData::TYPE;
 
-    public function __construct(PageData $data, DocumentElement $parent)
+    public function __construct(ViewData $data, PageElement|ViewElement $parent)
     {
         parent::__construct($data, $parent);
     }
@@ -26,9 +26,8 @@ class PageElement extends BaseElement
         return parent::addChild($child);
     }
 
-    /** @return Collection<int, ViewElement> */
     public function getChildren(): Collection
     {
-        return parent::getChildren();
+        return $this->children;
     }
 }

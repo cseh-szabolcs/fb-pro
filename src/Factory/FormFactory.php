@@ -3,18 +3,18 @@
 namespace App\Factory;
 
 use App\Entity\Editor\Element\DocumentElement;
+use App\Entity\Editor\Element\PageElement;
+use App\Entity\Editor\Element\ViewElement;
 use App\Entity\Form;
 use App\Entity\Form\FormVersion;
 use App\Entity\User;
 use App\Form\Data\Forms\CreateData;
 use App\Model\Editor\Data\DocumentData;
-use App\Repository\FormRepository;
+use App\Model\Editor\Data\PageData;
+use App\Model\Editor\Data\ViewData;
 
 final readonly class FormFactory
 {
-    public function __construct(
-        private FormRepository $formRepository
-    ) {}
 
     public function create(User $owner, CreateData $data): Form
     {
@@ -22,16 +22,23 @@ final readonly class FormFactory
 
         $draftVersion = new FormVersion($form, $this->createDocument());
         $form->setDraftVersion($draftVersion);
-        $this->formRepository->persist($form);
 
         return $form;
     }
 
     private function createDocument(): DocumentElement
     {
-        return new DocumentElement(new DocumentData([
+        $document = new DocumentElement(new DocumentData([
             'backgroundColor' => '#ffffff',
             'textColor' => '#000000',
         ]));
+
+
+        $page = new PageElement(new PageData(), $document);
+        $page->addChild(new ViewElement(new ViewData(), $page));
+
+        $document->addChild($page);
+
+        return $document;
     }
 }

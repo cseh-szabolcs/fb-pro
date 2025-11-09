@@ -11,6 +11,7 @@ window.Alpine = Alpine;
 Alpine.plugin(persist);
 
 export default {
+    start: () => Alpine.start(),
     component(data, name = 'root', start = true) {
         const factory = typeof data !== 'function'
             ? () => data
@@ -26,7 +27,6 @@ export default {
         });
         return result;
     },
-    start: () => Alpine.start(),
     delay: (callback, ms = undefined) => {
         window.setTimeout(callback, ms);
     },
@@ -36,6 +36,26 @@ export default {
             : new CustomEvent(name);
 
         window.dispatchEvent(event);
+    },
+    async fetch(path, method = 'GET', body = null, options = {}, headers = {}) {
+        return fetch(path, {
+            method,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                ...headers,
+            },
+            ...options,
+            body: body || undefined,
+        });
+    },
+    async get(path, options = {}, headers = {}) {
+        return this.fetch(path, 'GET', null, options, headers);
+    },
+    async post(path, body, options = {}, headers = {}) {
+        return this.fetch(path, 'POST', body, options, headers);
+    },
+    async delete(path, options = {}, headers = {}) {
+        return this.fetch(path, 'DELETE', null, options, headers);
     },
     core,
     components: {},

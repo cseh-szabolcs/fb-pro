@@ -6,4 +6,5 @@ use App\Model\Editor\BaseData;
 
 final class DocumentData extends BaseData
 {
+    const TYPE = 'document';
 }

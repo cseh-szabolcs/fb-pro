@@ -36,8 +36,6 @@ services:
       - './depts/editor:/app'
     ports:
       - "8081:8081"
-    environment:
-      VITE_API_URL: http://127.0.0.1:8080/api
 
   nginx:
     container_name: ${COMPOSE_PROJECT_NAME}_nginx
