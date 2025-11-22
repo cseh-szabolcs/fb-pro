@@ -4,13 +4,12 @@ import {Test} from "./Test/Test.tsx"
 import 'app/App.css'
 
 
-function App() {
+export function App() {
 
   return (
     <Provider store={store}>
-        <Test />
+      <Test/>
     </Provider>
   )
 }
 
-export default App

@@ -1,13 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { MainSlice } from "app/store/slice/mainSlice.ts";
-import { ElementSlice } from "app/store/slice/elementSlice.ts";
-import { useDispatch, useSelector, type TypedUseSelectorHook } from "react-redux";
+import {configureStore} from "@reduxjs/toolkit";
+import {MainSlice} from "app/store/slice/mainSlice.ts";
+import {ElementSlice} from "app/store/slice/elementSlice.ts";
+import {type TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 export const store = configureStore({
-    reducer: {
-        main: MainSlice.reducer,
-        element: ElementSlice.reducer,
-    },
+  reducer: {
+    main: MainSlice.reducer,
+    element: ElementSlice.reducer,
+  },
 });
 
 export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
