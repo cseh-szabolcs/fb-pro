@@ -5,7 +5,6 @@ import 'app/App.css'
 
 
 function App() {
-    console.log("DDDDDD", window, window.APP_URL);
 
   return (
     <Provider store={store}>
