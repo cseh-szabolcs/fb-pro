@@ -24,6 +24,7 @@ services:
             - '../src/Constants/'
             - '../src/Contracts/'
             - '../src/DependencyInjection/'
+            #- '../src/Dto/{Output,Input}/'
             - '../src/Entity/'
             - '../src/Event/'
             - '../src/Exception/'

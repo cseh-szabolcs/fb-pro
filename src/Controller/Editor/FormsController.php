@@ -2,7 +2,6 @@
 
 namespace App\Controller\Editor;
 
-use App\Attribute\ArgumentResolver\MapEntity;
 use App\Attribute\ArgumentResolver\MapEntityUuid;
 use App\Controller\BaseController;
 use App\Entity\Form;

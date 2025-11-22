@@ -13,6 +13,5 @@ declare global {
     interface Window {
         APP_URL: string;
         DATA_SRC: string;
-        API_URL: string;
     }
 }

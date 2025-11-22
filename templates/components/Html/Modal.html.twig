@@ -19,9 +19,11 @@
     <div class="modal-dialog modal-dialog-centered{{ size ? ' modal-' ~ size : '' }}">
         <div class="modal-content">
             <div class="modal-header border-bottom-0 mb-4">
-                <h5 class="modal-title">
-                    {{ title }}
-                </h5>
+                {% if title %}
+                    <h5 class="modal-title">
+                        {{ title }}
+                    </h5>
+                {% endif %}
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" :class="{ 'loading-child-btn': loading }">
