@@ -10,6 +10,7 @@ use DateTimeImmutable;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Uid\Uuid;
 
 readonly class UserProvider implements UserProviderInterface
 {
@@ -19,8 +20,12 @@ readonly class UserProvider implements UserProviderInterface
         private UserRepository $userRepository,
     ) {}
 
-    public function loadUserByIdentifier(string $identifier): UserInterface
+    public function loadUserByIdentifier(string|Uuid $identifier): UserInterface
     {
+        if ($identifier instanceof Uuid) {
+            return $this->userRepository->findOneBy(['uuid' => $identifier]);
+        }
+
         if ($user = $this->userRepository->findOneBy(['email' => $identifier])) {
             return $user;
         }

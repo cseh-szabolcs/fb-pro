@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Security;
+namespace App\Security\Authenticator;
 
 use App\App;
+use App\Entity\Token;
 use App\Entity\User;
 use App\Model\Auth\Credentials;
+use App\Security\TokenVerifier;
+use App\Security\UserProvider;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +31,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     public function __construct(
         private readonly UserProvider $userProvider,
         private readonly UserAuthenticatorInterface $userAuthenticator,
+        private readonly TokenVerifier $tokenVerifier,
         private readonly App $app,
     ) {}
 
@@ -58,6 +62,10 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        /** @var User $user */
+        $user = $token->getUser();
+        $this->tokenVerifier->create($user, Token::TYPE_AUTH, null, 60 * 60, true);
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }

@@ -7,8 +7,9 @@
     <title>FormBuilder-Pro Editor</title>
     <script type="module">
         if (import.meta.env.DEV) {
-            window.APP_URL = import.meta.env.VITE_APP_URL ?? '';
-            window.DATA_SRC = import.meta.env.VITE_DATA_SRC ?? '';
+            window.APP_URL = import.meta.env.VITE_APP_URL ?? null;
+            window.DATA_SRC = import.meta.env.VITE_DATA_SRC ?? null;
+            window.APP_AUTHORIZATION = import.meta.env.VITE_APP_AUTHORIZATION ?? null;
         }
     </script>
   </head>

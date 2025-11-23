@@ -6,7 +6,11 @@ use App\Entity\Token;
 use App\Entity\User;
 use App\Traits\Repository\RepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use InvalidArgumentException;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Token>
@@ -18,6 +22,29 @@ class TokenRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Token::class);
+    }
+
+    public function findToken(Uuid|string|null $token): ?Token
+    {
+        try {
+            $uuid = Uuid::fromString($token ?? '');
+
+            $result = $this->createQueryBuilder('t')
+                ->select('t, u')
+                ->join('t.owner', 'u')
+                ->andWhere('t.id = :id')
+                ->setParameter('id', $uuid, UuidType::NAME)
+                ->getQuery()
+                ->getOneOrNullResult()
+            ;
+
+            $this->assertResult($result);
+
+            return $result;
+
+        } catch (InvalidArgumentException) {
+            throw new NoResultException();
+        }
     }
 
     public function countUserToken(User $user, string $type): int

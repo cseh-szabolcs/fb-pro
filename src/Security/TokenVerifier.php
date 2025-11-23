@@ -6,6 +6,7 @@ use App\Entity\Token;
 use App\Entity\User;
 use App\Exception\SecurityException;
 use App\Repository\TokenRepository;
+use Doctrine\ORM\NoResultException;
 
 final readonly class TokenVerifier
 {
@@ -13,24 +14,48 @@ final readonly class TokenVerifier
         private TokenRepository $tokenRepository,
     ) {}
 
-    public function verify(?Token $token = null, bool $keepToken = false): User
+    public function verify(Token|string|null $token = null, bool $keepToken = false): Token
     {
-        if (!$token) {
+        try {
+            $token = $this->tokenRepository->findToken($token);
+        } catch (NoResultException) {
             throw new SecurityException('Token does not exist');
         }
 
-        if ($token->isExpired()) {
+        if ($token->isExpired() && !$token->isRenewable()) {
             throw new SecurityException('Token expired');
         }
 
-        $user = $token->getOwner();
+        if ($token->isRenewable()) {
+            return $token->isExpired()
+                ? $this->tokenRepository->replace($token, Token::class)
+                : $token;
+        }
+
         if ($keepToken) {
             $token->setTtl(null);
         } else {
             $this->tokenRepository->remove($token);
-            $this->tokenRepository->flush();
         }
 
-        return $user;
+        return $token;
+    }
+
+    public function create(
+        User $owner,
+        string $type,
+        ?array $payload = null,
+        ?int $ttl = null,
+        bool $renewable = false,
+    ): Token
+    {
+        if ($existing = $this->tokenRepository->findOneBy(['owner' => $owner, 'type' => $type])) {
+            $this->tokenRepository->remove($existing);
+        }
+
+        $token = new Token($owner, $type, $payload, $ttl, $renewable);
+        $this->tokenRepository->persist($token);
+
+        return $token;
     }
 }

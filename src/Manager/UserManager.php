@@ -37,7 +37,7 @@ final readonly class UserManager
 
     public function confirmAccount(?Token $token = null): User
     {
-        $user = $this->tokenVerifier->verify($token);
+        $user = $this->tokenVerifier->verify($token)->getOwner();
         $user->setRole($user->getMandate()->getOwner()->getId() === $user->getId()
             ? Role::MANDANT
             : Role::USER

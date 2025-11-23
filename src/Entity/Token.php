@@ -16,6 +16,7 @@ class Token implements OwnerAwareInterface
     use OwnerAwareTrait;
     use CreatedTrait;
 
+    const TYPE_AUTH = 'auth';
     const TYPE_REGISTRATION = 'registration';
     const TYPE_PASSWORD_RESET = 'password_reset';
 
@@ -25,15 +26,24 @@ class Token implements OwnerAwareInterface
     #[ORM\Column(nullable: true)]
     private ?array $payload;
 
+    #[ORM\Column]
+    private ?bool $renewable;
+
     #[ORM\Column(nullable: true)]
     private ?int $ttl;
 
-    public function __construct(User $owner, string $type, ?array $payload = null, ?int $ttl = null)
-    {
+    public function __construct(
+        User $owner,
+        string $type,
+        ?array $payload = null,
+        ?int $ttl = null,
+        bool $renewable = false,
+    ) {
         $this->owner = $owner;
         $this->type = $type;
         $this->payload = $payload;
         $this->ttl = $ttl;
+        $this->renewable = $renewable;
         $this->setCreated();
     }
 
@@ -65,13 +75,27 @@ class Token implements OwnerAwareInterface
         return $this;
     }
 
-    public function isExpired(): bool
+    public function isRenewable(): ?bool
     {
-        return null !== $this->ttl && $this->created->getTimestamp() + $this->ttl < time();
+        return $this->renewable;
     }
 
-    public function isOk(): bool
+    public function isExpired(?int $ttl = null): bool
     {
-        return !$this->isExpired();
+        $ttl = $ttl ?? $this->ttl;
+
+        return null !== $ttl && $this->created->getTimestamp() + $ttl < time();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+        $this->created = null;
+        $this->setCreated();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->id;
     }
 }

@@ -44,7 +44,7 @@ final readonly class AuthManager
 
     public function resetPassword(Token $token, string $newPasswort): void
     {
-        $user = $this->tokenVerifier->verify($token);
+        $user = $this->tokenVerifier->verify($token)->getOwner();
         $user->passwordPlain = $newPasswort;
         $this->authProvider->hashUserPassword($user);
         $this->userRepository->flush();

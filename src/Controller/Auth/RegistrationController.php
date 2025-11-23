@@ -10,7 +10,7 @@ use App\Exception\SecurityException;
 use App\Form\Data\Auth\RegistrationData;
 use App\Form\Type\Auth\RegistrationType;
 use App\Manager\UserManager;
-use App\Security\UserAuthenticator;
+use App\Security\Authenticator\UserAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

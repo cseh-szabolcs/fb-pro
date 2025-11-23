@@ -14,10 +14,15 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
             lazy: true
             provider: user_provider
-            custom_authenticator: App\Security\UserAuthenticator
+            entry_point: App\Security\Authenticator\UserAuthenticator
+            custom_authenticator:
+                - App\Security\Authenticator\UserAuthenticator
+                - App\Security\Authenticator\TokenAuthenticator
+
             logout:
                 path: app_auth_logout
                 # where to redirect after logout
@@ -29,6 +34,13 @@ security:
                 path: /
                 always_remember_me: true
                 signature_properties: ['authSignature']
+
+#        api:
+#            pattern: ^/api
+#            stateless: true
+#            provider: user_provider
+#            custom_authenticator:
+#                - App\Security\Authenticator\TokenAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

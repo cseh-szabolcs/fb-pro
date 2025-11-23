@@ -39,6 +39,22 @@ trait RepositoryTrait
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @return T
+     */
+    public function replace(object $entity, string $className): object
+    {
+        assert(is_a($entity, $className, true));
+        $new = clone $entity;
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->persist($new);
+        $this->getEntityManager()->flush();
+
+        return $new;
+    }
+
     public function flush(): void
     {
         $this->getEntityManager()->flush();
