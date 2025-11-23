@@ -2,9 +2,9 @@
 
 namespace App\Model\Editor\Data;
 
-use App\Model\Editor\BaseData;
+use App\Model\Editor\ElementData;
 
-final class DocumentData extends BaseData
+final class DocumentData extends ElementData
 {
     const TYPE = 'document';
 }

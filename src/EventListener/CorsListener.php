@@ -3,6 +3,8 @@
 namespace App\EventListener;
 
 use App\App;
+use App\Constants\Http;
+use App\Security\Authenticator\TokenAuthenticator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +14,26 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final readonly class CorsListener
 {
+    const ALLOWED_HEADERS = [
+        'Cookie',
+        'Authorization',
+        'Origin',
+        'Content-Type',
+        'Content-Length',
+        'Accept',
+        'Access-Control-Request-Method',
+        'X-Requested-With',
+        Http::HEADER_AUTH_TOKEN,
+    ];
+
+    const ALLOWED_METHODS = [
+        'GET',
+        'POST',
+        'PUT',
+        'DELETE',
+        'OPTIONS',
+    ];
+
     private bool $active;
 
     public function __construct(App $app)
@@ -40,10 +62,14 @@ final readonly class CorsListener
             return;
         }
 
+        $methods = implode(', ', self::ALLOWED_METHODS);
+        $headers = implode(', ', self::ALLOWED_HEADERS);
+
         $response = $event->getResponse();
         $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Headers', 'Cookie, Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Content-Length, Accept, Access-Control-Request-Method');
-        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-        $response->headers->set('Allow', 'GET, POST, UPDATE, OPTIONS, PUT, DELETE');
+        $response->headers->set('Access-Control-Allow-Headers', $headers);
+        $response->headers->set('Access-Control-Expose-Headers', $headers);
+        $response->headers->set('Access-Control-Allow-Methods', $methods);
+        $response->headers->set('Allow', $methods);
     }
 }

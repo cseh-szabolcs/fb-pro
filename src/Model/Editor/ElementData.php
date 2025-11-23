@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[SerializerMap(typeProperty: 'type', mapping: self::TYPES)]
 #[JsonDocument(serializationGroups: ['editor'])]
-abstract class BaseData
+abstract class ElementData
 {
     const TYPES = [
         DocumentData::TYPE => DocumentData::class,
@@ -24,10 +24,13 @@ abstract class BaseData
     public ?string $etag = null;
 
     #[Groups(['editor'])]
+    public ?string $role = null;
+
+    #[Groups(['editor'])]
     public ?string $backgroundColor = null;
 
     #[Groups(['editor'])]
-    public ?string $textColor = null;
+    public ?string $color = null;
 
     public function __construct(array $data = [])
     {

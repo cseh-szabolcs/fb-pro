@@ -9,9 +9,16 @@ export async function request(
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': window.APP_AUTHORIZATION ? `Bearer ${window.APP_AUTHORIZATION}` : '0',
+      'Authorization': APP_AUTHORIZATION ? `Bearer ${APP_AUTHORIZATION}` : '0',
     },
   });
 
-  return await response.json();
+  if (response.headers.has(HEADER_NEW_TOKEN)) {
+    APP_AUTHORIZATION = response.headers.get(HEADER_NEW_TOKEN) as string;
+  }
+
+  return response;
 }
+
+let APP_AUTHORIZATION = window.APP_AUTHORIZATION;
+const HEADER_NEW_TOKEN = 'X-Authorization-Token';

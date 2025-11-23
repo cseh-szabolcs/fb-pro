@@ -3,10 +3,11 @@
 namespace App\Serializer\Normalizer;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Contracts\Service\Attribute\Required;
 
-abstract class AbstractObjectNormalizer
+abstract class AbstractObjectNormalizer implements NormalizerInterface
 {
     protected readonly ?ObjectNormalizer $objectNormalizer;
 

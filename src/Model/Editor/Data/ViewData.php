@@ -2,9 +2,9 @@
 
 namespace App\Model\Editor\Data;
 
-use App\Model\Editor\BaseData;
+use App\Model\Editor\ElementData;
 
-class ViewData extends BaseData
+class ViewData extends ElementData
 {
     const TYPE = 'view';
 }

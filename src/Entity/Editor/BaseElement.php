@@ -7,7 +7,7 @@ use App\Doctrine\Type\JsonDocumentType;
 use App\Entity\Editor\Element\DocumentElement;
 use App\Entity\Editor\Element\PageElement;
 use App\Entity\Editor\Element\ViewElement;
-use App\Model\Editor\BaseData;
+use App\Model\Editor\ElementData;
 use App\Repository\Editor\ElementRepository;
 use App\Traits\Entity\UuidAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -43,7 +43,7 @@ abstract class BaseElement
 
     #[Groups(['editor'])]
     #[ORM\Column(type: JsonDocumentType::NAME)]
-    protected ?BaseData $data;
+    protected ?ElementData $data;
 
     #[ORM\ManyToOne(targetEntity: BaseElement::class, inversedBy: 'children')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
@@ -54,7 +54,7 @@ abstract class BaseElement
     #[ORM\OneToMany(targetEntity: BaseElement::class, mappedBy: 'parent', cascade: ['persist', 'remove'], orphanRemoval: true)]
     protected Collection $children;
 
-    public function __construct(BaseData $data, ?BaseElement $parent = null)
+    public function __construct(ElementData $data, ?BaseElement $parent = null)
     {
         $this->uuid = Uuid::v4();
         $this->data = $data;
@@ -73,12 +73,12 @@ abstract class BaseElement
         return static::TYPE;
     }
 
-    public function getData(): BaseData
+    public function getData(): ElementData
     {
         return $this->data;
     }
 
-    public function setData(BaseData $data): self
+    public function setData(ElementData $data): self
     {
         $this->data = $data;
 

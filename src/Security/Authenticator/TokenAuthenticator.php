@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security\Authenticator;
 
 use App\Constants\Env;
+use App\Constants\Http;
 use App\Entity\User;
 use App\Security\TokenVerifier;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -20,11 +21,11 @@ use Symfony\Component\Uid\Exception\InvalidArgumentException;
 
 class TokenAuthenticator extends AbstractAuthenticator
 {
-    const HEADER_REFRESH_TOKEN = 'X-Refresh-Token';
-
     private bool $dev;
 
     private ?string $token = null;
+
+    private ?string $newToken = null;
 
     public function __construct(
         private readonly TokenVerifier $tokenVerifier,
@@ -60,9 +61,9 @@ class TokenAuthenticator extends AbstractAuthenticator
         $token = $this->tokenVerifier->verify($token);
         $current = $token->__toString();
 
-        $this->token = $current !== $this->token
-            ? $current
-            : null;
+        if ($current !== $this->token) {
+            $this->newToken = $current;
+        }
 
         return $token->getOwner();
     }
@@ -70,8 +71,8 @@ class TokenAuthenticator extends AbstractAuthenticator
     #[AsEventListener]
     public function onResponse(ResponseEvent $event): void
     {
-        if (is_string($this->token)) {
-            $event->getResponse()->headers->set(self::HEADER_REFRESH_TOKEN, $this->token);
+        if (is_string($this->newToken)) {
+            $event->getResponse()->headers->set(Http::HEADER_AUTH_TOKEN, $this->newToken);
         }
     }
 

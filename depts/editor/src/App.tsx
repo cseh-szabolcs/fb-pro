@@ -1,13 +1,11 @@
-import {Provider} from "react-redux";
-import {store} from "app/store";
+import {useFetchData} from "app/hooks/useFetchData.ts";
 import {EditorPage} from "app/page/EditorPage.tsx";
 import 'app/App.css'
 
 export function App() {
+  useFetchData();
 
   return (
-    <Provider store={store}>
-      <EditorPage />
-    </Provider>
+    <EditorPage />
   );
 }

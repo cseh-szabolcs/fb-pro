@@ -2,9 +2,9 @@
 
 namespace App\Model\Editor\Data;
 
-use App\Model\Editor\BaseData;
+use App\Model\Editor\ElementData;
 
-class PageData extends BaseData
+class PageData extends ElementData
 {
     const TYPE = 'page';
 }
