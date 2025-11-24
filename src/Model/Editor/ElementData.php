@@ -5,6 +5,8 @@ namespace App\Model\Editor;
 use App\Attribute\Doctrine\JsonDocument;
 use App\Model\Editor\Data\DocumentData;
 use App\Model\Editor\Data\PageData;
+use App\Model\Editor\Data\Props\Corner;
+use App\Model\Editor\Data\Props\Side;
 use App\Model\Editor\Data\ViewData;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap as SerializerMap;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -32,10 +34,30 @@ abstract class ElementData
     #[Groups(['editor'])]
     public ?string $color = null;
 
+    #[Groups(['editor'])]
+    public ?bool $directionRow = null;
+
+    #[Groups(['editor'])]
+    public ?Side $margin = null;
+
+    #[Groups(['editor'])]
+    public ?Side $padding = null;
+
+    #[Groups(['editor'])]
+    public ?Side $borderWidth = null;
+
+    #[Groups(['editor'])]
+    public ?Side $borderColor = null;
+
+    #[Groups(['editor'])]
+    public ?Corner $borderRadius = null;
+
     public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
-            $this->{$key} = $value;
+            if (!property_exists($this, $key)) {
+                $this->{$key} = $value;
+            }
         }
     }
 

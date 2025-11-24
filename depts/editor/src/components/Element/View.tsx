@@ -9,7 +9,7 @@ export function View({element, parent, children}: {
 }) {
 
   return (
-    <div style={{backgroundColor: element.backgroundColor, border: '1px solid lime', margin: 20, padding: 20}}>
+    <div style={{backgroundColor: element.backgroundColor, border: '2px solid limegreen', margin: 20, padding: 20}}>
       <h4>type: {element.type}, parent: {parent?.type}</h4>
       {children}
     </div>

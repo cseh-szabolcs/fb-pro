@@ -2,7 +2,40 @@
 
 }
 
+/* common */
 
+.flex-1 {
+  flex: 1;
+}
+
+/* components */
+
+.app-scroll {
+  overflow-y: auto !important;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    position: relative;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 4px;
+    transition: background-color 320ms ease;
+  }
+
+  &:has(> *:hover)::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+  }
+}
 
 @media (prefers-color-scheme: light) {
   :root {

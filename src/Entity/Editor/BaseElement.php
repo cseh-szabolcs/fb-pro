@@ -49,16 +49,21 @@ abstract class BaseElement
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     protected ?BaseElement $parent = null;
 
+    #[Groups(['editor'])]
+    #[ORM\Column(nullable: false, options: ['unsigned' => true])]
+    private ?int $position;
+
     /** @var Collection<int, BaseElement> */
     #[Groups(['editor'])]
     #[ORM\OneToMany(targetEntity: BaseElement::class, mappedBy: 'parent', cascade: ['persist', 'remove'], orphanRemoval: true)]
     protected Collection $children;
 
-    public function __construct(ElementData $data, ?BaseElement $parent = null)
+    public function __construct(ElementData $data, ?BaseElement $parent = null, int $position = 0)
     {
         $this->uuid = Uuid::v4();
         $this->data = $data;
         $this->parent = $parent;
+        $this->position = $position;
         $this->children = new ArrayCollection();
     }
 
@@ -88,6 +93,18 @@ abstract class BaseElement
     public function getParent(): BaseElement
     {
         return $this->parent;
+    }
+
+    public function getPosition(): int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
+
+        return $this;
     }
 
     public function addChild(BaseElement $child): self

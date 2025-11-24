@@ -20,7 +20,7 @@ export const ElementSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchData.fulfilled, (state, {payload}) => {
-      const normalized = normalizeElements(payload.documentElement, {});
+      const normalized = normalizeElements(payload.document, {});
       for (const [, element] of Object.entries(normalized)) {
         elementAdapter.upsertOne(state, element);
       }

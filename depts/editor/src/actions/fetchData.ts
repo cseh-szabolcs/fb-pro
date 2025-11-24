@@ -17,12 +17,13 @@ export interface ElementData {
   uuid: string;
   type: string;
   role?: string;
+  position: number;
   children: ElementData[];
 }
 
 export interface ResponseData {
   created: string;
-  documentElement: ElementData;
+  document: ElementData;
   form: FormData;
   updated: string;
   uuid: string;

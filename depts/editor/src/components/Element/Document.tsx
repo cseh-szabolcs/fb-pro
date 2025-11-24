@@ -9,7 +9,7 @@ export function Document({element, parent, children}: {
 }) {
 
   return (
-    <div style={{backgroundColor: element.backgroundColor, border: '1px solid red', margin: 20, padding: 20}}>
+    <div className="d-flex flex-column h-100" style={{backgroundColor: element.backgroundColor, border: '2px solid red', padding: 20}}>
       <h4>type: {element.type}, parent: {parent?.type}</h4>
       {children}
     </div>

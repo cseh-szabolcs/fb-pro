@@ -33,7 +33,7 @@ export const MainSlice = createSlice({
       state.uuid = payload.form.uuid;
       state.title = payload.form.title;
       state.description = payload.form.description;
-      state.documentId = payload.documentElement.uuid;
+      state.documentId = payload.document.uuid;
       state.ready = true;
     });
     builder.addCase(fetchData.rejected, (state) => {

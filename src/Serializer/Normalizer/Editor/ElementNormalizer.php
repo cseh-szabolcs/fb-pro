@@ -11,8 +11,9 @@ class ElementNormalizer extends AbstractObjectNormalizer
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $normalized = $this->objectNormalizer->normalize($data, $format, $context);
-        $normalized['data']['type'] = $normalized['type'];
         $normalized['data']['uuid'] = $normalized['uuid'];
+        $normalized['data']['type'] = $normalized['type'];
+        $normalized['data']['position'] = $normalized['position'];
         $normalized['data']['children'] = $normalized['children'];
 
         return $normalized['data'];

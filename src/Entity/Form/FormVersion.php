@@ -60,9 +60,8 @@ class FormVersion implements UuidAwareInterface, EditorDocumentAwareInterface
         return $this;
     }
 
-
     #[Groups(['editor'])]
-    public function getDocumentElement(): DocumentElement
+    public function getDocument(): DocumentElement
     {
         return $this->document;
     }
