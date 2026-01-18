@@ -28,6 +28,6 @@ final class Item
     #[ExposeInTemplate]
     public function getActive(): bool
     {
-        return $this->requestStack->getCurrentRequest()->get('_route') === $this->route;
+        return $this->requestStack->getCurrentRequest()->attributes->get('_route') === $this->route;
     }
 }
