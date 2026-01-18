@@ -33,7 +33,6 @@ final readonly class FormFactory
             'textColor' => '#000000',
         ]));
 
-
         $page = new PageElement(new PageData(), $document);
         $page->addChild(new ViewElement(new ViewData(), $page));
 

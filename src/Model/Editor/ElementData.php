@@ -4,6 +4,7 @@ namespace App\Model\Editor;
 
 use App\Attribute\Doctrine\JsonDocument;
 use App\Model\Editor\Data\DocumentData;
+use App\Model\Editor\Data\FormGroupData;
 use App\Model\Editor\Data\PageData;
 use App\Model\Editor\Data\Props\Corner;
 use App\Model\Editor\Data\Props\Side;
@@ -17,6 +18,7 @@ abstract class ElementData
 {
     const TYPES = [
         DocumentData::TYPE => DocumentData::class,
+        FormGroupData::TYPE => FormGroupData::class,
         PageData::TYPE => PageData::class,
         ViewData::TYPE => ViewData::class,
     ];

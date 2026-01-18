@@ -22,8 +22,9 @@ class PageElement extends BaseElement
     public function addChild(BaseElement $child): self
     {
         assert($child instanceof ViewElement);
+        parent::addChild($child);
 
-        return parent::addChild($child);
+        return $this;
     }
 
     /** @return Collection<int, ViewElement> */

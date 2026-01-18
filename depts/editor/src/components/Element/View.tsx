@@ -1,12 +1,6 @@
-import {type ReactNode} from "react";
-import {type Element as TElement} from "app/types/element";
-import {type View as TView} from "app/types/element";
+import {registerRenderer, type ElementProps} from "app/components/Element/renderer";
 
-export function View({element, parent, children}: {
-  element: TView;
-  parent?: TElement;
-  children?: ReactNode;
-}) {
+registerRenderer(({element, parent, children}: ElementProps) => {
 
   return (
     <div style={{backgroundColor: element.backgroundColor, border: '2px solid limegreen', margin: 20, padding: 20}}>
@@ -14,4 +8,4 @@ export function View({element, parent, children}: {
       {children}
     </div>
   );
-}
+}, 'view');

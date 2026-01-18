@@ -22,8 +22,9 @@ class ViewElement extends BaseElement
     public function addChild(BaseElement $child): self
     {
         assert($child instanceof ViewElement);
+        parent::addChild($child);
 
-        return parent::addChild($child);
+        return $this;
     }
 
     public function getChildren(): Collection

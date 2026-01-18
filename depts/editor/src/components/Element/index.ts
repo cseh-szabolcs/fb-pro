@@ -1,3 +1,3 @@
-export {Document} from './Document'
-export {Page} from './Page'
-export {View} from './View'
+import './Document'
+import './Page'
+import './View'

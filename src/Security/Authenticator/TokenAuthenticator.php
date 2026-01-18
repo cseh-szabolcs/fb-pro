@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Security\Authenticator;
 
+use App\App;
 use App\Constants\Env;
 use App\Constants\Http;
+use App\Entity\Token;
 use App\Entity\User;
 use App\Security\TokenVerifier;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -21,18 +23,14 @@ use Symfony\Component\Uid\Exception\InvalidArgumentException;
 
 class TokenAuthenticator extends AbstractAuthenticator
 {
-    private bool $dev;
-
     private ?string $token = null;
 
     private ?string $newToken = null;
 
     public function __construct(
         private readonly TokenVerifier $tokenVerifier,
-        #[Autowire('%env(APP_ENV)%')] string $env,
-    ) {
-        $this->dev = $env === Env::Dev->value;
-    }
+        private readonly App $app,
+    ) {}
 
     public function supports(Request $request): ?bool
     {
@@ -78,17 +76,13 @@ class TokenAuthenticator extends AbstractAuthenticator
 
     private function getAuthToken(Request $request): ?string
     {
-        if ($token = $request->headers->get('Authorization')) {
-            if (str_starts_with($token, 'Bearer ')) {
-                return substr($token, 7);
+        if ($token = $this->getTokenFromRequest($request)) {
+            if ($this->isDevUserIdToken($token)) {
+                return $this->getTokenFromUserId($token);
             }
         }
 
-        if ($this->dev && $token = $request->query->get('bearer')) {
-            return $token;
-        }
-
-        return null;
+        return $token;
     }
 
     public function onAuthenticationSuccess(Request $request, $token, string $firewallName): ?Response
@@ -100,6 +94,36 @@ class TokenAuthenticator extends AbstractAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         // Für APIs: 401 JSON, für "nur User laden" kannst du auch null zurückgeben
+        return null;
+    }
+
+    private function getTokenFromRequest(Request $request): ?string
+    {
+        if ($this->app->isDev() && $request->query->has('authToken')) {
+            return $request->query->get('authToken');
+        }
+
+        if ($request->headers->has('Authorization')
+            && $token = $request->headers->get('Authorization')
+        ) {
+            if (str_starts_with($token, 'Bearer ')) {
+                return substr($token, 7);
+            }
+        }
+        return null;
+    }
+
+    private function isDevUserIdToken(int|string $token): bool
+    {
+        return is_numeric($token) && $this->app->isDev();
+    }
+
+    private function getTokenFromUserId(int|string $userId): ?string
+    {
+        if ($token = $this->tokenVerifier->getTokenByUser($userId, Token::TYPE_AUTH)) {
+            return $token->__toString();
+        }
+
         return null;
     }
 }

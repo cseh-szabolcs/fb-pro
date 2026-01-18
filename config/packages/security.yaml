@@ -54,6 +54,7 @@ security:
         - { path: "^/admin", roles: ROLE_ADMIN }
         - { path: "^/([a-z]{2})/forms(.*)", roles: ROLE_USER }
         - { path: "^/([a-z]{2})/editor(.*)", roles: ROLE_USER }
+        - { path: "^/api/*", roles: ROLE_USER }
 
     role_hierarchy:
         ROLE_AUTH: []

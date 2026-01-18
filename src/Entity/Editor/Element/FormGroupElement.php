@@ -3,35 +3,33 @@
 namespace App\Entity\Editor\Element;
 
 use App\Entity\Editor\BaseElement;
-use App\Model\Editor\Data\DocumentData;
+use App\Model\Editor\Data\FormGroupData;
+use App\Model\Editor\Data\ViewData;
 use App\Repository\Editor\ElementRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
 
-#[Groups(['editor'])]
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
-class DocumentElement extends BaseElement
+class FormGroupElement extends ViewElement
 {
-    const TYPE = DocumentData::TYPE;
+    const TYPE = FormGroupData::TYPE;
 
-    public function __construct(DocumentData $data)
+    public function __construct(FormGroupData $data, ViewElement $parent)
     {
-        parent::__construct($data);
+        parent::__construct($data, $parent);
     }
 
-    /** @param PageElement $child */
+    /** @param ViewElement $child */
     public function addChild(BaseElement $child): self
     {
-        assert($child instanceof PageElement);
+        assert($child instanceof ViewElement);
         parent::addChild($child);
 
         return $this;
     }
 
-    /** @return Collection<int, PageElement> */
     public function getChildren(): Collection
     {
-        return parent::getChildren();
+        return $this->children;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\App;
 use App\Entity\Token;
 use App\Entity\User;
 use App\Exception\SecurityException;
@@ -12,6 +13,7 @@ final readonly class TokenVerifier
 {
     public function __construct(
         private TokenRepository $tokenRepository,
+        private App $app,
     ) {}
 
     public function verify(Token|string|null $token = null, bool $keepToken = false): Token
@@ -57,5 +59,15 @@ final readonly class TokenVerifier
         $this->tokenRepository->persist($token);
 
         return $token;
+    }
+
+    public function getTokenByUser(string|int $userId, string $type): ?Token
+    {
+        assert($this->app->isDev());
+
+        return $this->tokenRepository->findOneBy([
+            'owner' => (int) $userId,
+            'type' => $type,
+        ]);
     }
 }

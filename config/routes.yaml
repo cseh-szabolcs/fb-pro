@@ -9,6 +9,12 @@ controllers:
     defaults:
         _locale: en
 
+api:
+    resource:
+        path: ../src/Controller/Api/
+        namespace: App\Controller\Api
+    type: attribute
+
 public:
     resource:
         path: ../src/Controller/Web/
