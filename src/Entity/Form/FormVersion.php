@@ -2,7 +2,7 @@
 
 namespace App\Entity\Form;
 
-use App\Contracts\Entity\EditorDocumentAwareInterface;
+use App\Contracts\Entity\Editor\DocumentAwareInterface;
 use App\Contracts\Entity\UuidAwareInterface;
 use App\Entity\Editor\Element\DocumentElement;
 use App\Entity\Form;
@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: FormVersionRepository::class)]
 #[ORM\Index(name: 'uuid_idx', columns: ['uuid'])]
 #[ORM\HasLifecycleCallbacks]
-class FormVersion implements UuidAwareInterface, EditorDocumentAwareInterface
+class FormVersion implements UuidAwareInterface, DocumentAwareInterface
 {
     use UuidAwareTrait;
     use UpdatedTrait;

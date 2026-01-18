@@ -2,8 +2,7 @@
 
 namespace App\Serializer\Normalizer\Editor;
 
-use App\Entity\Editor\BaseElement;
-use App\Model\Editor\ElementData;
+use App\Entity\Editor\Element\BaseElement;
 use App\Serializer\Normalizer\AbstractObjectNormalizer;
 
 class ElementNormalizer extends AbstractObjectNormalizer

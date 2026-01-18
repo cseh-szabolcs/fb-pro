@@ -18,7 +18,7 @@ function Element({element, parent, children}: ElementProps) {
 
   return (
     <div className="alert alert-warning">
-      Missing renderer for type <b>{element.type}</b>
+      Cannot render element form type <b>{element.type}</b>!
     </div>
   );
 }

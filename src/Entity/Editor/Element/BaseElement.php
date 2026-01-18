@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Entity\Editor;
+namespace App\Entity\Editor\Element;
 
 use App\Doctrine\EntityListener\ElementListener;
 use App\Doctrine\Type\JsonDocumentType;
-use App\Entity\Editor\Element\DocumentElement;
-use App\Entity\Editor\Element\PageElement;
-use App\Entity\Editor\Element\ViewElement;
-use App\Model\Editor\ElementData;
+use App\Model\Editor\ElementData\BaseData;
 use App\Repository\Editor\ElementRepository;
 use App\Traits\Entity\UuidAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
@@ -32,6 +30,8 @@ abstract class BaseElement
 
     const TYPES = [
         DocumentElement::TYPE => DocumentElement::class,
+        FieldsetElement::TYPE => FieldsetElement::class,
+        InputElement::TYPE => InputElement::class,
         PageElement::TYPE => PageElement::class,
         ViewElement::TYPE => ViewElement::class,
     ];
@@ -43,7 +43,7 @@ abstract class BaseElement
 
     #[Groups(['editor'])]
     #[ORM\Column(type: JsonDocumentType::NAME)]
-    protected ?ElementData $data;
+    protected ?BaseData $data;
 
     #[ORM\ManyToOne(targetEntity: BaseElement::class, inversedBy: 'children')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
@@ -58,7 +58,7 @@ abstract class BaseElement
     #[ORM\OneToMany(targetEntity: BaseElement::class, mappedBy: 'parent', cascade: ['persist', 'remove'], orphanRemoval: true)]
     protected Collection $children;
 
-    public function __construct(ElementData $data, ?BaseElement $parent = null, int $position = 0)
+    public function __construct(BaseData $data, ?BaseElement $parent = null, int $position = 0)
     {
         $this->uuid = Uuid::v4();
         $this->data = $data;
@@ -78,12 +78,12 @@ abstract class BaseElement
         return static::TYPE;
     }
 
-    public function getData(): ElementData
+    public function getData(): BaseData
     {
         return $this->data;
     }
 
-    public function setData(ElementData $data): self
+    public function setData(BaseData $data): self
     {
         $this->data = $data;
 
@@ -119,5 +119,10 @@ abstract class BaseElement
     public function getChildren(): Collection
     {
         return $this->children;
+    }
+
+    protected function deny(string $message = 'Impossible node.')
+    {
+        throw new LogicException($message);
     }
 }

@@ -2,8 +2,7 @@
 
 namespace App\Entity\Editor\Element;
 
-use App\Entity\Editor\BaseElement;
-use App\Model\Editor\Data\DocumentData;
+use App\Model\Editor\ElementData\DocumentData;
 use App\Repository\Editor\ElementRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

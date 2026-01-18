@@ -2,7 +2,7 @@
 
 namespace App\Factory\Element;
 
-use App\Model\Editor\Data\ViewData;
+use App\Model\Editor\ElementData\ViewData;
 use App\Model\Editor\Fixture\ElementFixture;
 use Generator;
 

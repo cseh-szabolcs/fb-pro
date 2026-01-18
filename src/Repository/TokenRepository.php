@@ -35,8 +35,7 @@ class TokenRepository extends ServiceEntityRepository
                 ->andWhere('t.id = :id')
                 ->setParameter('id', $uuid, UuidType::NAME)
                 ->getQuery()
-                ->getOneOrNullResult()
-            ;
+                ->getOneOrNullResult();
 
             $this->assertResult($result);
 
@@ -45,6 +44,24 @@ class TokenRepository extends ServiceEntityRepository
         } catch (InvalidArgumentException) {
             throw new NoResultException();
         }
+    }
+
+    public function findOneByOwnerAndType(string|int|User $user, string $type): ?Token
+    {
+        if ($user instanceof User) {
+            $user = $user->getId();
+        }
+
+        return $this->createQueryBuilder('t')
+            ->select('t, u')
+            ->join('t.owner', 'u')
+            ->andWhere('t.owner = :user')
+            ->andWhere('t.type = :type')
+            ->setParameter('user', (int) $user)
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
     }
 
     public function countUserToken(User $user, string $type): int
@@ -56,7 +73,6 @@ class TokenRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->setParameter('type', $type)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Entity\Editor\Element;
 
-use App\Entity\Editor\BaseElement;
-use App\Model\Editor\Data\ViewData;
+use App\Contracts\Entity\Editor\ViewElementInterface;
+use App\Model\Editor\ElementData\ViewData;
 use App\Repository\Editor\ElementRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ElementRepository::class)]
-class ViewElement extends BaseElement
+class ViewElement extends BaseElement implements ViewElementInterface
 {
     const TYPE = ViewData::TYPE;
 
@@ -21,7 +21,7 @@ class ViewElement extends BaseElement
     /** @param ViewElement $child */
     public function addChild(BaseElement $child): self
     {
-        assert($child instanceof ViewElement);
+        assert($child instanceof ViewElementInterface);
         parent::addChild($child);
 
         return $this;

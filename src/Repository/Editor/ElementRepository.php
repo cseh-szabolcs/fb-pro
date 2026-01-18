@@ -2,7 +2,7 @@
 
 namespace App\Repository\Editor;
 
-use App\Entity\Editor\BaseElement;
+use App\Entity\Editor\Element\BaseElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

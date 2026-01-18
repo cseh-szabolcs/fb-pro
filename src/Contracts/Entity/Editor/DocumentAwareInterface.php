@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contracts\Entity;
+namespace App\Contracts\Entity\Editor;
 
 use App\Entity\Editor\Element\DocumentElement;
 
-interface EditorDocumentAwareInterface
+interface DocumentAwareInterface
 {
     public function getDocument(): DocumentElement;
 }

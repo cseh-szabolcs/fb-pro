@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Editor\Data\Props;
+namespace App\Model\Editor\ElementData\Props;
 
 use Symfony\Component\Serializer\Attribute\Groups;
 

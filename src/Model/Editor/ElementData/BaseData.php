@@ -1,26 +1,23 @@
 <?php
 
-namespace App\Model\Editor;
+namespace App\Model\Editor\ElementData;
 
 use App\Attribute\Doctrine\JsonDocument;
-use App\Model\Editor\Data\DocumentData;
-use App\Model\Editor\Data\FormGroupData;
-use App\Model\Editor\Data\PageData;
-use App\Model\Editor\Data\Props\Corner;
-use App\Model\Editor\Data\Props\Side;
-use App\Model\Editor\Data\ViewData;
+use App\Model\Editor\ElementData\Props\Corner;
+use App\Model\Editor\ElementData\Props\Side;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap as SerializerMap;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[SerializerMap(typeProperty: 'type', mapping: self::TYPES)]
 #[JsonDocument(serializationGroups: ['editor'])]
-abstract class ElementData
+abstract class BaseData
 {
     const TYPES = [
         DocumentData::TYPE => DocumentData::class,
-        FormGroupData::TYPE => FormGroupData::class,
+        FieldsetData::TYPE => FieldsetData::class,
         PageData::TYPE => PageData::class,
         ViewData::TYPE => ViewData::class,
+        InputData::TYPE=> InputData::class,
     ];
 
     const TYPE = 'base';
@@ -57,7 +54,7 @@ abstract class ElementData
     public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
-            if (!property_exists($this, $key)) {
+            if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
         }

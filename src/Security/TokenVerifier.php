@@ -65,9 +65,6 @@ final readonly class TokenVerifier
     {
         assert($this->app->isDev());
 
-        return $this->tokenRepository->findOneBy([
-            'owner' => (int) $userId,
-            'type' => $type,
-        ]);
+        return $this->tokenRepository->findOneByOwnerAndType($userId, $type);
     }
 }

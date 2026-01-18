@@ -26,7 +26,7 @@ class User implements UserInterface
     private ?int $id = null;
 
     #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Mandate $mandate;
 
     #[ORM\Column(length: 255, unique: true, index: true)]
