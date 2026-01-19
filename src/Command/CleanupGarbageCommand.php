@@ -7,6 +7,7 @@ use IteratorAggregate;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Symfony\Contracts\Service\Attribute\Required;
 
 #[AsCommand(
     name: 'app:garbage:cleanup',
@@ -14,27 +15,30 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 )]
 class CleanupGarbageCommand extends AbstractCommand
 {
-    public function __construct(
-        /** @var CleanupGarbageInterface[] */
-        #[AutowireIterator(tag: 'app.cleanup_garbage.worker')]
-        private readonly IteratorAggregate $workers,
-    ) {
-        parent::__construct();
-    }
+    private readonly IteratorAggregate $workers;
 
-    public function __invoke(
-        // todo: this should work, but it doesn't' :-(
-        // #[AutowireIterator(tag: 'app.cleanup_garbage.worker')] IteratorAggregate $workers,
-    ): int
+    public function __invoke(): int
     {
+        $this->io->title('Nice night for a walk ey, now cleaning right?');
+
         foreach ($this->workers as $worker) {
             if ($worker instanceof CleanupGarbageInterface) {
+                $this->io->write('Execute worker ' . $worker::class . ' ... ');
                 $worker($this->io);
+                $this->io->writeln('<info>done</info>!');
             }
         }
 
-        $this->io->writeln('CleanUp ... :o) ');
+        $this->io->success('Now its clean :)');
 
         return Command::SUCCESS;
+    }
+
+    #[Required]
+    public function setWorkers(
+        #[AutowireIterator(tag: 'app.cleanup_garbage.worker')] $workers,
+    ): void
+    {
+        $this->workers = $workers;
     }
 }
