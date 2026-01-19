@@ -6,18 +6,13 @@ use App\Garbage\CleanupGarbageInterface;
 use IteratorAggregate;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 #[AsCommand(
     name: 'app:garbage:cleanup',
     description: 'Add a short description for your command',
 )]
-class CleanupGarbageCommand extends Command
+class CleanupGarbageCommand extends AbstractCommand
 {
     public function __construct(
         /** @var CleanupGarbageInterface[] */
@@ -27,31 +22,18 @@ class CleanupGarbageCommand extends Command
         parent::__construct();
     }
 
-    protected function configure(): void
+    public function __invoke(
+        // todo: this should work, but it doesn't' :-(
+        // #[AutowireIterator(tag: 'app.cleanup_garbage.worker')] IteratorAggregate $workers,
+    ): int
     {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-
-        $io->title('Garbage cleanup');
-        $io->info(sprintf('Garbage cleanup started. %d workers found.', count($this->workers)));
-
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        foreach ($this->workers as $worker) {
+            if ($worker instanceof CleanupGarbageInterface) {
+                $worker($this->io);
+            }
         }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $this->io->writeln('CleanUp ... :o) ');
 
         return Command::SUCCESS;
     }

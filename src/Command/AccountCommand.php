@@ -2,50 +2,34 @@
 
 namespace App\Command;
 
-use App\App;
 use App\Constants\Lang;
 use App\Constants\Role;
 use App\Entity\Mandate;
 use App\Entity\User;
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:account:create',
     description: 'Create main account.',
 )]
-class AccountCommand extends Command
+class AccountCommand extends AbstractCommand
 {
-    public function __construct(
-        private readonly App $app,
-    ) {
-        parent::__construct();
-    }
-
-    protected function configure(): void
+    public function __invoke(#[Argument('Root password')] string $password): int
     {
-        $this->addArgument('password', InputArgument::REQUIRED, 'Password which will be hashed.');
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-        $io->title('Main account creation');
+        $this->io->title('Main account creation');
 
         $mandate = new Mandate('NanoScript');
         $user = new User($mandate, 'szabolcs.cseh@gmail.com', Role::ROOT, Lang::DE->value);
 
-        $user->passwordPlain = $input->getArgument('password');
+        $user->passwordPlain = $password;
         $this->app->authProvider->hashUserPassword($user);
 
         $this->app->em->persist($user);
         $this->app->em->flush();
 
-        $io->success('Done.');
+        $this->io->success('Done.');
 
         return Command::SUCCESS;
     }
