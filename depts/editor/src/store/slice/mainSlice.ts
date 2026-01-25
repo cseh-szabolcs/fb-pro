@@ -5,8 +5,10 @@ import type {Main} from "app/types/main";
 
 interface MainState extends Main {
   documentId: string;
-  elementsReady: boolean;
-  fixturesReady: boolean;
+  ready: {
+    elements: boolean;
+    fixtures: boolean;
+  };
   error: boolean;
 }
 
@@ -15,8 +17,10 @@ const initialState: MainState = {
   title: '',
   description: '',
   documentId: '',
-  elementsReady: false,
-  fixturesReady: false,
+  ready: {
+    elements: false,
+    fixtures: false,
+  },
   error: false,
 };
 
@@ -37,10 +41,10 @@ export const MainSlice = createSlice({
       state.title = payload.form.title;
       state.description = payload.form.description;
       state.documentId = payload.document.uuid;
-      state.elementsReady = true;
+      state.ready.elements = true;
     });
     builder.addCase(fetchFixtures.fulfilled, (state) => {
-      state.elementsReady = true;
+      state.ready.fixtures = true;
     });
     builder.addCase(fetchElementData.rejected, (state) => {
       state.error = true;
@@ -50,7 +54,7 @@ export const MainSlice = createSlice({
     });
   },
   selectors: {
-    selectIsReady: (state) => state.elementsReady && state.fixturesReady,
+    selectIsReady: (state) => state.ready.elements && state.ready.fixtures,
     selectDocumentId: (state) => state.documentId,
   },
 });
