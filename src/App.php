@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class App
 {
@@ -24,6 +25,7 @@ final readonly class App
         public UrlGeneratorInterface $urlGenerator,
         public EntityManagerInterface $em,
         public LoggerInterface $logger,
+        public TranslatorInterface $translator,
         public string $rootDir,
         public string $env,
     ) {
@@ -69,6 +71,11 @@ final readonly class App
     public function path(string $name, array $params = []): string
     {
         return $this->router->generate($name, $params);
+    }
+
+    public function locale(): string
+    {
+        return $this->translator->getLocale();
     }
 
     public function isDev(): bool

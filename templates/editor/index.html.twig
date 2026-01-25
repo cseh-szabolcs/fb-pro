@@ -7,7 +7,9 @@
     <title>FormBuilder-Pro Editor</title>
     <script type="module">
         window.APP_URL = "{{ env('APP_URL') }}";
-        window.DATA_SRC = "{{ dataSrc }}";
+        window.APP_LOCALE = "{{ locale }}";
+        window.DATA_ID = "{{ id }}";
+        window.DATA_TYPE = "{{ type }}";
     </script>
     <script type="module" src="/editor/index.js?v={{ env('APP_EDITOR_VERSION') }}"></script>
     <link rel="stylesheet" href="/editor/index.css?v={{ env('APP_EDITOR_VERSION') }}">

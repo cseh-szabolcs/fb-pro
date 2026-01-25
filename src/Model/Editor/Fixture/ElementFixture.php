@@ -10,8 +10,8 @@ final readonly class ElementFixture
     public Uuid $uuid;
 
     public function __construct(
-        public BaseData           $data,
-        protected array           $children = [],
+        public BaseData $data,
+        protected array $children = [],
         protected ?ElementFixture $parent = null,
     ) {
         $this->uuid = Uuid::v7();

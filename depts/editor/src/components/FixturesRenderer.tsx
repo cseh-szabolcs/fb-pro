@@ -4,7 +4,7 @@ import {useAppSelector} from "app/store";
 import {Element} from "./Element.tsx";
 import type {Element as TElement} from "app/types/element.ts";
 
-export function ElementRenderer({elementId, parent}: {
+export function FixturesRenderer({elementId, parent}: {
   elementId: string;
   parent?: TElement;
 }) {
@@ -14,7 +14,7 @@ export function ElementRenderer({elementId, parent}: {
   );
 
   const children = useMemo(() => element.children.map(childId => (
-    <ElementRenderer key={childId} elementId={childId} parent={element} />
+    <FixturesRenderer key={childId} elementId={childId} parent={element} />
   )), [element]);
 
   return (

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Factory;
+namespace App\Factory\Editor;
 
 use App\Constants\Editor\InputType;
 use App\Entity\Editor\Element\DocumentElement;

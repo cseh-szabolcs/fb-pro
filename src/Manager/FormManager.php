@@ -5,7 +5,7 @@ namespace App\Manager;
 use App\Entity\Form;
 use App\Event\Form\FormCreatedEvent;
 use App\Event\Form\FormDeletedEvent;
-use App\Factory\FormFactory;
+use App\Factory\Editor\FormFactory;
 use App\Form\Data\Forms\CreateData;
 use App\Repository\FormRepository;
 use App\Security\AuthProvider;

@@ -1,5 +1,5 @@
-import {createEntityAdapter, createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import {fetchData, type ElementData} from "app/actions/fetchData.ts";
+import {createEntityAdapter, createSlice, type PayloadAction,} from "@reduxjs/toolkit";
+import {fetchFixtures, type FixturesData} from "app/actions/fetchFixtures.ts";
 import type {Element} from "app/types/element.ts";
 
 const elementAdapter = createEntityAdapter<Element, string>({
@@ -8,8 +8,8 @@ const elementAdapter = createEntityAdapter<Element, string>({
 
 const elementSelector = elementAdapter.getSelectors();
 
-export const ElementSlice = createSlice({
-  name: 'element',
+export const FixtureSlice = createSlice({
+  name: 'fixtures',
   initialState: elementAdapter.getInitialState(),
   reducers: {
     addElement: elementAdapter.addOne,
@@ -19,8 +19,8 @@ export const ElementSlice = createSlice({
     removeElement: elementAdapter.removeOne,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchData.fulfilled, (state, {payload}) => {
-      const normalized = normalizeElements(payload.document, {});
+    builder.addCase(fetchFixtures.fulfilled, (state, {payload}) => {
+      const normalized = normalizeElements(payload, {});
       for (const [, element] of Object.entries(normalized)) {
         elementAdapter.upsertOne(state, element);
       }
@@ -35,7 +35,7 @@ export const ElementSlice = createSlice({
   },
 });
 
-function normalizeElements(current: ElementData, state: Record<string, Element>) {
+function normalizeElements(current: FixturesData, state: Record<string, Element>) {
   state[current.uuid] = {
     ...current,
     children: current.children.map(child => child.uuid),
@@ -54,4 +54,4 @@ export const {
   selectIds,
   selectEntities,
   selectTotal,
-} = ElementSlice.selectors;
+} = FixtureSlice.selectors;

@@ -7,9 +7,11 @@
     <title>FormBuilder-Pro Editor</title>
     <script type="module">
         if (import.meta.env.DEV) {
-            window.APP_URL = import.meta.env.VITE_APP_URL ?? null;
-            window.DATA_SRC = import.meta.env.VITE_DATA_SRC ?? null;
-            window.APP_AUTHORIZATION = import.meta.env.VITE_APP_AUTHORIZATION ?? null;
+          window.APP_URL = import.meta.env.VITE_APP_URL ?? null;
+          window.APP_LOCALE = import.meta.env.VITE_APP_LOCALE ?? null;
+          window.DATA_ID = import.meta.env.VITE_DATA_ID ?? null;
+          window.DATA_TYPE = import.meta.env.VITE_DATA_TYPE ?? null;
+          window.AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN ?? null;
         }
     </script>
   </head>

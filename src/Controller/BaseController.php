@@ -5,18 +5,21 @@ namespace App\Controller;
 use App\Contracts\ToArrayInterface;
 use App\Entity\User;
 use App\Security\AuthProvider;
+use App\Traits\Service\AppAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class BaseController extends AbstractController
 {
     use TargetPathTrait;
+    use AppAwareTrait;
 
     public function newResponse(int $status = Response::HTTP_NO_CONTENT, string $content = ''): Response
     {
@@ -40,6 +43,11 @@ class BaseController extends AbstractController
             ['groups' => count($groups) ? $groups : ['app']],
             $context,
         ));
+    }
+
+    protected function notFound(): Response
+    {
+        return new Response('', Response::HTTP_NOT_FOUND);
     }
 
     protected function emptyResponse(): Response

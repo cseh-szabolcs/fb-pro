@@ -2,15 +2,36 @@
 
 namespace App\Controller\Editor;
 
+use App\Contracts\Editor\FixtureFactoryInterface;
 use App\Controller\BaseController;
-use App\Factory\FixturesFactory;
+use App\Factory\Editor\FormFixturesFactory;
+use InvalidArgumentException;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/editor/fixtures', name: 'app_editor_fixtures')]
+#[Route(path: '/editor/{type}/fixtures', name: 'app_editor_fixtures')]
 class FixturesController extends BaseController
 {
-    public function __invoke(FixturesFactory $fixturesFactory): array
+    public function __construct(
+        private readonly FormFixturesFactory $formFixturesFactory,
+    )
+    {}
+
+    public function __invoke(string $type, FormFixturesFactory $fixturesFactory): array
     {
-        return $fixturesFactory->create();
+        try {
+            return $this->getFactory($type)->create();
+        } catch (InvalidArgumentException) {
+            throw $this->createNotFoundException();
+        }
+    }
+
+    private function getFactory(string $type): FixtureFactoryInterface
+    {
+        return match ($type) {
+            'form' => $this->formFixturesFactory,
+            default => throw new InvalidArgumentException(),
+        };
     }
 }

@@ -9,16 +9,18 @@ export async function request(
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': APP_AUTHORIZATION ? `Bearer ${APP_AUTHORIZATION}` : '0',
+      'Authorization': AUTH_TOKEN
+        ? `Bearer ${AUTH_TOKEN}`
+        : '0',
     },
   });
 
   if (response.headers.has(HEADER_NEW_TOKEN)) {
-    APP_AUTHORIZATION = response.headers.get(HEADER_NEW_TOKEN) as string;
+    AUTH_TOKEN = response.headers.get(HEADER_NEW_TOKEN) as string;
   }
 
   return response;
 }
 
-let APP_AUTHORIZATION = window.APP_AUTHORIZATION;
+let AUTH_TOKEN = window.AUTH_TOKEN;
 const HEADER_NEW_TOKEN = 'X-Authorization-Token';

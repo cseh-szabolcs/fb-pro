@@ -5,14 +5,14 @@ namespace App\Model\Editor\ElementData;
 use App\Attribute\Doctrine\JsonDocument;
 use App\Model\Editor\ElementData\Props\Corner;
 use App\Model\Editor\ElementData\Props\Side;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap as SerializerMap;
+use Symfony\Component\Serializer\Attribute\DiscriminatorMap;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[SerializerMap(typeProperty: 'type', mapping: self::TYPES)]
+#[DiscriminatorMap(typeProperty: 'type', mapping: self::TYPES)]
 #[JsonDocument(serializationGroups: ['editor'])]
 abstract class BaseData
 {
-    const TYPES = [
+    const array TYPES = [
         DocumentData::TYPE => DocumentData::class,
         FieldsetData::TYPE => FieldsetData::class,
         PageData::TYPE => PageData::class,

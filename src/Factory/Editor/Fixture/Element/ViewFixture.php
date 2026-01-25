@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Factory\Element;
+namespace App\Factory\Editor\Fixture\Element;
 
 use App\Model\Editor\ElementData\ViewData;
 use App\Model\Editor\Fixture\ElementFixture;
 use Generator;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-class ViewFactory extends AbstractElementFactory
+#[AutoconfigureTag(name: 'app.fixture.editor.form')]
+class ViewFixture extends AbstractElementFixture
 {
     public function __invoke(): Generator
     {
