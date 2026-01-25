@@ -4,5 +4,5 @@ namespace App\Contracts;
 
 interface OutputExtensionInterface
 {
-    public static function supports(object $subject, array $context = []): bool;
+    public static function supports(object $data, array $context = []): bool;
 }

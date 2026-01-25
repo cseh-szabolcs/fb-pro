@@ -24,6 +24,6 @@ class FormController extends BaseController
     #[Route(path: '/data', name: 'data', methods: ['GET'])]
     public function data(#[MapEntityUuid] Form $form): Response
     {
-        return $this->toJson($form->getDraftVersion(), ['editor']);
+        return $this->toJson($form->getDraftVersion(), ['editor', 'editor-get']);
     }
 }

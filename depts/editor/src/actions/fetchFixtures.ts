@@ -1,8 +1,10 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import xhr from "app/xhr";
 
+const FIXTURES_PATH = `/${window.APP_LOCALE}/editor/fixtures/${window.DATA_TYPE}`;
+
 export const fetchFixtures = createAsyncThunk('fetchFixtures', async () => {
-  const response = await xhr.get(`/${window.APP_LOCALE}/editor/fixtures/form`);
+  const response = await xhr.get(FIXTURES_PATH);
 
   return await response.json() as FixturesData;
 });

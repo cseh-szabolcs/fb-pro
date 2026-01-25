@@ -2,8 +2,10 @@
 
 namespace App\Serializer\Normalizer\Editor;
 
+use App\Contracts\Editor\ElementDataAwareInterface;
 use App\Contracts\OutputExtensionInterface;
 use App\Entity\Editor\Element\BaseElement;
+use App\Model\Editor\Fixture\FixtureElement;
 use App\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
@@ -17,6 +19,7 @@ final class ElementNormalizer extends AbstractObjectNormalizer
 
     public function normalize(mixed $data, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
+        /** @var BaseElement $data */
         $normalized = $this->objectNormalizer->normalize($data, $format, $context);
         $normalized['data']['uuid'] = $normalized['uuid'];
         $normalized['data']['type'] = $normalized['type'];
@@ -25,7 +28,7 @@ final class ElementNormalizer extends AbstractObjectNormalizer
 
         /** @var OutputExtensionInterface $extension */
         foreach ($this->extensions as $extension) {
-            if ($extension::supports($data, $context)) {
+            if ($extension::supports($data->getData(), $context)) {
                 $normalized['data'] = [
                     ...$normalized['data'],
                     ...$this->objectNormalizer->normalize($extension, $format, $context),
@@ -38,11 +41,14 @@ final class ElementNormalizer extends AbstractObjectNormalizer
 
     public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
-        return $data instanceof BaseElement;
+        return $data instanceof ElementDataAwareInterface;
     }
 
     public function getSupportedTypes(?string $format): array
     {
-        return [BaseElement::class => true];
+        return [
+            BaseElement::class => true,
+            FixtureElement::class => true,
+        ];
     }
 }

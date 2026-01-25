@@ -6,11 +6,10 @@ use App\Contracts\Editor\FixtureFactoryInterface;
 use App\Controller\BaseController;
 use App\Factory\Editor\FormFixturesFactory;
 use InvalidArgumentException;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/editor/{type}/fixtures', name: 'app_editor_fixtures')]
+#[Route(path: '/editor/fixtures/{type}', name: 'app_editor_fixtures')]
 class FixturesController extends BaseController
 {
     public function __construct(
@@ -18,10 +17,13 @@ class FixturesController extends BaseController
     )
     {}
 
-    public function __invoke(string $type, FormFixturesFactory $fixturesFactory): array
+    public function __invoke(string $type, FormFixturesFactory $fixturesFactory): JsonResponse
     {
         try {
-            return $this->getFactory($type)->create();
+            $data = $this->getFactory($type)->create();
+
+            return $this->toJson($data, ['fixture', 'editor', 'editor-get']);
+
         } catch (InvalidArgumentException) {
             throw $this->createNotFoundException();
         }

@@ -3,7 +3,7 @@
 namespace App\Factory\Editor\Fixture\Element;
 
 use App\Model\Editor\ElementData\ViewData;
-use App\Model\Editor\Fixture\ElementFixture;
+use App\Model\Editor\Fixture\FixtureElement;
 use Generator;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
@@ -12,7 +12,7 @@ class ViewFixture extends AbstractElementFixture
 {
     public function __invoke(): Generator
     {
-        yield new ElementFixture(
+        yield new FixtureElement(
             data: new ViewData(),
         );
     }

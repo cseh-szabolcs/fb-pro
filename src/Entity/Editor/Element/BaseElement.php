@@ -2,6 +2,7 @@
 
 namespace App\Entity\Editor\Element;
 
+use App\Contracts\Editor\ElementDataAwareInterface;
 use App\Doctrine\EntityListener\ElementListener;
 use App\Doctrine\Type\JsonDocumentType;
 use App\Model\Editor\ElementData\BaseData;
@@ -22,7 +23,7 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(BaseElement::TYPES)]
 #[ORM\EntityListeners(value: [ElementListener::class])]
-abstract class BaseElement
+abstract class BaseElement implements ElementDataAwareInterface
 {
     use UuidAwareTrait;
 
