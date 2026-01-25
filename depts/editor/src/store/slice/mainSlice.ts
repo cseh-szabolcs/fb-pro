@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {fetchData} from "app/actions/fetchData";
+import {fetchElementData} from "app/actions/fetchElementData.ts";
 import type {Main} from "app/types/main";
 
 interface MainState extends Main {
@@ -29,14 +29,14 @@ export const MainSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchData.fulfilled, (state, {payload}) => {
+    builder.addCase(fetchElementData.fulfilled, (state, {payload}) => {
       state.uuid = payload.form.uuid;
       state.title = payload.form.title;
       state.description = payload.form.description;
       state.documentId = payload.document.uuid;
       state.ready = true;
     });
-    builder.addCase(fetchData.rejected, (state) => {
+    builder.addCase(fetchElementData.rejected, (state) => {
       state.error = true;
     });
   },

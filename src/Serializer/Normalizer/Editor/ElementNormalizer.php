@@ -26,6 +26,10 @@ final class ElementNormalizer extends AbstractObjectNormalizer
         $normalized['data']['position'] = $normalized['position'];
         $normalized['data']['children'] = $normalized['children'];
 
+        if ($data instanceof FixtureElement) {
+            $normalized['data']['fixtureData'] = $normalized['fixtureData'];
+        }
+
         /** @var OutputExtensionInterface $extension */
         foreach ($this->extensions as $extension) {
             if ($extension::supports($data->getData(), $context)) {

@@ -3,7 +3,7 @@ import xhr from "app/xhr";
 
 const DATA_PATH = `/${window.APP_LOCALE}/editor/${window.DATA_TYPE}/${window.DATA_ID}/data`;
 
-export const fetchData = createAsyncThunk('fetchData', async () => {
+export const fetchElementData = createAsyncThunk('fetchData', async () => {
   const response = await xhr.get(DATA_PATH);
 
   return await response.json() as ResponseData;

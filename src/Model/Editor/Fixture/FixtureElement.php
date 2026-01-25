@@ -7,22 +7,16 @@ use App\Model\Editor\ElementData\BaseData;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
+#[Groups(['fixture'])]
 final readonly class FixtureElement implements ElementDataAwareInterface
 {
-    #[Groups(['fixture'])]
     public Uuid $uuid;
 
     public function __construct(
-        #[Groups(['fixture'])]
         public BaseData $data,
-
-        #[Groups(['fixture'])]
+        public FixtureData $fixtureData,
         public int $position = 0,
-
-        #[Groups(['fixture'])]
         public array $children = [],
-
-        #[Groups(['fixture'])]
         protected ?FixtureElement $parent = null,
     ) {
         $this->uuid = Uuid::v7();

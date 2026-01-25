@@ -1,6 +1,6 @@
 import {useAppDispatch} from "app/store";
 import {useEffect} from "react";
-import {fetchData} from "app/actions/fetchData.ts";
+import {fetchElementData} from "app/actions/fetchElementData.ts";
 import {fetchFixtures} from "app/actions/fetchFixtures.ts";
 
 export function useFetchData() {
@@ -8,7 +8,7 @@ export function useFetchData() {
 
   useEffect(() => {
     if (!initialized) {
-      dispatch(fetchData());
+      dispatch(fetchElementData());
       dispatch(fetchFixtures());
       initialized = true;
     }

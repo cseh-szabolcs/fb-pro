@@ -13,7 +13,10 @@ export const FixtureSlice = createSlice({
   initialState: elementAdapter.getInitialState(),
   reducers: {
     addElement: elementAdapter.addOne,
-    updateElement: (state, action: PayloadAction<{uuid: string; changes: Partial<Element>}>) => {
+    updateElement: (state, action: PayloadAction<{
+      uuid: string;
+      changes: Partial<Element>;
+    }>) => {
       elementAdapter.updateOne(state, { id: action.payload.uuid, changes: action.payload.changes });
     },
     removeElement: elementAdapter.removeOne,

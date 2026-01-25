@@ -1,5 +1,5 @@
 import {createEntityAdapter, createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import {fetchData, type ElementData} from "app/actions/fetchData.ts";
+import {fetchElementData, type ElementData} from "app/actions/fetchElementData.ts";
 import type {Element} from "app/types/element.ts";
 
 const elementAdapter = createEntityAdapter<Element, string>({
@@ -13,13 +13,16 @@ export const ElementSlice = createSlice({
   initialState: elementAdapter.getInitialState(),
   reducers: {
     addElement: elementAdapter.addOne,
-    updateElement: (state, action: PayloadAction<{uuid: string; changes: Partial<Element>}>) => {
+    updateElement: (state, action: PayloadAction<{
+      uuid: string;
+      changes: Partial<Element>;
+    }>) => {
       elementAdapter.updateOne(state, { id: action.payload.uuid, changes: action.payload.changes });
     },
     removeElement: elementAdapter.removeOne,
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchData.fulfilled, (state, {payload}) => {
+    builder.addCase(fetchElementData.fulfilled, (state, {payload}) => {
       const normalized = normalizeElements(payload.document, {});
       for (const [, element] of Object.entries(normalized)) {
         elementAdapter.upsertOne(state, element);
