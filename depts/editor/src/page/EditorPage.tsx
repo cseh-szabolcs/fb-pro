@@ -10,7 +10,7 @@ export function EditorPage() {
 
   return (
     <div className="d-flex" style={{height: '100vh'}}>
-      <FixturesRenderer elementId={document.children[0]} />
+      <FixturesRenderer />
       <div className="d-flex flex-column flex-1 h-100" style={{backgroundColor: '#dedede'}}>
         <Header />
         <Editor>

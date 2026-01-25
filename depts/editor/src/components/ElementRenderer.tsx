@@ -14,10 +14,18 @@ export function ElementRenderer({elementId, parent}: {
   );
 
   const children = useMemo(() => element.children.map(childId => (
-    <ElementRenderer key={childId} elementId={childId} parent={element} />
+    <ElementRenderer
+      key={childId}
+      elementId={childId}
+      parent={element}
+    />
   )), [element]);
 
   return (
-    <Element element={element} parent={parent} children={children} />
+    <Element
+      element={element}
+      parent={parent}
+      children={children}
+    />
   );
 }

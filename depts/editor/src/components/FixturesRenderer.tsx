@@ -1,11 +1,12 @@
 import {useMemo} from "react";
-import {selectById} from "app/store/slice/elementSlice.ts";
+import {selectById} from "app/store/slice/fixtureSlice.ts";
 import {useAppSelector} from "app/store";
-import {Element} from "./Element.tsx";
+import {Panel} from "app/components/Fixtures/Panel.tsx";
 import type {Element as TElement} from "app/types/element.ts";
+import {FixtureElement} from "app/components/Fixtures/FixtureElement.tsx";
 
-export function FixturesRenderer({elementId, parent}: {
-  elementId: string;
+export function FixturesRenderer({elementId = 'root', parent}: {
+  elementId?: string;
   parent?: TElement;
 }) {
 
@@ -17,7 +18,17 @@ export function FixturesRenderer({elementId, parent}: {
     <FixturesRenderer key={childId} elementId={childId} parent={element} />
   )), [element]);
 
+  if (elementId === 'root') {
+    return (
+        <Panel>{children}</Panel>
+    );
+  }
+
   return (
-    <Element element={element} parent={parent} children={children} />
+    <FixtureElement
+      element={element}
+      parent={parent}
+      children={children}
+    />
   );
 }

@@ -1,10 +1,9 @@
 
-export interface Element {
+interface ElementData {
   uuid: string;
   type: string;
   role?: string;
   position: number;
-  children: string[];
   backgroundColor?: string;
   color?: string;
   directionRow?: boolean;
@@ -13,6 +12,18 @@ export interface Element {
   borderWidth?: Side;
   borderColor?: Side;
   borderRadius?: Corner;
+  supportedTypes?: string[];
+}
+
+// element in editor (frontend)
+export interface Element extends ElementData {
+  children: string[];
+}
+
+// element from api (backend)
+export interface ResponseElement extends ElementData {
+  parent?: ResponseElement;
+  children: ResponseElement[];
 }
 
 export interface Document extends Element {
