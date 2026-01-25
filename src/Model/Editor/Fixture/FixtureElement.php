@@ -14,10 +14,10 @@ final readonly class FixtureElement implements ElementDataAwareInterface
 
     public function __construct(
         public BaseData $data,
-        public FixtureData $fixtureData,
         public int $position = 0,
         public array $children = [],
         protected ?FixtureElement $parent = null,
+        public ?FixtureData $fixtureData = null,
     ) {
         $this->uuid = Uuid::v7();
     }

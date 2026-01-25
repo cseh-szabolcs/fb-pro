@@ -15,6 +15,11 @@ class ViewFixture extends AbstractElementFixture
     {
         yield new FixtureElement(
             data: new ViewData(),
+            children: [
+                new FixtureElement(
+                    data: new ViewData(),
+                ),
+            ],
             fixtureData: new FixtureData(
                 name: 'View',
                 description: 'View-Element',

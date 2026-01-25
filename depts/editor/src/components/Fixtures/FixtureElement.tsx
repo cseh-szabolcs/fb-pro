@@ -3,11 +3,18 @@ import {type ElementProps} from "app/components/Element/renderer.ts";
 import type {FixtureData, FixtureElement as TFixtureElement} from "app/types/fixture.ts";
 
 export function FixtureElement(props: ElementProps) {
+  const fixtureData = (props.element as TFixtureElement).fixtureData;
+
+  if (!fixtureData) {
+    return (
+      <Element {...props} />
+    );
+  }
 
   return (
     <div style={{border: "4px solid orange", background: 'yellow', margin: 10}}>
       <Element {...props} />
-      <Data {...(props.element as TFixtureElement).fixtureData} />
+      <Data {...fixtureData} />
     </div>
   );
 }
