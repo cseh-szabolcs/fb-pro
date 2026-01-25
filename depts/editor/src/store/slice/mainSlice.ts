@@ -1,10 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {fetchElementData} from "app/actions/fetchElementData.ts";
+import {fetchFixtures} from "app/actions/fetchFixtures.ts";
 import type {Main} from "app/types/main";
 
 interface MainState extends Main {
   documentId: string;
-  ready: boolean;
+  elementsReady: boolean;
+  fixturesReady: boolean;
   error: boolean;
 }
 
@@ -13,7 +15,8 @@ const initialState: MainState = {
   title: '',
   description: '',
   documentId: '',
-  ready: false,
+  elementsReady: false,
+  fixturesReady: false,
   error: false,
 };
 
@@ -34,19 +37,25 @@ export const MainSlice = createSlice({
       state.title = payload.form.title;
       state.description = payload.form.description;
       state.documentId = payload.document.uuid;
-      state.ready = true;
+      state.elementsReady = true;
+    });
+    builder.addCase(fetchFixtures.fulfilled, (state) => {
+      state.elementsReady = true;
     });
     builder.addCase(fetchElementData.rejected, (state) => {
       state.error = true;
     });
+    builder.addCase(fetchFixtures.rejected, (state) => {
+      state.error = true;
+    });
   },
   selectors: {
-    selectReady: (state) => state.ready,
+    selectIsReady: (state) => state.elementsReady && state.fixturesReady,
     selectDocumentId: (state) => state.documentId,
   },
 });
 
 export const {
-  selectReady,
+  selectIsReady,
   selectDocumentId,
 } = MainSlice.selectors;
