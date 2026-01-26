@@ -1,5 +1,5 @@
-import {Element} from "app/components/Element.tsx";
-import {type ElementProps} from "app/components/Element/renderer.ts";
+import {Element} from "app/components/Element/Element.tsx";
+import {type ElementProps} from "app/registry/elements.ts";
 import type {FixtureData, FixtureElement as TFixtureElement} from "app/types/fixture.ts";
 
 export function FixtureElement(props: ElementProps) {

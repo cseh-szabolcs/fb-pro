@@ -9,6 +9,6 @@ export type ElementProps = {
 
 export const elements: Record<string, FC<ElementProps>> = {};
 
-export function registerRenderer(component: FC<ElementProps>, type: string) {
+export function registerElement(component: FC<ElementProps>, type: string) {
   elements[type] = component;
 }
