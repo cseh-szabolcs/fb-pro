@@ -4,7 +4,7 @@
 
 Call on the machine (not docker):
 ```
-./bin/editor/build
+./bin/editor-build
 ```
 
 

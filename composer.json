@@ -76,7 +76,7 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "bin/editor/build"
+          "bin/editor/build-editor"
         ],
         "post-update-cmd": [
             "@auto-scripts"
