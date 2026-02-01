@@ -1,6 +1,6 @@
 import {elements, type ElementProps} from "app/registry/elements.ts";
+import {ElementContext} from "./ElementContext.tsx";
 import './index.ts';
-import {ElementContext} from "app/components/Element/ElementContext.tsx";
 
 export function Element({element, parent, children}: ElementProps) {
   if (elements[element.type]) {

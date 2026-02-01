@@ -1,5 +1,6 @@
 import {Element} from "app/components/Element/Element.tsx";
-import {type ElementProps} from "app/registry/elements.ts";
+import {Draggable} from "app/ui/Dnd";
+import type {ElementProps} from "app/registry/elements.ts";
 import type {FixtureData, FixtureElement as TFixtureElement} from "app/types/fixture.ts";
 
 export function FixtureElement(props: ElementProps) {
@@ -12,10 +13,12 @@ export function FixtureElement(props: ElementProps) {
   }
 
   return (
-    <div style={{border: "4px solid orange", background: 'yellow', margin: 10}}>
-      <Element {...props} />
-      <Data {...fixtureData} />
-    </div>
+    <Draggable id={`${props.element.uuid}-draggable`}>
+      <div style={{border: "4px solid orange", background: 'yellow', margin: 10}}>
+        <Element {...props} />
+        <Data {...fixtureData} />
+      </div>
+    </Draggable>
   );
 }
 
