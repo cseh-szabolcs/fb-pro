@@ -1,8 +1,9 @@
 import {createEditor, type Descendant} from "slate";
 import {withHistory} from "slate-history";
-import {Editable, Slate, withReact} from "slate-react";
-import {useMemo, useState} from "react";
+import {Editable, type RenderLeafProps, Slate, withReact} from "slate-react";
+import {useCallback, useMemo, useState} from "react";
 import "app/types/editor.ts";
+import {Toolbar} from "app/components/Editor/Toolbar/Toolbar.tsx";
 
 export function Editor() {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -19,12 +20,31 @@ export function Editor() {
     console.log("Editor-State", value);
   };
 
+  const renderLeaf = useCallback(({ attributes, children, leaf }: RenderLeafProps) => {
+    let style: React.CSSProperties = {};
+
+    if (leaf.bold)   style.fontWeight = 'bold';
+    if (leaf.italic) style.fontStyle  = 'italic';
+    if (leaf.underline) style.textDecoration = 'underline';
+
+    return (
+      <span style={style} {...attributes}>{children}</span>
+    );
+  }, []);
+
   return (
-    <Slate editor={editor} initialValue={value} onChange={handleChange}>
-      <Editable
-        placeholder="Tippe etwas..."
-        style={{ minHeight: 200, border: '4px solid limegreen', padding: 8 }}
-      />
-    </Slate>
+    <div style={{padding:20, border:'4px solid gray'}}>
+      <Slate editor={editor} initialValue={value} onChange={handleChange}>
+        <Toolbar />
+        <Editable
+          renderLeaf={renderLeaf}
+          placeholder="Tippe etwas..."
+          style={{ minHeight: 60, border: '4px solid limegreen', padding: 8 }}
+        />
+        <div style={{border: '1px solid limegreen', padding: '10px'}}>
+          <span>{JSON.stringify(value)}</span>
+        </div>
+      </Slate>
+    </div>
   );
 }

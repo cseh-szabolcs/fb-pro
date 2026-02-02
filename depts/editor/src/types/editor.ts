@@ -10,16 +10,18 @@ export type CustomText = {
   // add marks
 };
 
+export type MarkTypes = keyof Omit<CustomText, 'text'>;
+
 interface Node {
   type: string;
   children?: CustomText[];
 }
 
-interface Paragraph extends Node {
+export interface Paragraph extends Node {
   type: 'paragraph';
 }
 
-interface Heading extends Node {
+export interface Heading extends Node {
   type: 'heading';
   level: 1 | 2 | 3 | 4 | 5 | 6;
 }
