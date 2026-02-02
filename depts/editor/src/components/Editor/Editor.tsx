@@ -1,9 +1,9 @@
 import {createEditor, type Descendant} from "slate";
 import {withHistory} from "slate-history";
-import {Editable, type RenderLeafProps, Slate, withReact} from "slate-react";
-import {useCallback, useMemo, useState} from "react";
-import "app/types/editor.ts";
+import {Editable, Slate, withReact, type RenderLeafProps} from "slate-react";
+import {useCallback, useMemo, useState, type CSSProperties} from "react";
 import {Toolbar} from "app/components/Editor/Toolbar/Toolbar.tsx";
+import "app/types/editor.ts";
 
 export function Editor() {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -21,10 +21,10 @@ export function Editor() {
   };
 
   const renderLeaf = useCallback(({ attributes, children, leaf }: RenderLeafProps) => {
-    let style: React.CSSProperties = {};
+    let style: CSSProperties = {};
 
-    if (leaf.bold)   style.fontWeight = 'bold';
-    if (leaf.italic) style.fontStyle  = 'italic';
+    if (leaf.bold) style.fontWeight = 'bold';
+    if (leaf.italic) style.fontStyle = 'italic';
     if (leaf.underline) style.textDecoration = 'underline';
 
     return (

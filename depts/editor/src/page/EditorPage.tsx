@@ -18,7 +18,6 @@ export function EditorPage() {
           <Header />
           <Workspace>
             <Editor />
-            <Editor />
             <ElementRenderer elementId={document.uuid} />
           </Workspace>
         </div>
