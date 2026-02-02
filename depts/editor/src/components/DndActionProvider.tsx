@@ -6,12 +6,12 @@ export function DndActionProvider({children}: {
   children: ReactNode;
 }) {
 
-  useListener('editorDnd:drop', (e: DropEvent) => {
+  useListener('dnd:element:drop', (e: DropEvent) => {
     alert(e.detail.over?.id);
   });
 
   return (
-    <DndProvider context="editorDnd">
+    <DndProvider scope="dnd:element">
       {children}
     </DndProvider>
   );
