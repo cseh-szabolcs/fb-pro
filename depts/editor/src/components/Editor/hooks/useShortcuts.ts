@@ -1,7 +1,7 @@
 import {useCallback, type KeyboardEvent} from "react";
 import {useToggleMark} from "app/components/Editor/hooks/useMark.ts";
 
-export function useShortCuts() {
+export function useShortcuts() {
   const toggleMark = useToggleMark();
 
   return useCallback((event: KeyboardEvent) => {
