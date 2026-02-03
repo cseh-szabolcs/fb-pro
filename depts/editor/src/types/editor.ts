@@ -12,16 +12,16 @@ export type CustomText = {
 
 export type MarkTypes = keyof Omit<CustomText, 'text'>;
 
-interface Node {
+interface Element {
   type: string;
   children?: CustomText[];
 }
 
-export interface Paragraph extends Node {
+export interface Paragraph extends Element {
   type: 'paragraph';
 }
 
-export interface Heading extends Node {
+export interface Heading extends Element {
   type: 'heading';
   level: 1 | 2 | 3 | 4 | 5 | 6;
 }
