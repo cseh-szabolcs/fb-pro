@@ -1,5 +1,5 @@
 import {useCallback, type KeyboardEvent} from "react";
-import {useToggleMark} from "app/components/Editor/hooks/useMark.ts";
+import {useToggleMark} from "./useMark.ts";
 
 export function useShortcuts() {
   const toggleMark = useToggleMark();

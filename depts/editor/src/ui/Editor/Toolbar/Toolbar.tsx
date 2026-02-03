@@ -1,5 +1,5 @@
 import type {MouseEvent} from "react";
-import {useMark} from "app/components/Editor/hooks/useMark.ts";
+import {useMark} from "../hooks/useMark.ts";
 
 export function Toolbar() {
   const [toggleBold, isBold] = useMark('bold');

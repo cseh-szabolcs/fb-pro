@@ -3,9 +3,9 @@ import {useMemo, useState} from "react";
 import {createEditor, type Descendant} from "slate";
 import {Editable, Slate, withReact} from "slate-react";
 import {withHistory} from "slate-history";
-import {useRenderLeaf} from "app/components/Editor/hooks/useRenderLeaf.tsx";
-import {useShortcuts} from "app/components/Editor/hooks/useShortcuts.ts";
-import {Toolbar} from "app/components/Editor/Toolbar/Toolbar.tsx";
+import {useRenderLeaf} from "./hooks/useRenderLeaf.tsx";
+import {useShortcuts} from "./hooks/useShortcuts.ts";
+import {Toolbar} from "./Toolbar/Toolbar.tsx";
 import "app/types/editor.ts";
 
 export function Editor({placeholder}: {

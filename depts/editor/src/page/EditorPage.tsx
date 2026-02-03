@@ -5,7 +5,7 @@ import {Settings} from "app/components/Settings/Settings.tsx";
 import {FixturesRenderer} from "app/components/FixturesRenderer.tsx";
 import {Workspace} from "app/components/Workspace.tsx";
 import {DndActionProvider} from "app/components/DndActionProvider.tsx";
-import {Editor} from "app/components/Editor/Editor.tsx";
+import {Editor} from "app/ui/Editor";
 
 export function EditorPage() {
   const document = useDocument();
