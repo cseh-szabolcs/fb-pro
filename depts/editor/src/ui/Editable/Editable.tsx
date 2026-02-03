@@ -1,14 +1,14 @@
 import * as React from "react";
 import {useMemo, useState} from "react";
 import {createEditor, type Descendant} from "slate";
-import {Editable, Slate, withReact} from "slate-react";
+import {Editable as SlateEditable, Slate, withReact} from "slate-react";
 import {withHistory} from "slate-history";
 import {useRenderLeaf} from "./hooks/useRenderLeaf.tsx";
 import {useShortcuts} from "./hooks/useShortcuts.ts";
 import {Toolbar} from "./Toolbar/Toolbar.tsx";
 import "app/types/editor.ts";
 
-export function Editor({placeholder}: {
+export function Editable({placeholder}: {
   placeholder?: string;
 }) {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
@@ -44,7 +44,7 @@ const EditorInput = React.memo(({placeholder}: {
   return (
     <>
       <Toolbar />
-      <Editable
+      <SlateEditable
         renderLeaf={renderLeaf}
         onKeyDown={handleShortcuts}
         placeholder={placeholder ?? 'Tippe etwas...'}

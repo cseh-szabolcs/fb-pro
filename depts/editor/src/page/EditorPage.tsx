@@ -5,7 +5,7 @@ import {Settings} from "app/components/Settings/Settings.tsx";
 import {FixturesRenderer} from "app/components/FixturesRenderer.tsx";
 import {Workspace} from "app/components/Workspace.tsx";
 import {DndActionProvider} from "app/components/DndActionProvider.tsx";
-import {Editor} from "app/ui/Editor";
+import {Editable} from "app/ui/Editable";
 
 export function EditorPage() {
   const document = useDocument();
@@ -17,7 +17,7 @@ export function EditorPage() {
         <div className="d-flex flex-column flex-1 h-100" style={{backgroundColor: '#dedede'}}>
           <Header />
           <Workspace>
-            <Editor />
+            <Editable />
             <ElementRenderer elementId={document.uuid} />
           </Workspace>
         </div>
