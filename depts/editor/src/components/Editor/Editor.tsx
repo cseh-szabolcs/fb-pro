@@ -1,7 +1,10 @@
+import * as React from "react";
+import {useMemo, useState} from "react";
 import {createEditor, type Descendant} from "slate";
+import {Editable, Slate, withReact} from "slate-react";
 import {withHistory} from "slate-history";
-import {Editable, Slate, withReact, type RenderLeafProps} from "slate-react";
-import {useCallback, useMemo, useState, type CSSProperties} from "react";
+import {useRenderLeaf} from "app/components/Editor/hooks/useRenderLeaf.tsx";
+import {useShortCuts} from "app/components/Editor/hooks/useShortCuts.ts";
 import {Toolbar} from "app/components/Editor/Toolbar/Toolbar.tsx";
 import "app/types/editor.ts";
 
@@ -20,27 +23,10 @@ export function Editor() {
     console.log("Editor-State", value);
   };
 
-  const renderLeaf = useCallback(({ attributes, children, leaf }: RenderLeafProps) => {
-    let style: CSSProperties = {};
-
-    if (leaf.bold) style.fontWeight = 'bold';
-    if (leaf.italic) style.fontStyle = 'italic';
-    if (leaf.underline) style.textDecoration = 'underline';
-
-    return (
-      <span style={style} {...attributes}>{children}</span>
-    );
-  }, []);
-
   return (
     <div style={{padding:20, border:'4px solid gray'}}>
       <Slate editor={editor} initialValue={value} onChange={handleChange}>
-        <Toolbar />
-        <Editable
-          renderLeaf={renderLeaf}
-          placeholder="Tippe etwas..."
-          style={{ minHeight: 60, border: '4px solid limegreen', padding: 8 }}
-        />
+        <EditorInput />
         <div style={{border: '1px solid limegreen', padding: '10px'}}>
           <span>{JSON.stringify(value)}</span>
         </div>
@@ -48,3 +34,20 @@ export function Editor() {
     </div>
   );
 }
+
+const EditorInput = React.memo(() => {
+  const renderLeaf = useRenderLeaf();
+  const shortCuts = useShortCuts();
+
+  return (
+    <>
+      <Toolbar />
+      <Editable
+        renderLeaf={renderLeaf}
+        onKeyDown={shortCuts}
+        placeholder="Tippe etwas..."
+        style={{ minHeight: 60, border: '4px solid limegreen', padding: 8 }}
+      />
+    </>
+  );
+});

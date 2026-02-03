@@ -3,19 +3,21 @@ import {Editor} from "slate";
 import {useEditor} from "./useEditor.ts";
 
 export function useMark(format: MarkTypes): [() => void, boolean] {
-  const toggle = useToggleMark(format);
+  const toggle = useToggleMark();
   const isValue = useIsMarkActive(format);
 
+  const toggleFormat = () => toggle(format);
+
   return [
-    toggle,
+    toggleFormat,
     isValue,
   ];
 }
 
-export function useToggleMark(format: MarkTypes) {
+export function useToggleMark() {
   const editor = useEditor();
 
-  return () => {
+  return (format: MarkTypes) => {
     const isActive = isMarkActive(editor, format);
 
     if (isActive) {
