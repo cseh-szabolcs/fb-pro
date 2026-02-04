@@ -1,5 +1,4 @@
 # App
-./entrypoint.sh
 .env.local
 
 # Logs
