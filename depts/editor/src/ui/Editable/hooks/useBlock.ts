@@ -19,7 +19,7 @@ export function useBlock(props: Props): [() => void, boolean] {
   ];
 }
 
-export function useGetCurrentBlock():[
+export function useCurrentBlock():[
   <T extends BaseElement>(type:ElementTypes, props?: Partial<Omit<T,  'type' | 'children'>>) => void,
   Omit<EElement, 'children'>|undefined
 ] {

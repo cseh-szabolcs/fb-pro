@@ -1,6 +1,6 @@
 import type {ChangeEvent, MouseEvent} from "react";
 import {useMark} from "../hooks/useMark.ts";
-import {useBlock, useGetCurrentBlock} from "app/ui/Editable/hooks/useBlock.ts";
+import {useBlock, useCurrentBlock} from "app/ui/Editable/hooks/useBlock.ts";
 import type {EElement, Heading} from "app/types/editor.ts";
 
 export function Toolbar() {
@@ -9,7 +9,7 @@ export function Toolbar() {
   const [toggleBlockCenter, isBlockCenter] = useBlock({align: 'center'});
   const [toggleBlockJustify, isBlockJustify] = useBlock({align: 'justify'});
   const [toggleBlockRight, isBlockRight] = useBlock({align: 'right'});
-  const [switchBlock, block] = useGetCurrentBlock();
+  const [switchBlock, block] = useCurrentBlock();
 
   const handleTextBold = (e: MouseEvent) => {
     e.preventDefault();
