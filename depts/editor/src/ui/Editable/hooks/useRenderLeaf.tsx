@@ -9,6 +9,8 @@ export function useRenderLeaf() {
     if (leaf.italic) style.fontStyle = 'italic';
     if (leaf.underline) style.textDecoration = 'underline';
 
+    console.debug(leaf)
+
     return (
       <span {...attributes} style={style}>
         {children}

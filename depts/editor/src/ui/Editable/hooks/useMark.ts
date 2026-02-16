@@ -1,6 +1,7 @@
 import type {MarkTypes} from "app/types/editor.ts";
 import {Editor} from "slate";
 import {useEditor} from "./useEditor.ts";
+import {isMarkActive} from "app/ui/Editable/functions/isMarkActive.ts";
 
 export function useMark(format: MarkTypes): [() => void, boolean] {
   const toggle = useToggleMark();
@@ -30,11 +31,6 @@ export function useToggleMark() {
 
 export function useIsMarkActive(format: MarkTypes) {
   const editor = useEditor();
+
   return isMarkActive(editor, format);
 }
-
-const isMarkActive = (editor: Editor, format: MarkTypes): boolean => {
-  const marks = Editor.marks(editor);
-
-  return !!marks?.[format];
-};

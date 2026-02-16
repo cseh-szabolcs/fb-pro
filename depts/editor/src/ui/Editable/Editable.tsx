@@ -4,6 +4,7 @@ import {createEditor, type Descendant} from "slate";
 import {Editable as SlateEditable, Slate, withReact} from "slate-react";
 import {withHistory} from "slate-history";
 import {useRenderLeaf} from "./hooks/useRenderLeaf.tsx";
+import {useRenderElement} from "app/ui/Editable/hooks/useRenderElement.tsx";
 import {useShortcuts} from "./hooks/useShortcuts.ts";
 import {Toolbar} from "./Toolbar/Toolbar.tsx";
 import "app/types/editor.ts";
@@ -39,6 +40,7 @@ const EditorInput = React.memo(({placeholder}: {
   placeholder?: string;
 }) => {
   const renderLeaf = useRenderLeaf();
+  const renderElement = useRenderElement();
   const handleShortcuts = useShortcuts();
 
   return (
@@ -46,6 +48,7 @@ const EditorInput = React.memo(({placeholder}: {
       <Toolbar />
       <SlateEditable
         renderLeaf={renderLeaf}
+        renderElement={renderElement}
         onKeyDown={handleShortcuts}
         placeholder={placeholder ?? 'Tippe etwas...'}
         style={{ minHeight: 60, border: '4px solid limegreen', padding: 8 }}
