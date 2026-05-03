@@ -16,8 +16,8 @@ class FormController extends BaseController
     {
         return $this->render('editor/index.html.twig', [
             'id' => $form->getUuid()->toString(),
-            'type' => 'form',
             'locale' => $this->app->locale(),
+            'type' => Form::TYPE,
         ]);
     }
 

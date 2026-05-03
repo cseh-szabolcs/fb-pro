@@ -26,7 +26,7 @@ export function ElementRenderer({elementId, parent}: {
 
   return (
     <ElementOuter margin={element.margin}>
-        <Controls>
+        <Controls element={element}>
           <Element
             element={element}
             parent={parent}

@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ListController extends BaseController
 {
     #[Route(name: 'index')]
-    public function login(): Response
+    public function index(): Response
     {
         $form = $this->createForm(CreateType::class, new CreateData());
 

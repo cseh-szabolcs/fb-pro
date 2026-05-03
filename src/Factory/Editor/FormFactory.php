@@ -42,11 +42,13 @@ final readonly class FormFactory
 
         $this->createInput(InputType::Text->value, $view1, [
             'name' => 'Vorname',
+            'label' => 'Vorname',
             'placeholder' => 'Vorname',
         ]);
 
         $this->createInput(InputType::Text->value, $view1, [
             'name' => 'Nachname',
+            'label' => 'Nachname',
             'placeholder' => 'Nachname',
             'required' => true,
         ]);

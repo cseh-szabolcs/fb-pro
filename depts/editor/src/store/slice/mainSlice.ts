@@ -1,10 +1,11 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {fetchElementData} from "app/actions/fetchElementData.ts";
 import {fetchFixtures} from "app/actions/fetchFixtures.ts";
 import type {Main} from "app/types/main";
 
 interface MainState extends Main {
   documentId: string;
+  activeElementId?: string;
   ready: {
     elements: boolean;
     fixtures: boolean;
@@ -34,6 +35,9 @@ export const MainSlice = createSlice({
         ...payload,
       };
     },
+    setActiveElementId: (state, {payload = undefined}: PayloadAction<undefined | string>) => {
+      state.activeElementId = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchElementData.fulfilled, (state, {payload}) => {
@@ -56,10 +60,17 @@ export const MainSlice = createSlice({
   selectors: {
     selectIsReady: (state) => state.ready.elements && state.ready.fixtures,
     selectDocumentId: (state) => state.documentId,
+    getActiveElementId: (state) => state.activeElementId,
   },
 });
 
 export const {
   selectIsReady,
   selectDocumentId,
+  getActiveElementId,
 } = MainSlice.selectors;
+
+
+export const {
+  setActiveElementId,
+} = MainSlice.actions;

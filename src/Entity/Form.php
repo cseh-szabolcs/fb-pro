@@ -27,6 +27,8 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
     use OwnerAwareTrait;
     use CreatedTrait;
 
+    const string TYPE = 'form';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(options: ['unsigned' => true])]
@@ -56,7 +58,7 @@ class Form implements MandateAwareInterface, OwnerAwareInterface
     #[ORM\OrderBy(['updated' => 'DESC'])]
     private Collection $versions;
 
-    public function __construct(User $user, string $title, string $description = null)
+    public function __construct(User $user, string $title, ?string $description = null)
     {
         $this->owner = $user;
         $this->title = $title;

@@ -26,7 +26,9 @@ final class ElementNormalizer extends AbstractObjectNormalizer
         $normalized['data']['position'] = $normalized['position'];
         $normalized['data']['children'] = $normalized['children'];
 
-        if ($data instanceof FixtureElement) {
+        if ($data instanceof BaseElement) {
+            $normalized['data']['parentId'] = $data->getParent()?->getUuid()->toString();
+        } else if ($data instanceof FixtureElement) {
             $normalized['data']['fixtureData'] = $normalized['fixtureData'];
         }
 

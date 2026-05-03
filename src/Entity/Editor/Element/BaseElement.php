@@ -91,7 +91,7 @@ abstract class BaseElement implements ElementDataAwareInterface
         return $this;
     }
 
-    public function getParent(): BaseElement
+    public function getParent(): ?BaseElement
     {
         return $this->parent;
     }

@@ -1,6 +1,6 @@
 import type {ReactNode} from "react";
 
-export function Workspace({children}: {
+export function Elements({children}: {
   children: ReactNode,
 }) {
 

@@ -1,28 +1,30 @@
 import {useDocument} from "app/hooks/useDocument.ts";
-import {Header} from "app/components/Header/Header.tsx";
+import {Editor} from "app/components/Editor.tsx";
+import {Content as Workspace} from "app/components/Workspace/Content.tsx";
+import {Header} from "app/components/Workspace/Header.tsx";
+import {Elements} from "app/components/Workspace/Elements.tsx";
 import {ElementRenderer} from "app/components/ElementRenderer.tsx";
-import {Settings} from "app/components/Settings/Settings.tsx";
 import {FixturesRenderer} from "app/components/FixturesRenderer.tsx";
-import {Workspace} from "app/components/Workspace.tsx";
-import {DndActionProvider} from "app/components/DndActionProvider.tsx";
 import {Editable} from "app/ui/Editable";
+import {Panel as SettingsPanel} from "app/components/Settings/Panel.tsx";
+import {Panel as FixturePanel} from "app/components/Fixtures/Panel.tsx";
 
 export function EditorPage() {
   const document = useDocument();
 
   return (
-    <DndActionProvider>
-      <div className="d-flex" style={{height: '100vh'}}>
+    <Editor>
+      <FixturePanel>
         <FixturesRenderer />
-        <div className="d-flex flex-column flex-1 h-100" style={{backgroundColor: '#dedede'}}>
-          <Header />
-          <Workspace>
-            <Editable />
-            <ElementRenderer elementId={document.uuid} />
-          </Workspace>
-        </div>
-        <Settings />
-      </div>
-    </DndActionProvider>
+      </FixturePanel>
+      <Workspace>
+        <Header />
+        <Elements>
+          <Editable />
+          <ElementRenderer elementId={document.uuid} />
+        </Elements>
+      </Workspace>
+      <SettingsPanel />
+    </Editor>
   );
 }

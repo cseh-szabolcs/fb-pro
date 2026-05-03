@@ -1,8 +1,8 @@
-export function Settings() {
+export function Panel() {
 
   return (
     <div className="h-100" style={{backgroundColor: '#ccc'}}>
-      <h1>Settings</h1>
+      <h1>gg</h1>
     </div>
   );
 }

@@ -1,12 +1,24 @@
 import {registerElement, type ElementProps} from "app/registry/elements.ts";
+import {DefaultInput} from "./DefaultInput.tsx";
+import type {Input, InputElementTypes} from "app/types/element.ts";
 
-registerElement(({element, parent, children}: ElementProps) => {
+registerElement<Input>(({element}: ElementProps<Input>) => {
+  if (DefaultTypes.includes(element.inputType)) {
+    return <DefaultInput {...element} />;
+  }
 
-  return (
-    <div style={{backgroundColor: element.backgroundColor, border: '4px solid orange', padding: 20}}>
-      <strong><code style={{color:'orange'}}>type: {element.type}, parent: {parent?.type}</code></strong><br />
-      <small><code>uuid: {element.uuid}</code></small>
-      {children}
-    </div>
-  );
+  return null;
 }, 'input');
+
+const DefaultTypes: InputElementTypes[] = [
+  'text',
+  'email',
+  'password',
+  'number',
+  'date',
+  'time',
+  'datetime-local',
+  'color',
+  'file',
+  'url',
+];
