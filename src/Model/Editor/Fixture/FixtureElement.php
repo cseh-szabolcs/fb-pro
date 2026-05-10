@@ -10,7 +10,7 @@ use Symfony\Component\Uid\Uuid;
 #[Groups(['fixture'])]
 final readonly class FixtureElement implements ElementDataAwareInterface
 {
-    public Uuid $uuid;
+    public Uuid $id;
 
     public function __construct(
         public BaseData $data,
@@ -19,7 +19,7 @@ final readonly class FixtureElement implements ElementDataAwareInterface
         protected ?FixtureElement $parent = null,
         public ?FixtureData $fixtureData = null,
     ) {
-        $this->uuid = Uuid::v7();
+        $this->id = Uuid::v7();
     }
 
     public function getData(): BaseData
