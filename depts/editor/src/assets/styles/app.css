@@ -12,6 +12,10 @@ body {
   flex: 1;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 /* components */
 
 .app-scroll {
