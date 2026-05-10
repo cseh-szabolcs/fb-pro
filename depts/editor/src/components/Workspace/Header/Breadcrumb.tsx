@@ -13,7 +13,7 @@ export function Breadcrumb() {
       setTreeMemorized(tree);
     }
     for (const node of tree) {
-      if (!treeMemorized?.find(item => item.uuid === node.uuid)) {
+      if (!treeMemorized?.find(item => item.id === node.id)) {
         setTreeMemorized(tree);
       }
     }
@@ -23,9 +23,9 @@ export function Breadcrumb() {
     <div className="d-flex gap-2">
       {(treeMemorized ?? []).map((node) => (
         <div
-            key={node.uuid}
-            onClick={() => setActiveElement(node.uuid)}
-            className={classNames("pointer", {'opacity-50': !tree?.find(item => item.uuid === node.uuid)})}
+            key={node.id}
+            onClick={() => setActiveElement(node.id)}
+            className={classNames("pointer", {'opacity-50': !tree?.find(item => item.id === node.id)})}
         >
           <span>
             {node.label}

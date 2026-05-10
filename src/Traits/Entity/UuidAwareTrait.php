@@ -5,10 +5,12 @@ namespace App\Traits\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
 trait UuidAwareTrait
 {
+    #[SerializedName('id')]
     #[ORM\Column(type: UuidType::NAME, unique: true, index: true)]
     private ?Uuid $uuid = null;
 

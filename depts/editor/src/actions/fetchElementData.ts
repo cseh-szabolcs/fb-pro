@@ -13,6 +13,6 @@ export const fetchElementData = createAsyncThunk('fetchData', async () => {
     document: ResponseElement;
     form: FormData;
     updated: string;
-    uuid: string;
+    id: string;
   };
 });

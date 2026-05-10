@@ -13,7 +13,7 @@ export function FixtureElement(props: ElementProps) {
   }
 
   return (
-    <Draggable id={`${props.element.uuid}-draggable`}>
+    <Draggable id={`${props.element.id}-draggable`}>
       <div style={{border: "4px solid orange", background: 'yellow', margin: 10}}>
         <Element {...props} />
         <Data {...fixtureData} />

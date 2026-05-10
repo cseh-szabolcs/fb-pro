@@ -8,7 +8,7 @@ export function Element({element, parent, children}: ElementProps) {
 
     return (
       <ElementContext value={element}>
-        <div dat-role-element={element.type} id={element.uuid}>
+        <div dat-role-element={element.type} id={element.id}>
           <Component element={element} parent={parent} children={children}/>
         </div>
       </ElementContext>

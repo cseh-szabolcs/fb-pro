@@ -7,8 +7,10 @@ use App\Contracts\OutputExtensionInterface;
 use App\Entity\Editor\Element\BaseElement;
 use App\Model\Editor\Fixture\FixtureElement;
 use App\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
+#[AutoconfigureTag('serializer.normalizer', ['priority' => 255])]
 final class ElementNormalizer extends AbstractObjectNormalizer
 {
     public function __construct(
@@ -21,7 +23,7 @@ final class ElementNormalizer extends AbstractObjectNormalizer
     {
         /** @var BaseElement $data */
         $normalized = $this->objectNormalizer->normalize($data, $format, $context);
-        $normalized['data']['uuid'] = $normalized['uuid'];
+        $normalized['data']['id'] = $normalized['id'];
         $normalized['data']['type'] = $normalized['type'];
         $normalized['data']['position'] = $normalized['position'];
         $normalized['data']['children'] = $normalized['children'];

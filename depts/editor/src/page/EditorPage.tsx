@@ -21,7 +21,7 @@ export function EditorPage() {
         <Header />
         <Elements>
           <Editable />
-          <ElementRenderer elementId={document.uuid} />
+          <ElementRenderer elementId={document.id} />
         </Elements>
       </Workspace>
       <SettingsPanel />

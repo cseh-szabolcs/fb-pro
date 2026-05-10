@@ -1,9 +1,8 @@
 import type {Corner, Side} from "app/types/element/props.ts";
 
 interface ElementData {
-  uuid: string;
+  id: string;
   type: string;
-  id?: string;
   parentId?: string;
   role?: string;
   position: number;
@@ -19,7 +18,7 @@ interface ElementData {
 }
 
 // element in editor (frontend)
-interface BaseElement extends ElementData {
+export interface BaseElement extends ElementData {
   children: string[];
 }
 
@@ -57,7 +56,7 @@ export type Element =
   | Input;
 
 export type Node = {
-  uuid: string
+  id: string
   type: Element['type'];
   label: string;
 }

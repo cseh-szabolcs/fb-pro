@@ -1,5 +1,5 @@
 export interface Main {
-  uuid: string;
+  id: string;
   title: string,
   description?: string,
 }

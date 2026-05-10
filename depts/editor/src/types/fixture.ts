@@ -1,6 +1,6 @@
-import type {Element} from "./element.ts";
+import type {BaseElement} from "./element.ts";
 
-export interface FixtureElement extends Element {
+export interface FixtureElement extends BaseElement {
   fixtureData?: FixtureData;
 }
 

@@ -4,7 +4,7 @@ import {extractElements} from "app/functions/extractElements.ts";
 import type {Element} from "app/types/element.ts";
 
 const elementAdapter = createEntityAdapter<Element, string>({
-  selectId: (element) => element.uuid,
+  selectId: (element) => element.id,
 });
 
 const elementSelector = elementAdapter.getSelectors();
@@ -15,11 +15,11 @@ export const ElementSlice = createSlice({
   reducers: {
     addElement: elementAdapter.addOne,
     updateElement: (state, action: PayloadAction<{
-      uuid: string;
+      id: string;
       changes: Partial<Element>;
     }>) => {
       elementAdapter.updateOne(state, {
-        id: action.payload.uuid,
+        id: action.payload.id,
         changes: action.payload.changes,
       });
     },

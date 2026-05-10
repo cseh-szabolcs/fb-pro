@@ -14,7 +14,7 @@ interface MainState extends Main {
 }
 
 const initialState: MainState = {
-  uuid: '',
+  id: '',
   title: '',
   description: '',
   documentId: '',
@@ -41,10 +41,10 @@ export const MainSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchElementData.fulfilled, (state, {payload}) => {
-      state.uuid = payload.form.uuid;
+      state.id = payload.form.id;
       state.title = payload.form.title;
       state.description = payload.form.description;
-      state.documentId = payload.document.uuid;
+      state.documentId = payload.document.id;
       state.ready.elements = true;
     });
     builder.addCase(fetchFixtures.fulfilled, (state) => {

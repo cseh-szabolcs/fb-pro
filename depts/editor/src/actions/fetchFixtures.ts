@@ -8,7 +8,7 @@ export const fetchFixtures = createAsyncThunk('fetchFixtures', async () => {
   const response = await xhr.get(FIXTURES_PATH);
 
   return {
-    uuid: 'root',
+    id: 'root',
     children: await response.json(),
   } as unknown as ResponseElement;
 });

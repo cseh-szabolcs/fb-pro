@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Contracts\Entity\UuidAwareInterface;
 use App\Contracts\MandateAwareInterface;
 use App\Contracts\OwnerAwareInterface;
 use App\Entity\Form\FormVersion;
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FormRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Form implements MandateAwareInterface, OwnerAwareInterface
+class Form implements MandateAwareInterface, OwnerAwareInterface, UuidAwareInterface
 {
     use UuidAwareTrait;
     use MandateAwareTrait;

@@ -1,9 +1,9 @@
-import type {Element, ResponseElement} from "app/types/element.ts";
+import type {BaseElement, ResponseElement} from "app/types/element.ts";
 
-export function extractElements(current: ResponseElement, state: Record<string, Element>) {
-    state[current.uuid] = {
+export function extractElements(current: ResponseElement, state: Record<string, BaseElement>) {
+    state[current.id] = {
         ...current,
-        children: current.children.map(child => child.uuid),
+        children: current.children.map(child => child.id),
     }
 
     for (const child of current.children) {

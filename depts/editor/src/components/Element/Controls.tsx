@@ -9,15 +9,15 @@ export function Controls({element, children}: {
 
   const activeElement = useGetActiveElement();
   const setActiveElement = useSetActiveElement();
-  const isActive = activeElement?.uuid === element?.uuid;
+  const isActive = activeElement?.id === element?.id;
 
   const handleSetActiveElement = (e: MouseEvent) => {
     e.stopPropagation();
-    setActiveElement(element.uuid);
+    setActiveElement(element.id);
   };
 
   return (
-    <div style={{border:`4px solid ${isActive ? 'cyan' : 'blue'}`}} data-id={element?.uuid} onClick={handleSetActiveElement}>
+    <div style={{border:`4px solid ${isActive ? 'cyan' : 'blue'}`}} data-id={element?.id} onClick={handleSetActiveElement}>
       {children}
     </div>
   );

@@ -43,7 +43,7 @@ export function useGetActiveElementBreadcrumbs(): Node[] {
     }
 
     const elements: Node[] = [{
-      uuid: currentElement.uuid,
+      id: currentElement.id,
       type:currentElement.type,
       label: getElementLabel(currentElement),
     }];
@@ -56,7 +56,7 @@ export function useGetActiveElementBreadcrumbs(): Node[] {
       }
 
       elements.push({
-        uuid: parent.uuid,
+        id: parent.id,
         type: parent.type,
         label: getElementLabel(parent),
       });
